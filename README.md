@@ -57,7 +57,7 @@ LLuisosWeb/
 
 1. **Clonar o descarregar el repositori:**
    ```bash
-   git clone <url-del-repositori>
+   git clone https://github.com/danicasjau/LLuisosWeb.git
    cd LLuisosWeb
    ```
 
@@ -76,6 +76,11 @@ LLuisosWeb/
 3. **Instal·lar les dependències:**
    ```bash
    pip install -r requirements.txt
+   ```
+
+4. **Executar:**
+   ```bash
+   python app.py
    ```
 
 ---
