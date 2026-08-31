@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}MAPA DEL FOULARD | AE Lluïsos de Gràcia{% endblock %}
+
+{% block extra_head %}
+<!-- Leaflet Open-Source Interactive Map CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">MAPA DEL FOULARD VIATGER</h2>
+      <div class="section-subtitle">EXPEDICIONS DE MUNTANYA, PROJECTES COMUNITARIS I TROBADES MUNDIALS ESCOLTES</div>
+    </div>
+    <div style="font-family: var(--font-display); font-size: 1.1rem; background: var(--retro-blue); color: white; padding: 6px 14px; border: 1px solid var(--ink-black);">
+      RUTES PER TOT EL MÓN
+    </div>
+  </div>
+
+  <div class="map-layout">
+    
+    <!-- Leaflet Map Container -->
+    <div class="map-container" id="leaflet-map"></div>
+
+    <!-- Sidebar Pinpoints Directory -->
+    <div class="map-sidebar-list">
+      <h3 style="font-family: var(--font-display); font-size: 1.4rem; border-bottom: 1px solid var(--ink-black); padding-bottom: 5px;">
+        PINPOINTS D'EXPEDICIÓ
+      </h3>
+      {% for pin in pins %}
+      <div class="pin-card" onclick="focusPin({{ pin.lat }}, {{ pin.lng }}, '{{ pin.title|escape }}')">
+        <span class="post-tag" style="font-size: 0.75rem;">{{ pin.unit }}</span>
+        <h4 style="font-family: var(--font-title); font-size: 1.1rem; margin: 4px 0;">{{ pin.title }}</h4>
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--retro-orange);">
+          {{ pin.location }} ({{ pin.year }})
+        </div>
+        <p style="font-size: 0.85rem; color: var(--ink-muted); margin-top: 5px;">
+          {{ pin.description }}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  let map;
+  let markers = [];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    map = L.map('leaflet-map').setView([30.0000, 20.0000], 3);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors | AE Lluïsos de Gràcia'
+    }).addTo(map);
+
+    const pins = {{ pins|tojson }};
+
+    const orangeIcon = L.divIcon({
+      className: 'custom-leaflet-pin',
+      html: `<div style="background-color:#FF7A00; width:18px; height:18px; border-radius:50%; border:2px solid #FFFFFF; box-shadow:0 3px 8px rgba(0,0,0,0.5); cursor:pointer;"></div>`,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    });
+
+    pins.forEach(pin => {
+      const marker = L.marker([pin.lat, pin.lng], { icon: orangeIcon }).addTo(map);
+      marker.bindPopup(`
+        <div style="font-family:'Space Grotesk', sans-serif; padding:5px;">
+          <b style="font-size:1.1rem; color:#FF5722; font-family:'Syne', sans-serif;">${pin.title}</b><br>
+          <small style="font-weight:bold; color:#1B4965;">${pin.location} (${pin.year})</small>
+          <p style="margin-top:6px; font-size:0.85rem;">${pin.description}</p>
+        </div>
+      `);
+      markers.push({ lat: pin.lat, lng: pin.lng, marker });
+    });
+  });
+
+  function focusPin(lat, lng, title) {
+    if (!map) return;
+    map.flyTo([lat, lng], 6, { duration: 1.5 });
+    const target = markers.find(m => Math.abs(m.lat - lat) < 0.01 && Math.abs(m.lng - lng) < 0.01);
+    if (target) {
+      target.marker.openPopup();
+    }
+  }
+</script>
+{% endblock %}

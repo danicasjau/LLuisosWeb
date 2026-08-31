@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}EQUIP DE CAPS & MONITORS | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">EQUIP DE CAPS & MONITORS 2026</h2>
+      <div class="section-subtitle">ELS EDUCADORS I GUIES DE L'AGRUPAMENT • VOLUNTARIAT I PASSIONALITAT ESCOLTA</div>
+    </div>
+    <div style="font-family: var(--font-display); font-size: 1.2rem; background: var(--retro-orange); color: white; padding: 6px 14px; border: 1px solid var(--ink-black);">
+      EQUIP VOLUNTARI DE GRÀCIA
+    </div>
+  </div>
+
+  <div class="team-grid">
+    {% for member in team %}
+    <div class="team-card">
+      <div class="team-polaroid-frame">
+        <img src="{{ member.image }}" alt="{{ member.name }}" class="team-photo">
+      </div>
+      <span class="team-unit-badge">{{ member.unit }}</span>
+      <h3 class="team-name">{{ member.name }}</h3>
+      <div class="team-role">{{ member.role }}</div>
+      <div style="font-size: 0.8rem; font-weight: 700; color: var(--retro-orange); margin-bottom: 8px;">
+        {{ member.years }}
+      </div>
+      <p class="team-bio">{{ member.bio }}</p>
+      <div style="margin-top: 10px; font-style: italic; font-size: 0.8rem; color: var(--retro-blue); font-weight: 600;">
+        {{ member.quote }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

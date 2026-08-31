@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}QUINIELA DE CAPS | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<div class="page-container" style="padding: 40px 30px;">
+  
+  <!-- Header Banner (No icons) -->
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">QUINIELA DE CAPS</h2>
+      <div class="section-subtitle">Reparteix els caps entre les 5 unitats del cau. No t'oblidis de triar qui marxa!</div>
+    </div>
+    
+    <!-- Action Controls (PUBLICAR & REINICIAR) -->
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+      <button id="btn-publish-kiniela" class="btn-retro btn-retro-orange">
+        PUBLICAR QUINIELA
+      </button>
+      <button id="btn-reset-kiniela" class="btn-retro btn-retro-blue">
+        REINICIAR
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Bar Strip -->
+  <div class="kiniela-progress-bar-container">
+    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px;">
+      <span>PROGRÉS DE LA QUINIELA:</span>
+      <span id="kiniela-progress-counter">0 / 22</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="kiniela-progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- Kiniela Main Two-Column Layout (Lateral Sidebar Pool + 6 Group Columns) -->
+  <div class="kiniela-main-split-layout">
+    
+    <!-- Left Lateral Sidebar: Member Circles Pool -->
+    <aside class="kiniela-lateral-sidebar">
+      
+      <!-- Unassigned Member Circles Pool -->
+      <div class="kiniela-pool-wrapper">
+        <div class="sidebar-title">CAPS</div>
+        <div class="unassigned-pool-grid" id="unassigned-pool">
+          <!-- Member circular avatar cards rendered by kiniela.js -->
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Right Area: 5 Group Columns Grid (Castors, Llops, Ranguis, Pios, Truk) -->
+    <main class="kiniela-groups-layout" id="groups-container">
+      <!-- Group columns rendered by kiniela.js -->
+    </main>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/kiniela.js') }}"></script>
+{% endblock %}

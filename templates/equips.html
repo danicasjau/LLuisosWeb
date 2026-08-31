@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}EQUIP DE CAPS I MONITORS | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<div class="page-container equips-page-layout">
+
+  <!-- Breadcrumb & Top Bar -->
+  <div class="page-top-nav animate-on-scroll fade-down">
+    <a href="/" class="btn-retro btn-retro-blue btn-back-home">← TORNAR A L'INICI</a>
+    <div class="page-badge-counter">22 MONITORS VOLUNTARIS</div>
+  </div>
+
+  <!-- Header -->
+  <div class="section-header animate-on-scroll fade-left" style="margin-top: 15px;">
+    <div>
+      <h2 class="section-title" style="font-size: clamp(2.2rem, 4.5vw, 3.8rem);">EQUIP DE CAPS I MONITORS 2026</h2>
+      <div class="section-subtitle">ELS EDUCADORS I GUIES DE L'AGRUPAMENT • VOLUNTARIAT, PASSIÓ I LIDERATGE COMUNITARI</div>
+    </div>
+    <div style="font-family: var(--font-display); font-size: 1.1rem; background: var(--retro-orange); color: white; padding: 8px 18px; border-radius: 8px; font-weight: 700;">
+      CURS ESCOLTA 2026
+    </div>
+  </div>
+
+  <!-- Unit Filter Tabs -->
+  <div class="equips-filters-strip animate-on-scroll scale-up">
+    <button class="btn-filter active" data-unit-filter="all" onclick="filterEquips('all', this)">TOTS ELS CAPS</button>
+    <button class="btn-filter" data-unit-filter="coordinacio" onclick="filterEquips('coordinacio', this)">COORDINACIÓ</button>
+    <button class="btn-filter" data-unit-filter="castors" onclick="filterEquips('castors', this)">CASTÚDRIGUES (6-8)</button>
+    <button class="btn-filter" data-unit-filter="llops" onclick="filterEquips('llops', this)">DAINOPS (9-11)</button>
+    <button class="btn-filter" data-unit-filter="ranguis" onclick="filterEquips('ranguis', this)">RANGUIS (12-14)</button>
+    <button class="btn-filter" data-unit-filter="pios" onclick="filterEquips('pios', this)">PIONEL·LES (15-17)</button>
+    <button class="btn-filter" data-unit-filter="truk" onclick="filterEquips('truk', this)">TRUK (18-20)</button>
+    <button class="btn-filter" data-unit-filter="marxen" onclick="filterEquips('marxen', this)">MARXEN (+20)</button>
+  </div>
+
+  <!-- Grid of All Caps Cards -->
+  <div class="equips-full-grid stagger-grid" id="equips-container" style="margin-top: 35px;">
+    {% for member in team %}
+    <div class="team-card equip-full-card" data-unit-code="{{ member.unit_code|default('general') }}"
+      onclick="openModal('{{ member.name|escape }}', '{{ member.unit }}', '{{ member.role }} • {{ member.years }}', `<p><strong>Biografia:</strong> {{ member.bio|escape }}</p><blockquote style=\'margin-top:12px; font-style:italic; border-left:3px solid var(--retro-orange); padding-left:10px;\'>{{ member.quote|escape }}</blockquote>`, '{{ member.image }}')">
+      
+      <div class="team-polaroid-frame">
+        <img src="{{ member.image }}" alt="{{ member.name }}" class="team-photo">
+      </div>
+      
+      <div class="team-card-content">
+        <span class="team-unit-badge">{{ member.unit }}</span>
+        <h3 class="team-name">{{ member.name }}</h3>
+        <div class="team-role">{{ member.role }}</div>
+        <div class="team-years-tag">{{ member.years }}</div>
+        
+        <p class="team-bio">{{ member.bio }}</p>
+        
+        <div class="team-quote-box">
+          {{ member.quote }}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Pedagogical Units Explanatory Section -->
+  <div class="units-intro-panel animate-on-scroll scale-up" style="margin-top: 60px;">
+    <div class="section-header" style="margin-bottom: 20px;">
+      <div>
+        <h3 class="section-title" style="font-size: 1.8rem;">LES UNITATS PEDAGÒGIQUES DEL CAU</h3>
+        <div class="section-subtitle">UNA PROPOSTA EDUCATIVA CONTINUADA DES DELS 6 FINS ALS 20 ANYS</div>
+      </div>
+    </div>
+
+    <div class="units-overview-grid">
+      <div class="unit-overview-box" style="border-top-color: #FF7A00;">
+        <h4 style="color: #FF7A00;">CASTÚDRIGUES (6-8 ANYS)</h4>
+        <p>Primera presa de contacte amb el joc col·lectiu, la vida al bosc i el respecte per la natura.</p>
+      </div>
+      <div class="unit-overview-box" style="border-top-color: #EAB308;">
+        <h4 style="color: #EAB308;">DAINOPS (9-11 ANYS)</h4>
+        <p>Aventures en sisena, foment de l'autonomia personal i aprenentatge mitjançant el joc simbòlic.</p>
+      </div>
+      <div class="unit-overview-box" style="border-top-color: #2563EB;">
+        <h4 style="color: #2563EB;">RANGUIS (12-14 ANYS)</h4>
+        <p>Travesses de muntanya, vida en patrulla, primeres decisions democràtiques i esperit de superació.</p>
+      </div>
+      <div class="unit-overview-box" style="border-top-color: #DC2626;">
+        <h4 style="color: #DC2626;">PIONEL·LES (15-17 ANYS)</h4>
+        <p>Autogestió d'empreses i grans projectes d'aventura, coneixement crític del món i compromís social.</p>
+      </div>
+      <div class="unit-overview-box" style="border-top-color: #16A34A;">
+        <h4 style="color: #16A34A;">TRUK (18-20 ANYS)</h4>
+        <p>Projectes internacionals de cooperació, servei cívic a la comunitat i consolidació de valors transformadors.</p>
+      </div>
+      <div class="unit-overview-box" style="border-top-color: #7C3AED;">
+        <h4 style="color: #7C3AED;">CONSELL DE CAPS</h4>
+        <p>L'equip de joves voluntaris que fan possible l'agrupament setmana rere setmana.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function filterEquips(unitCode, btn) {
+    document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.equip-full-card');
+    cards.forEach(card => {
+      const cardUnit = card.getAttribute('data-unit-code') || '';
+      if (unitCode === 'all' || cardUnit === unitCode) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AE LLUÏSOS DE GRÀCIA{% endblock %}</title>
+  <meta name="description"
+    content="Agrupament Escolta Lluïsos de Gràcia. Escoltisme, muntanya i lleure educatiu a Gràcia.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- Leaflet Open-Source Interactive Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- Outer Frame -->
+  <div class="poster-outer-wrapper">
+    <div class="poster-canvas">
+
+      <!-- Main Top Bar Banner -->
+      <header class="poster-top-bar" id="main-top-bar">
+        <div class="topbar-inner-container">
+          <h1 class="poster-title-fill">
+            <a href="/" class="poster-title-link">
+              <em><span class="smalltext" style="font-weight: 900; text-transform: uppercase;">AE</span>
+                <d style="font-weight: 900;">lluïsos</d>
+              </em> <span class="smalltext">de</span>
+              <em style="font-weight: 900;">gràcia</em>
+            </a>
+          </h1>
+
+          <!-- 5 Index Apartats integrated on Top Bar -->
+          <nav class="topbar-apartats-nav" id="topbar-apartats" aria-label="Index Apartats">
+            <a href="/#qui-som" class="topbar-apartat-link"><span class="apartat-num">01</span> QUI SOM</a>
+            <a href="/#novetats" class="topbar-apartat-link"><span class="apartat-num">02</span> NOVETATS</a>
+            <a href="/equips" class="topbar-apartat-link"><span class="apartat-num">03</span> EQUIP DE CAPS</a>
+            <a href="/calendar" class="topbar-apartat-link"><span class="apartat-num">04</span> CALENDARI</a>
+            <a href="/foulard" class="topbar-apartat-link"><span class="apartat-num">05</span> FOULARD & SEU</a>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Static Vertical Center Navigation Bar with Hide/Show Toggle -->
+      <button class="nav-hide-btn" id="nav-hide-toggle" aria-label="Amagar o Mostrar Menú">
+        <span class="hide-icon">☰</span>
+      </button>
+
+      <nav class="poster-nav" id="main-nav">
+        <a href="/">INICI</a>
+        <a href="/#qui-som">QUI SOM</a>
+        <a href="/#novetats">NOVETATS</a>
+        <a href="/equips">EQUIP DE CAPS</a>
+        <a href="/calendar">CALENDARI</a>
+        <a href="/foulard">FOULARD VIATGER</a>
+        <a href="/shop">BOTIGA</a>
+      </nav>
+
+      <!-- Dynamic Page Content -->
+      <main class="poster-main-content">
+        {% block content %}{% endblock %}
+      </main>
+
+      <!-- Retro Modal Popup Shell -->
+      <div class="retro-modal-backdrop" id="retro-modal">
+        <div class="retro-modal-box">
+          <button class="modal-close-btn" id="modal-close-btn">✕</button>
+          <div id="modal-badge" class="post-tag" style="margin-bottom: 10px;">BADGE</div>
+          <h2 id="modal-title" class="section-title" style="font-size: 1.8rem; margin-bottom: 5px;">Modal Title</h2>
+          <div id="modal-meta"
+            style="font-size: 0.85rem; font-weight: 700; color: var(--retro-blue); margin-bottom: 15px;">Date / Location
+          </div>
+          <img id="modal-img" src="" alt="Modal media"
+            style="width:100%; max-height:220px; object-fit:cover; border:1px solid #121212; margin-bottom:15px; display:none;">
+          <div id="modal-body" style="font-size: 0.95rem; line-height: 1.6; color: var(--ink-black);">
+            Content text goes here.
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional Dark Footer Bar with Index & Sitemap -->
+      <footer class="poster-footer-bar">
+        <div class="footer-index-grid">
+          <div class="footer-col">
+            <div class="footer-title">AE LLUÏSOS DE GRÀCIA</div>
+            <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 5px;">
+              Educant infants i joves en el lleure, la muntanya i el compromís social des de 1957.
+            </p>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">ÍNDEX DEL LLOC</div>
+            <ul class="footer-sitemap">
+              <li><a href="/">INICI</a></li>
+              <li><a href="/#qui-som">QUI SOM</a></li>
+              <li><a href="/#novetats">NOVETATS</a></li>
+              <li><a href="/equips">EQUIP DE CAPS</a></li>
+              <li><a href="/calendar">CALENDARI</a></li>
+              <li><a href="/foulard">FOULARD VIATGER</a></li>
+              <li><a href="/shop">BOTIGA</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">CONTACTE & SEU</div>
+            <div style="font-size: 0.85rem; color: #CBD5E1; line-height: 1.6;">
+              Plaça del Nord, 4<br>
+              08024 Barcelona (Gràcia)<br>
+              Email: info@lluisosdegracia.cat
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom-line">
+          <div>AE LLUÏSOS DE GRÀCIA &copy; 2026 • TOTS ELS DRETS RESERVATS</div>
+          <div class="retro-barcode">
+            <div class="barcode-lines" id="barcode-lines-container"></div>
+            <div class="barcode-text">AE_LLUISOS_GRACIA_2026</div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/beauty.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/animations.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+
+</html>

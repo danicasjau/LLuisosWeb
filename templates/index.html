@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+
+{% block title %}INICI | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<!-- Vertical Poster Hero Section with 3D Parallax Depth Layers -->
+<div class="hero-poster-container" id="hero-container">
+  <!-- Back Layer: Sky & Mountain Landscape -->
+  <div class="hero-mountain-bg"></div>
+
+  <!-- Front Layer: Cutout Mountain Ridges in front of centered Title (z-index: 10) -->
+  <img src="{{ url_for('static', filename='images/mountains_cutout.png') }}" alt="Muntanyes AE Lluïsos de Gràcia"
+    class="hero-mountain-cutout">
+
+  <!-- Hero Scroll Hint Badge -->
+</div>
+
+<!-- Distinction Interactive 2x2 Square Cards Grid -->
+<section class="distinction-section animate-on-scroll scale-up">
+  <div class="distinction-grid">
+
+    <!-- 01 QUI SOM -->
+    <div class="distinction-item" id="distinction-qui-som" onclick="toggleDistinctionCard(this)">
+      <div class="distinction-media-wrap">
+        <img src="{{ url_for('static', filename='images/distincitiona_001.png') }}" alt="Qui Som Escolta"
+          class="distinction-image">
+      </div>
+      <div class="distinction-title-overlay">
+        <span class="distinction-badge">MÉS DE 65 ANYS D'ESCOLTISME</span>
+        <div class="distinction-header-row">
+          <h3 class="distinction-title-text">QUI SOM</h3>
+        </div>
+        <div class="distinction-expanded-content">
+          <p class="distinction-desc">
+            L'Agrupament Escolta Lluïsos de Gràcia és una entitat sense ànim de lucre fundada el 1957. Educem en el
+            lleure, la muntanya i el compromís social des de la Plaça del Nord de Gràcia, organitzats gràcies a
+            l'entrega voluntària d'un equip de caps compromesos amb l'educació transformadora.
+          </p>
+          <div class="distinction-actions">
+            <a href="#qui-som" class="btn-retro btn-retro-orange" onclick="event.stopPropagation()">CONEIX L'AGRUPAMENT
+              →</a>
+            <button class="btn-retro btn-retro-blue btn-collapse-card"
+              onclick="event.stopPropagation(); toggleDistinctionCard(this.closest('.distinction-item'))">✕
+              TANCAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 NOVETATS -->
+    <div class="distinction-item" id="distinction-novetats" onclick="toggleDistinctionCard(this)">
+      <div class="distinction-media-wrap">
+        <img src="{{ url_for('static', filename='images/distincitiona_002.png') }}" alt="Novetats Escolta"
+          class="distinction-image">
+      </div>
+      <div class="distinction-title-overlay">
+        <span class="distinction-badge">CRÒNIQUES I HISTÒRIES</span>
+        <div class="distinction-header-row">
+          <h3 class="distinction-title-text">NOVETATS</h3>
+        </div>
+        <div class="distinction-expanded-content">
+          <p class="distinction-desc">
+            Descobreix les últimes cròniques d'excursions, fotos de les sortides de cap de setmana, avisos de les
+            unitats pedagògiques i pròximes activitats destacades de l'agrupament.
+          </p>
+          <div class="distinction-actions">
+            <a href="#novetats" class="btn-retro btn-retro-blue" onclick="event.stopPropagation()">VEURE TOTES LES
+              NOVETATS →</a>
+            <button class="btn-retro btn-retro-orange btn-collapse-card"
+              onclick="event.stopPropagation(); toggleDistinctionCard(this.closest('.distinction-item'))">✕
+              TANCAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 EQUIP DE CAPS -->
+    <div class="distinction-item" id="distinction-equip-de-caps" onclick="toggleDistinctionCard(this)">
+      <div class="distinction-media-wrap">
+        <img src="{{ url_for('static', filename='images/distincitiona_003.png') }}" alt="Equip de Caps Escolta"
+          class="distinction-image">
+      </div>
+      <div class="distinction-title-overlay">
+        <span class="distinction-badge">EQUIP DE MONITORS VOLUNTARIS</span>
+        <div class="distinction-header-row">
+          <h3 class="distinction-title-text">EQUIP DE CAPS</h3>
+        </div>
+        <div class="distinction-expanded-content">
+          <p class="distinction-desc">
+            Un equip de 22 joves voluntaris compromesos que organitzen dissabte a dissabte les activitats, excursions i
+            campaments per a totes les branques pedagògiques de l'agrupament.
+          </p>
+          <div class="distinction-actions">
+            <a href="/equips" class="btn-retro btn-retro-orange" onclick="event.stopPropagation()">VEURE EQUIP DE CAPS
+              →</a>
+            <button class="btn-retro btn-retro-blue btn-collapse-card"
+              onclick="event.stopPropagation(); toggleDistinctionCard(this.closest('.distinction-item'))">✕
+              TANCAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 CALENDARI & VALORS -->
+    <div class="distinction-item" id="distinction-valors" onclick="toggleDistinctionCard(this)">
+      <div class="distinction-media-wrap">
+        <img src="{{ url_for('static', filename='images/distincitiona_004.png') }}" alt="Valors Escolta"
+          class="distinction-image">
+      </div>
+      <div class="distinction-title-overlay">
+        <span class="distinction-badge">AGENDA I ACTIVITATS 2026</span>
+        <div class="distinction-header-row">
+          <h3 class="distinction-title-text">CALENDARI</h3>
+        </div>
+        <div class="distinction-expanded-content">
+          <p class="distinction-desc">
+            Consulta totes les sortides de cap de setmana, campaments d'estiu, caus especials i assemblees generals
+            programades per a aquest curs 2026.
+          </p>
+          <div class="distinction-actions">
+            <a href="/calendar" class="btn-retro btn-retro-blue" onclick="event.stopPropagation()">VEURE CALENDARI
+              COMPLET →</a>
+            <button class="btn-retro btn-retro-orange btn-collapse-card"
+              onclick="event.stopPropagation(); toggleDistinctionCard(this.closest('.distinction-item'))">✕
+              TANCAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Decorative Retro Separator 1 -->
+<div class="section-divider-bar">
+  <span class="section-divider-badge">AE LLUÏSOS DE GRÀCIA • 1957</span>
+</div>
+
+<!-- SECTION 1: QUI SOM I VALORS (Vintage Cream Background) -->
+<section class="section-block bg-vintage-cream animate-on-scroll" id="qui-som" style="scroll-margin-top: 20px;">
+  <div class="page-container" style="padding: 0;">
+    <div class="section-header animate-on-scroll fade-left">
+      <div>
+        <h2 class="section-title">QUI SOM I COM SOM</h2>
+        <div class="section-subtitle">MÉS DE 65 ANYS D'ESCOLTISME, LLEURE I COMPROMÍS A GRÀCIA</div>
+      </div>
+    </div>
+
+    <div class="about-card animate-on-scroll scale-up">
+      <div class="about-lead">
+        L'Agrupament Escolta Lluïsos de Gràcia és una entitat sense ànim de lucre dedicada a l'educació en el lleure
+        d'infants i joves d'entre 6 i 20 anys al cor de la vila de Gràcia.
+      </div>
+      <div class="about-body">
+        <p style="margin-bottom: 14px;">
+          Treballem dissabte a dissabte, en excursions de cap de setmana i als campaments d'estiu, utilitzant el mètode
+          escolta per fomentar l'autonomia, el treball en equip, la responsabilitat social i l'amor per la natura i la
+          muntanya.
+        </p>
+        <p>
+          Organitzats en 6 unitats pedagògiques (Castúdrigues, Dainops, Ranguis, Pionel·les, Truk i Marxen),
+          l'agrupament s'estructura gràcies a l'entrega voluntària d'un equip de caps compromesos amb l'educació
+          transformadora.
+        </p>
+      </div>
+    </div>
+
+    <!-- Educational Values Cards -->
+    <div class="values-grid stagger-grid" style="margin-top: 35px;">
+      <div class="value-card">
+        <div class="value-number">01</div>
+        <div class="value-title">ESCOLTISME I MUNTANYA</div>
+        <div class="value-text">
+          Aprenem a viure en harmonia amb el medi natural, respectant l'entorn i conquerint reptes d'alta muntanya amb
+          esforç i humiltat.
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="value-number">02</div>
+        <div class="value-title">AUTONOMIA I CRÍTICA</div>
+        <div class="value-text">
+          Potenciem la presa de decisions, la responsabilitat individual i l'esperit crític en un entorn segur de
+          participació activa.
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="value-number">03</div>
+        <div class="value-title">COMPROMÍS AMB LA VILA</div>
+        <div class="value-text">
+          Arrelats a la Plaça del Nord i al teixit associatiu de Gràcia, fomentem el civisme, la solidaritat i la
+          cooperació veïnal.
+        </div>
+      </div>
+
+      <div class="value-card">
+        <div class="value-number">04</div>
+        <div class="value-title">COEDUCACIÓ I INCLUSIÓ</div>
+        <div class="value-text">
+          Educem en la igualtat d'oportunitats, la diversitat i el respecte mutu, formant ciutadans conscients i
+          empàtics.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Graphic Line Separator 2 -->
+<div class="section-line-separator"></div>
+
+<!-- SECTION 2: DARRERES NOVETATS (Dark Slate Background) -->
+<section class="section-block bg-dark-slate animate-on-scroll" id="novetats" style="scroll-margin-top: 20px;">
+  <div class="page-container" style="padding: 0;">
+    <div class="section-header animate-on-scroll fade-right">
+      <div>
+        <h2 class="section-title">DARRERES NOVETATS</h2>
+        <div class="section-subtitle">HISTÒRIES, ANUNCIS I CRÒNIQUES DE LES NOSTRES AVENTURES</div>
+      </div>
+      <div>
+        <a href="/novetats" class="btn-retro btn-retro-orange">TOTES LES CRÒNIQUES →</a>
+      </div>
+    </div>
+
+    <div class="posts-grid stagger-grid">
+      {% for post in novetats %}
+      <div class="post-card"
+        onclick="openModal('{{ post.title|escape }}', '{{ post.tag }}', '{{ post.date }} • {{ post.author }}', `<p>{{ post.content|escape }}</p>`, '{{ post.image }}')">
+        <img src="{{ post.image }}" alt="{{ post.title }}" class="post-thumb">
+        <div class="post-body">
+          <div>
+            <span class="post-tag">{{ post.tag }}</span>
+            <h3 class="post-title">{{ post.title }}</h3>
+            <p class="post-excerpt">{{ post.excerpt }}</p>
+          </div>
+          <div class="post-footer">
+            <span>{{ post.author }}</span>
+            <span>{{ post.date }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Decorative Retro Separator 3 -->
+<div class="section-divider-bar">
+  <span class="section-divider-badge">EQUIP DE CAPS • MONITORS VOLUNTARIS</span>
+</div>
+
+<!-- SECTION 3: EQUIP DE CAPS (Horizontal Scroll Track & Link to /equips) -->
+<section class="section-block bg-warm-beige animate-on-scroll" id="caps" style="scroll-margin-top: 20px;">
+  <div class="page-container" style="padding: 0;">
+    <div class="section-header animate-on-scroll fade-left">
+      <div>
+        <h2 class="section-title">EQUIP DE CAPS & MONITORS</h2>
+        <div class="section-subtitle">DESPLAÇA EN HORITZONTAL PER CONÈIXER ELS CAPS O CLICA PER VEURE LA FITXA COMPLETA
+        </div>
+      </div>
+      <div class="caps-carousel-controls">
+        <button class="caps-scroll-arrow" id="caps-scroll-prev" aria-label="Desplaçar a l'esquerra">←</button>
+        <button class="caps-scroll-arrow" id="caps-scroll-next" aria-label="Desplaçar a la dreta">→</button>
+        <a href="/equips" class="btn-retro btn-retro-orange">VEURE TOTS ELS CAPS (22) →</a>
+      </div>
+    </div>
+
+    <!-- Horizontal Scroll Carousel Track -->
+    <div class="caps-scroll-wrapper animate-on-scroll scale-up">
+      <div class="caps-scroll-track" id="caps-scroll-track">
+        {% for member in team %}
+        <div class="team-card team-card-scrollable" onclick="window.location.href='/equips'">
+          <div class="team-polaroid-frame">
+            <img src="{{ member.image }}" alt="{{ member.name }}" class="team-photo">
+          </div>
+          <span class="team-unit-badge">{{ member.unit }}</span>
+          <h3 class="team-name">{{ member.name }}</h3>
+          <div class="team-role">{{ member.role }}</div>
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--retro-orange); margin-bottom: 8px;">
+            {{ member.years }}
+          </div>
+          <p class="team-bio">{{ member.bio }}</p>
+          <div
+            style="margin-top: 10px; font-style: italic; font-size: 0.8rem; color: var(--retro-blue); font-weight: 600;">
+            {{ member.quote }}
+          </div>
+          <div class="team-card-view-more">
+            <span>FITXA COMPLETA →</span>
+          </div>
+        </div>
+        {% endfor %}
+
+        <!-- Extra CTA Card at end of scroll track -->
+        <div class="team-card team-card-cta" onclick="window.location.href='/equips'">
+          <div class="cta-card-inner">
+            <div class="cta-icon">⛺</div>
+            <h3
+              style="font-family: var(--font-display); font-size: 1.8rem; margin: 10px 0; color: var(--retro-orange);">
+              EQUIP COMPLET</h3>
+            <p style="font-size: 0.9rem; color: var(--ink-muted); margin-bottom: 15px;">
+              Descobreix els 22 caps repartits entre les 6 unitats pedagògiques.
+            </p>
+            <span class="btn-retro btn-retro-orange" style="display:inline-block;">VEURE /EQUIPS →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
