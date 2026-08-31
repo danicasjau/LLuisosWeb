@@ -215,43 +215,15 @@ function showCartToast(msg) {
 }
 
 /* ==========================================================================
-   INLINE DISTINCTION CARD 1000PX LATERAL EXPANSION SYSTEM
-   ========================================================================== */
-function toggleDistinctionCard(cardElement) {
-  if (!cardElement) return;
-
-  const isAlreadyExpanded = cardElement.classList.contains('is-expanded');
-
-  // Collapse any currently open card first
-  document.querySelectorAll('.distinction-item.is-expanded').forEach(item => {
-    if (item !== cardElement) {
-      item.classList.remove('is-expanded');
-    }
-  });
-
-  if (isAlreadyExpanded) {
-    cardElement.classList.remove('is-expanded');
-  } else {
-    cardElement.classList.add('is-expanded');
-    setTimeout(() => {
-      cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 250);
-  }
-}
-
-/* ==========================================================================
-   HASH SHORTCUT AUTO-EXPANSION (e.g. /#distinction-qui-som)
+   HASH SHORTCUT AUTO-SCROLL (e.g. /#distinction-qui-som, /#qui-som)
    ========================================================================== */
 function handleHashExpansion() {
   const hash = window.location.hash;
   if (!hash) return;
 
   const targetEl = document.querySelector(hash);
-  if (targetEl && targetEl.classList.contains('distinction-item')) {
-    if (!targetEl.classList.contains('is-expanded')) {
-      toggleDistinctionCard(targetEl);
-    } else {
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+  if (targetEl) {
+    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
+

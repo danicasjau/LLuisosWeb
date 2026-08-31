@@ -15,121 +15,87 @@
   <!-- Hero Scroll Hint Badge -->
 </div>
 
-<!-- Distinction Interactive 2x2 Square Cards Grid -->
-<section class="distinction-section animate-on-scroll scale-up">
-  <div class="distinction-grid">
+<!-- Distinction Editorial Full-Width Alternating Sections -->
+<div class="distinction-sections-wrapper">
 
-    <!-- 01 QUI SOM -->
-    <div class="distinction-item" id="distinction-qui-som" onclick="toggleDistinctionCard(this)">
-      <div class="distinction-media-wrap">
-        <img src="{{ url_for('static', filename='images/distincitiona_001.png') }}" alt="Qui Som Escolta"
-          class="distinction-image">
-      </div>
-      <div class="distinction-title-overlay">
-        <span class="distinction-badge">MÉS DE 65 ANYS D'ESCOLTISME</span>
-        <div class="distinction-header-row">
-          <h3 class="distinction-title-text">QUI SOM</h3>
-        </div>
-        <div class="distinction-expanded-content">
-          <p class="distinction-desc">
-            L'Agrupament Escolta Lluïsos de Gràcia és una entitat sense ànim de lucre fundada el 1957. Educem en el
-            lleure, la muntanya i el compromís social des de la Plaça del Nord de Gràcia, organitzats gràcies a
-            l'entrega voluntària d'un equip de caps compromesos amb l'educació transformadora.
-          </p>
-          <div class="distinction-actions">
-            <a href="#qui-som" class="btn-retro btn-retro-orange" onclick="event.stopPropagation()">CONEIX L'AGRUPAMENT
-              →</a>
-            <button class="btn-retro btn-retro-blue btn-collapse-card"
-              onclick="event.stopPropagation(); toggleDistinctionCard(this.closest('.distinction-item'))">✕
-              TANCAR</button>
-          </div>
-        </div>
+  <!-- 01 QUI SOM (Image Left 70%, Text Right 30%) -->
+  <section class="distinction-panel distinction-panel-left animate-on-scroll scale-up" id="distinction-qui-som">
+    <div class="distinction-media-wrap">
+      <img src="{{ url_for('static', filename='images/distincitiona_001.png') }}" alt="Qui Som Escolta"
+        class="distinction-image">
+    </div>
+    <div class="distinction-content-box">
+      <span class="distinction-badge">MÉS DE 65 ANYS D'ESCOLTISME</span>
+      <h2 class="distinction-title-text">QUI SOM</h2>
+      <p class="distinction-desc">
+        L'Agrupament Escolta Lluïsos de Gràcia és una entitat sense ànim de lucre fundada el 1957. Educem en el
+        lleure, la muntanya i el compromís social des de la Plaça del Nord de Gràcia, organitzats gràcies a
+        l'entrega voluntària d'un equip de caps compromesos amb l'educació transformadora.
+      </p>
+      <div class="distinction-actions">
+        <a href="#qui-som" class="btn-retro btn-retro-orange">CONEIX L'AGRUPAMENT →</a>
       </div>
     </div>
+  </section>
 
-    <!-- 02 NOVETATS -->
-    <div class="distinction-item" id="distinction-novetats" onclick="toggleDistinctionCard(this)">
-      <div class="distinction-media-wrap">
-        <img src="{{ url_for('static', filename='images/distincitiona_002.png') }}" alt="Novetats Escolta"
-          class="distinction-image">
-      </div>
-      <div class="distinction-title-overlay">
-        <span class="distinction-badge">CRÒNIQUES I HISTÒRIES</span>
-        <div class="distinction-header-row">
-          <h3 class="distinction-title-text">NOVETATS</h3>
-        </div>
-        <div class="distinction-expanded-content">
-          <p class="distinction-desc">
-            Descobreix les últimes cròniques d'excursions, fotos de les sortides de cap de setmana, avisos de les
-            unitats pedagògiques i pròximes activitats destacades de l'agrupament.
-          </p>
-          <div class="distinction-actions">
-            <a href="#novetats" class="btn-retro btn-retro-blue" onclick="event.stopPropagation()">VEURE TOTES LES
-              NOVETATS →</a>
-            <button class="btn-retro btn-retro-orange btn-collapse-card"
-              onclick="event.stopPropagation(); toggleDistinctionCard(this.closest('.distinction-item'))">✕
-              TANCAR</button>
-          </div>
-        </div>
+  <!-- 02 NOVETATS (Text Left 30%, Image Right 70%) -->
+  <section class="distinction-panel distinction-panel-right animate-on-scroll scale-up" id="distinction-novetats">
+    <div class="distinction-media-wrap">
+      <img src="{{ url_for('static', filename='images/distincitiona_002.png') }}" alt="Novetats Escolta"
+        class="distinction-image">
+    </div>
+    <div class="distinction-content-box">
+      <span class="distinction-badge">CRÒNIQUES I HISTÒRIES</span>
+      <h2 class="distinction-title-text">NOVETATS</h2>
+      <p class="distinction-desc">
+        Descobreix les últimes cròniques d'excursions, fotos de les sortides de cap de setmana, avisos de les
+        unitats pedagògiques i pròximes activitats destacades de l'agrupament.
+      </p>
+      <div class="distinction-actions">
+        <a href="#novetats" class="btn-retro btn-retro-blue">VEURE TOTES LES NOVETATS →</a>
       </div>
     </div>
+  </section>
 
-    <!-- 03 EQUIP DE CAPS -->
-    <div class="distinction-item" id="distinction-equip-de-caps" onclick="toggleDistinctionCard(this)">
-      <div class="distinction-media-wrap">
-        <img src="{{ url_for('static', filename='images/distincitiona_003.png') }}" alt="Equip de Caps Escolta"
-          class="distinction-image">
-      </div>
-      <div class="distinction-title-overlay">
-        <span class="distinction-badge">EQUIP DE MONITORS VOLUNTARIS</span>
-        <div class="distinction-header-row">
-          <h3 class="distinction-title-text">EQUIP DE CAPS</h3>
-        </div>
-        <div class="distinction-expanded-content">
-          <p class="distinction-desc">
-            Un equip de 22 joves voluntaris compromesos que organitzen dissabte a dissabte les activitats, excursions i
-            campaments per a totes les branques pedagògiques de l'agrupament.
-          </p>
-          <div class="distinction-actions">
-            <a href="/equips" class="btn-retro btn-retro-orange" onclick="event.stopPropagation()">VEURE EQUIP DE CAPS
-              →</a>
-            <button class="btn-retro btn-retro-blue btn-collapse-card"
-              onclick="event.stopPropagation(); toggleDistinctionCard(this.closest('.distinction-item'))">✕
-              TANCAR</button>
-          </div>
-        </div>
+  <!-- 03 EQUIP DE CAPS (Image Left 70%, Text Right 30%) -->
+  <section class="distinction-panel distinction-panel-left animate-on-scroll scale-up" id="distinction-equip-de-caps">
+    <div class="distinction-media-wrap">
+      <img src="{{ url_for('static', filename='images/distincitiona_003.png') }}" alt="Equip de Caps Escolta"
+        class="distinction-image">
+    </div>
+    <div class="distinction-content-box">
+      <span class="distinction-badge">EQUIP DE MONITORS VOLUNTARIS</span>
+      <h2 class="distinction-title-text">EQUIP DE CAPS</h2>
+      <p class="distinction-desc">
+        Un equip de 22 joves voluntaris compromesos que organitzen dissabte a dissabte les activitats, excursions i
+        campaments per a totes les branques pedagògiques de l'agrupament.
+      </p>
+      <div class="distinction-actions">
+        <a href="/equips" class="btn-retro btn-retro-orange">VEURE EQUIP DE CAPS →</a>
       </div>
     </div>
+  </section>
 
-    <!-- 04 CALENDARI & VALORS -->
-    <div class="distinction-item" id="distinction-valors" onclick="toggleDistinctionCard(this)">
-      <div class="distinction-media-wrap">
-        <img src="{{ url_for('static', filename='images/distincitiona_004.png') }}" alt="Valors Escolta"
-          class="distinction-image">
-      </div>
-      <div class="distinction-title-overlay">
-        <span class="distinction-badge">AGENDA I ACTIVITATS 2026</span>
-        <div class="distinction-header-row">
-          <h3 class="distinction-title-text">CALENDARI</h3>
-        </div>
-        <div class="distinction-expanded-content">
-          <p class="distinction-desc">
-            Consulta totes les sortides de cap de setmana, campaments d'estiu, caus especials i assemblees generals
-            programades per a aquest curs 2026.
-          </p>
-          <div class="distinction-actions">
-            <a href="/calendar" class="btn-retro btn-retro-blue" onclick="event.stopPropagation()">VEURE CALENDARI
-              COMPLET →</a>
-            <button class="btn-retro btn-retro-orange btn-collapse-card"
-              onclick="event.stopPropagation(); toggleDistinctionCard(this.closest('.distinction-item'))">✕
-              TANCAR</button>
-          </div>
-        </div>
+  <!-- 04 CALENDARI & VALORS (Text Left 30%, Image Right 70%) -->
+  <section class="distinction-panel distinction-panel-right animate-on-scroll scale-up" id="distinction-valors">
+    <div class="distinction-media-wrap">
+      <img src="{{ url_for('static', filename='images/distincitiona_004.png') }}" alt="Calendari Escolta"
+        class="distinction-image">
+    </div>
+    <div class="distinction-content-box">
+      <span class="distinction-badge">AGENDA I ACTIVITATS 2026</span>
+      <h2 class="distinction-title-text">CALENDARI</h2>
+      <p class="distinction-desc">
+        Consulta totes les sortides de cap de setmana, campaments d'estiu, caus especials i assemblees generals
+        programades per a aquest curs 2026.
+      </p>
+      <div class="distinction-actions">
+        <a href="/calendar" class="btn-retro btn-retro-blue">VEURE CALENDARI COMPLET →</a>
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
+</div>
 
 <!-- Decorative Retro Separator 1 -->
 <div class="section-divider-bar">

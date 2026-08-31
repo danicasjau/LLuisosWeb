@@ -101,6 +101,6 @@ def api_save_kiniela():
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
     print(f"==================================================")
-    print(f"🚀 AE LLUÏSOS DE GRÀCIA Website Running on http://127.0.0.1:{port}")
+    print(f">> AE LLUISOS DE GRACIA Website Running on http://127.0.0.1:{port}")
     print(f"==================================================")
     app.run(host='0.0.0.0', port=port, debug=True)
