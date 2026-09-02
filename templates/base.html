@@ -36,11 +36,12 @@
 
           <!-- 5 Index Apartats integrated on Top Bar -->
           <nav class="topbar-apartats-nav" id="topbar-apartats" aria-label="Index Apartats">
-            <a href="/#qui-som" class="topbar-apartat-link"><span class="apartat-num">01</span> QUI SOM</a>
-            <a href="/#novetats" class="topbar-apartat-link"><span class="apartat-num">02</span> NOVETATS</a>
-            <a href="/equips" class="topbar-apartat-link"><span class="apartat-num">03</span> EQUIP DE CAPS</a>
-            <a href="/calendar" class="topbar-apartat-link"><span class="apartat-num">04</span> CALENDARI</a>
-            <a href="/foulard" class="topbar-apartat-link"><span class="apartat-num">05</span> FOULARD & SEU</a>
+            <a href="/#qui-som" class="topbar-apartat-link">QUI SOM</a>
+            <a href="/#novetats" class="topbar-apartat-link">NOVETATS</a>
+            <a href="/equips" class="topbar-apartat-link">CAPS</a>
+            <a href="/kiniela" class="topbar-apartat-link">QUINIELA</a>
+            <a href="/calendar" class="topbar-apartat-link">CALENDARI</a>
+            <a href="/foulard" class="topbar-apartat-link">FOULARD & SEU</a>
           </nav>
         </div>
       </header>
@@ -54,7 +55,8 @@
         <a href="/">INICI</a>
         <a href="/#qui-som">QUI SOM</a>
         <a href="/#novetats">NOVETATS</a>
-        <a href="/equips">EQUIP DE CAPS</a>
+        <a href="/equips">CAPS</a>
+        <a href="/kiniela">QUINIELA</a>
         <a href="/calendar">CALENDARI</a>
         <a href="/foulard">FOULARD VIATGER</a>
         <a href="/shop">BOTIGA</a>
@@ -68,16 +70,18 @@
       <!-- Retro Modal Popup Shell -->
       <div class="retro-modal-backdrop" id="retro-modal">
         <div class="retro-modal-box">
-          <button class="modal-close-btn" id="modal-close-btn">✕</button>
+          <button class="modal-close-btn" id="modal-close-btn" type="button" aria-label="Tanca">✕</button>
           <div id="modal-badge" class="post-tag" style="margin-bottom: 10px;">BADGE</div>
           <h2 id="modal-title" class="section-title" style="font-size: 1.8rem; margin-bottom: 5px;">Modal Title</h2>
           <div id="modal-meta"
             style="font-size: 0.85rem; font-weight: 700; color: var(--retro-blue); margin-bottom: 15px;">Date / Location
           </div>
-          <img id="modal-img" src="" alt="Modal media"
-            style="width:100%; max-height:220px; object-fit:cover; border:1px solid #121212; margin-bottom:15px; display:none;">
-          <div id="modal-body" style="font-size: 0.95rem; line-height: 1.6; color: var(--ink-black);">
-            Content text goes here.
+          <div class="modal-person-layout">
+            <div id="modal-body" style="font-size: 0.95rem; line-height: 1.6; color: var(--ink-black);">
+              Content text goes here.
+            </div>
+            <img id="modal-img" src="" alt="Modal media"
+              style="width:100%; max-height:220px; object-fit:cover; border:1px solid #121212; margin-bottom:15px; display:none;">
           </div>
         </div>
       </div>

@@ -1,9 +1,17 @@
 import os
+import random
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from gsheets_db import db
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'ae-lluisos-gracia-retro-k2-key-2026')
+
+
+def shuffle_caps_team(team):
+    """Return a shuffled copy of the team list so the layout changes on each visit."""
+    shuffled = list(team)
+    random.shuffle(shuffled)
+    return shuffled
 
 # --------------------------------------------------------------------------
 # Page Routes
@@ -13,7 +21,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'ae-lluisos-gracia-retro-k2-k
 def index():
     """Main Entry Point with Hero, Qui Som, Novetats, and Equip de Caps Carousel"""
     novetats = db.get_novetats()
-    team = db.get_caps()
+    team = shuffle_caps_team(db.get_caps())
     return render_template(
         'index.html',
         active_page='index',
@@ -38,7 +46,7 @@ def calendar():
 @app.route('/caps')
 def equips():
     """Dedicated Team / All Caps Page"""
-    team = db.get_caps()
+    team = shuffle_caps_team(db.get_caps())
     return render_template('equips.html', active_page='equips', team=team)
 
 @app.route('/foulard')
@@ -55,7 +63,7 @@ def shop():
 @app.route('/quiniela')
 @app.route('/kiniela')
 def kiniela():
-    return render_template('kiniela.html', active_page='kiniela')
+    return render_template('kiniela.html', active_page='kiniela', team=shuffle_caps_team(db.get_caps()))
 
 
 # --------------------------------------------------------------------------
@@ -72,7 +80,7 @@ def api_calendari():
 
 @app.route('/api/caps', methods=['GET'])
 def api_caps():
-    return jsonify({"status": "success", "data": db.get_caps()})
+    return jsonify({"status": "success", "data": shuffle_caps_team(db.get_caps())})
 
 @app.route('/api/foulard', methods=['GET'])
 def api_foulard():

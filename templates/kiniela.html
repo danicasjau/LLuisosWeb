@@ -3,6 +3,9 @@
 {% block title %}QUINIELA DE CAPS | AE Lluïsos de Gràcia{% endblock %}
 
 {% block content %}
+<script>
+  window.CAPS_POOL = {{ team|tojson }};
+</script>
 <div class="page-container" style="padding: 40px 30px;">
   
   <!-- Header Banner (No icons) -->
@@ -15,22 +18,11 @@
     <!-- Action Controls (PUBLICAR & REINICIAR) -->
     <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
       <button id="btn-publish-kiniela" class="btn-retro btn-retro-orange">
-        PUBLICAR QUINIELA
+        ALEATORI
       </button>
       <button id="btn-reset-kiniela" class="btn-retro btn-retro-blue">
         REINICIAR
       </button>
-    </div>
-  </div>
-
-  <!-- Progress Bar Strip -->
-  <div class="kiniela-progress-bar-container">
-    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px;">
-      <span>PROGRÉS DE LA QUINIELA:</span>
-      <span id="kiniela-progress-counter">0 / 22</span>
-    </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="kiniela-progress-fill"></div>
     </div>
   </div>
 

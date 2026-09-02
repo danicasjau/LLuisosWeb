@@ -34,20 +34,44 @@ const MEMBERS_POOL = [
   { id: 22, name: "Gemma Fortuny", initials: "GF", photo: "/static/images/scout_team.jpg" }
 ];
 
-// 6 Official Groups with softened pastel unit colors
+// Five units plus Marxen for people who leave the active units.
 const GROUPS = [
-  { code: "castors", name: "Castúdrigues", age: "6-8 anys", color: "#FF7A00" },
-  { code: "llops", name: "Dainops", age: "9-11 anys", color: "#EAB308" },
-  { code: "ranguis", name: "Ranguis", age: "12-14 anys", color: "#2563EB" },
-  { code: "pios", name: "Pionel·les", age: "15-17 anys", color: "#DC2626" },
-  { code: "truk", name: "Truk", age: "18-20 anys", color: "#16A34A" },
-  { code: "marxen", name: "Marxen", age: "+20 anys", color: "#7C3AED" }
+  { code: "castors", name: "Castúdrigues", color: "#FF7A00" },
+  { code: "llops", name: "Dainops", color: "#FFD21F" },
+  { code: "ranguis", name: "Ranguis", color: "#2563EB" },
+  { code: "pios", name: "Pionel·les", color: "#DC2626" },
+  { code: "truk", name: "Truk", color: "#16A34A" },
+  { code: "marxen", name: "Marxen", color: "#7C3AED" }
+];
+
+const NEW_CAPS = [
+  { id: 1001, name: "Pau Nuet", isNewCap: true },
+  { id: 1002, name: "Joan Nuet", isNewCap: true },
+  { id: 1003, name: "Jana Bosc", isNewCap: true },
+  { id: 1004, name: "Iris de Cook", isNewCap: true },
+  { id: 1005, name: "Aniol Rovira", isNewCap: true }
 ];
 
 // State Management: memberId -> groupCode (or 'pool')
 let assignments = {};
 
 function initKiniela() {
+  if (Array.isArray(window.CAPS_POOL) && window.CAPS_POOL.length > 0) {
+    MEMBERS_POOL.length = 0;
+    window.CAPS_POOL.forEach(member => {
+      MEMBERS_POOL.push({
+        id: member.id,
+        name: member.name,
+        photo: member.image,
+        role: member.role || '',
+        unit: member.unit || '',
+        years: member.years || '',
+        bio: member.bio || '',
+        quote: member.quote || ''
+      });
+    });
+  }
+  NEW_CAPS.forEach(member => MEMBERS_POOL.push(member));
   resetAssignments();
   renderGroupsUI();
   renderPoolUI();
@@ -70,6 +94,13 @@ function renderPoolUI() {
   const poolContainer = document.getElementById('unassigned-pool');
   if (!poolContainer) return;
 
+  if (!poolContainer.dataset.dropReady) {
+    poolContainer.addEventListener('dragover', handleDragOver);
+    poolContainer.addEventListener('dragleave', handleDragLeave);
+    poolContainer.addEventListener('drop', (e) => handleDrop(e, 'pool'));
+    poolContainer.dataset.dropReady = 'true';
+  }
+
   poolContainer.innerHTML = '';
 
   const unassigned = MEMBERS_POOL.filter(m => assignments[m.id] === 'pool');
@@ -79,10 +110,24 @@ function renderPoolUI() {
     return;
   }
 
-  unassigned.forEach(member => {
+  const existingCaps = unassigned.filter(member => !member.isNewCap);
+  const newCaps = unassigned.filter(member => member.isNewCap);
+
+  existingCaps.forEach(member => {
     const card = createMemberCard(member);
     poolContainer.appendChild(card);
   });
+
+  if (newCaps.length > 0) {
+    const title = document.createElement('div');
+    title.className = 'kiniela-new-caps-title';
+    title.textContent = 'Nous Caps';
+    poolContainer.appendChild(title);
+
+    newCaps.forEach(member => {
+      poolContainer.appendChild(createMemberCard(member));
+    });
+  }
 }
 
 function renderGroupsUI() {
@@ -95,6 +140,7 @@ function renderGroupsUI() {
     const groupCol = document.createElement('div');
     groupCol.className = 'group-column';
     groupCol.setAttribute('data-group', group.code);
+    groupCol.style.setProperty('--group-color', group.color);
 
     const membersInGroup = MEMBERS_POOL.filter(m => assignments[m.id] === group.code);
 
@@ -127,13 +173,28 @@ function createMemberCard(member) {
   card.setAttribute('draggable', 'true');
   card.setAttribute('data-id', member.id);
 
-  card.innerHTML = `
-    <div class="member-circle-avatar" style="background-image: url('${member.photo}');">
-      <span>${member.initials}</span>
-    </div>
-    <span class="person-name">${member.name}</span>
-    <button class="btn-quick-move" title="Moure de grup">→</button>
-  `;
+  card.innerHTML = `<span class="person-name">${member.name}</span>`;
+
+  if (!member.isNewCap) card.addEventListener('click', () => {
+    const modal = document.getElementById('retro-modal');
+    const profileQuestions = `
+      <div class="person-profile-questions">
+        <p><strong>Nom i Cognoms:</strong> ${member.name}</p>
+        <p><strong>Cap de:</strong> ${member.role}</p>
+        <p><strong>Data de naixement:</strong></p>
+        <p><strong>Any que va entrar al Cau:</strong></p>
+        <p><strong>Estudis:</strong></p>
+        <p><strong>Hobbies:</strong></p>
+        <p><strong>Cançó preferida:</strong></p>
+        <p><strong>Llibre preferit:</strong></p>
+        <p><strong>Color preferit:</strong></p>
+        <p><strong>Anècdota:</strong></p>
+      </div>
+    `;
+
+    modal.classList.add('caps-person-modal');
+    openModal(member.name, '', '', profileQuestions, member.photo);
+  });
 
   card.addEventListener('dragstart', (e) => {
     e.dataTransfer.setData('text/plain', member.id);
@@ -142,12 +203,6 @@ function createMemberCard(member) {
 
   card.addEventListener('dragend', () => {
     card.classList.remove('dragging');
-  });
-
-  const quickBtn = card.querySelector('.btn-quick-move');
-  quickBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    showQuickAssignMenu(member, card);
   });
 
   return card;
@@ -170,10 +225,29 @@ function handleDrop(e, targetGroupCode) {
   e.preventDefault();
   e.currentTarget.classList.remove('drag-over');
 
-  const memberId = parseInt(e.dataTransfer.getData('text/plain'));
-  if (memberId) {
+  const memberId = Number(e.dataTransfer.getData('text/plain'));
+  if (Number.isInteger(memberId)) {
+    const member = MEMBERS_POOL.find(candidate => candidate.id === memberId);
+    if (member?.isNewCap && targetGroupCode === 'marxen') {
+      showMarxenRestrictionMessage(e.currentTarget);
+      return;
+    }
     assignMember(memberId, targetGroupCode);
   }
+}
+
+function showMarxenRestrictionMessage(dropzone) {
+  const existingMessage = dropzone.querySelector('.marxen-restriction-message');
+  if (existingMessage) existingMessage.remove();
+
+  const message = document.createElement('div');
+  message.className = 'marxen-restriction-message';
+  message.textContent = 'No es pot posar perquè és un nou cap';
+  dropzone.appendChild(message);
+
+  setTimeout(() => {
+    message.remove();
+  }, 1800);
 }
 
 /* ==========================================================================
@@ -188,11 +262,42 @@ function assignMember(memberId, groupCode) {
 }
 
 function randomizeKiniela() {
-  const groupCodes = GROUPS.map(g => g.code);
-  MEMBERS_POOL.forEach(member => {
-    const randomGroup = groupCodes[Math.floor(Math.random() * groupCodes.length)];
-    assignments[member.id] = randomGroup;
+  resetAssignments();
+  const activeGroupCodes = GROUPS
+    .filter(group => group.code !== 'marxen')
+    .map(group => group.code);
+  const allGroupCodes = [...activeGroupCodes, 'marxen'];
+  const groupCounts = Object.fromEntries(allGroupCodes.map(groupCode => [groupCode, 0]));
+  const shuffledMembers = [...MEMBERS_POOL].sort(() => Math.random() - 0.5);
+  const marxenCandidates = shuffledMembers.filter(member => !member.isNewCap);
+  const marxenMembers = marxenCandidates.slice(0, 3);
+
+  marxenMembers.forEach(member => {
+    assignments[member.id] = 'marxen';
+    groupCounts.marxen += 1;
   });
+
+  activeGroupCodes.forEach(groupCode => {
+    shuffledMembers
+      .filter(member => assignments[member.id] === 'pool')
+      .splice(0, 3)
+      .forEach(member => {
+        assignments[member.id] = groupCode;
+        groupCounts[groupCode] += 1;
+      });
+  });
+
+  shuffledMembers.forEach(member => {
+    if (assignments[member.id] !== 'pool') return;
+    const availableGroupCodes = allGroupCodes.filter(groupCode => {
+      const marxenBlocked = member.isNewCap && groupCode === 'marxen';
+      return !marxenBlocked && groupCounts[groupCode] < 5;
+    });
+    const randomGroup = availableGroupCodes[Math.floor(Math.random() * availableGroupCodes.length)];
+    assignments[member.id] = randomGroup;
+    groupCounts[randomGroup] += 1;
+  });
+
   renderPoolUI();
   renderGroupsUI();
   updateProgressUI();
@@ -219,6 +324,12 @@ function updateProgressUI() {
     const percentage = Math.round((assigned / total) * 100);
     fillEl.style.width = `${percentage}%`;
   }
+
+  const publishButton = document.getElementById('btn-publish-kiniela');
+  if (publishButton) {
+    const isComplete = assigned === total;
+    publishButton.textContent = isComplete ? 'PUBLICAR QUINIELA' : 'ALEATORI';
+  }
 }
 
 /* ==========================================================================
@@ -237,7 +348,7 @@ function showQuickAssignMenu(member, targetCard) {
   optionsHTML += `<button data-code="pool">Sense assignar</button>`;
 
   GROUPS.forEach(g => {
-    optionsHTML += `<button data-code="${g.code}">${g.name} (${g.age})</button>`;
+    optionsHTML += `<button data-code="${g.code}">${g.name}</button>`;
   });
 
   menu.innerHTML = optionsHTML;
@@ -267,7 +378,17 @@ function showQuickAssignMenu(member, targetCard) {
 
 function setupEventListeners() {
   const btnPublish = document.getElementById('btn-publish-kiniela');
-  if (btnPublish) btnPublish.addEventListener('click', openPublishNameModal);
+  if (btnPublish) {
+    btnPublish.addEventListener('click', () => {
+      const assigned = Object.values(assignments).filter(group => group !== 'pool').length;
+      const total = MEMBERS_POOL.length;
+      if (assigned === total) {
+        openPublishNameModal();
+      } else {
+        randomizeKiniela();
+      }
+    });
+  }
 
   const btnReset = document.getElementById('btn-reset-kiniela');
   if (btnReset) btnReset.addEventListener('click', resetKiniela);
