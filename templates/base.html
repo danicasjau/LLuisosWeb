@@ -79,17 +79,20 @@
       <div class="retro-modal-backdrop" id="retro-modal">
         <div class="retro-modal-box">
           <button class="modal-close-btn" id="modal-close-btn" type="button" aria-label="Tanca">✕</button>
-          <div id="modal-badge" class="post-tag" style="margin-bottom: 10px;">BADGE</div>
-          <h2 id="modal-title" class="section-title" style="font-size: 1.8rem; margin-bottom: 5px;">Modal Title</h2>
-          <div id="modal-meta"
-            style="font-size: 0.85rem; font-weight: 700; color: var(--retro-blue); margin-bottom: 15px;">Date / Location
+
+          <!-- Image on top -->
+          <img id="modal-img" src="" alt="Modal media" style="display:none;" />
+
+          <div style="text-align:center; margin-top:12px;">
+            <div id="modal-badge" class="post-tag" style="margin-bottom: 8px; display:inline-block;">BADGE</div>
+            <h2 id="modal-title" class="section-title" style="font-size: 2.2rem; margin:6px 0;">Modal Title</h2>
+            <div id="modal-meta" style="font-size: 0.9rem; font-weight: 700; color: var(--retro-blue); margin-bottom: 12px;">Date / Location</div>
           </div>
+
           <div class="modal-person-layout">
-            <div id="modal-body" style="font-size: 0.95rem; line-height: 1.6; color: var(--ink-black);">
+            <div id="modal-body" style="font-size: 0.98rem; line-height: 1.6; color: var(--ink-black);">
               Content text goes here.
             </div>
-            <img id="modal-img" src="" alt="Modal media"
-              style="width:100%; max-height:220px; object-fit:cover; border:1px solid #121212; margin-bottom:15px; display:none;">
           </div>
         </div>
       </div>
