@@ -34,18 +34,16 @@
     function updateScrollState() {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
 
-      if (scrollY >= SCROLL_THRESHOLD) {
+      if (topBarEl) topBarEl.classList.add('is-scrolled', 'topbar-docked');
+      if (apartatsNav) apartatsNav.classList.add('is-visible');
+      if (titleEl) titleEl.classList.add('is-topbar', 'title-on-topbar');
+
+      if (scrollY >= 80) {
         document.body.classList.add('topbar-mode');
-        if (titleEl) titleEl.classList.add('is-topbar', 'title-on-topbar');
-        if (topBarEl) topBarEl.classList.add('is-scrolled', 'topbar-docked');
         if (heroEl) heroEl.classList.add('hero-scrolled');
-        if (apartatsNav) apartatsNav.classList.add('is-visible');
       } else {
         document.body.classList.remove('topbar-mode');
-        if (titleEl) titleEl.classList.remove('is-topbar', 'title-on-topbar');
-        if (topBarEl) topBarEl.classList.remove('is-scrolled', 'topbar-docked');
         if (heroEl) heroEl.classList.remove('hero-scrolled');
-        if (apartatsNav) apartatsNav.classList.remove('is-visible');
       }
 
       ticking = false;

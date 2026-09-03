@@ -22,31 +22,39 @@
   <div class="poster-outer-wrapper">
     <div class="poster-canvas">
 
-      <!-- Main Top Bar Banner -->
+      <!-- Main Top Bar Banner (Always Visible on Top & Vertically Centered) -->
       <header class="poster-top-bar" id="main-top-bar">
         <div class="topbar-inner-container">
-          <h1 class="poster-title-fill">
-            <a href="/" class="poster-title-link">
-              <em><span class="smalltext" style="font-weight: 900; text-transform: uppercase;">AE</span>
-                <d style="font-weight: 900;">lluïsos</d>
-              </em> <span class="smalltext">de</span>
-              <em style="font-weight: 900;">gràcia</em>
+          <div class="topbar-left-cluster">
+            {% if active_page != 'index' %}
+            <a href="/" class="btn-topbar-home" title="Tornar a l'inici">
+              <span class="btn-home-arrow">←</span> <span class="btn-home-text">TORNAR A L'INICI</span>
             </a>
-          </h1>
+            {% endif %}
+            <h1 class="poster-title-fill">
+              <a href="/" class="poster-title-link">
+                <em><span class="smalltext" style="font-weight: 900; text-transform: uppercase;">AE</span>
+                  <d style="font-weight: 900;">lluïsos</d>
+                </em> <span class="smalltext">de</span>
+                <em style="font-weight: 900;">gràcia</em>
+              </a>
+            </h1>
+          </div>
 
-          <!-- 5 Index Apartats integrated on Top Bar -->
+          <!-- Top Bar Navigation Apartats -->
           <nav class="topbar-apartats-nav" id="topbar-apartats" aria-label="Index Apartats">
             <a href="/#qui-som" class="topbar-apartat-link">QUI SOM</a>
             <a href="/#novetats" class="topbar-apartat-link">NOVETATS</a>
-            <a href="/equips" class="topbar-apartat-link">CAPS</a>
-            <a href="/kiniela" class="topbar-apartat-link">QUINIELA</a>
-            <a href="/calendar" class="topbar-apartat-link">CALENDARI</a>
-            <a href="/foulard" class="topbar-apartat-link">FOULARD & SEU</a>
+            <a href="/equips" class="topbar-apartat-link {% if active_page == 'equips' %}active{% endif %}">CAPS</a>
+            <a href="/kiniela" class="topbar-apartat-link {% if active_page == 'kiniela' %}active{% endif %}">QUINIELA</a>
+            <a href="/calendar" class="topbar-apartat-link {% if active_page == 'calendar' %}active{% endif %}">CALENDARI</a>
+            <a href="/foulard" class="topbar-apartat-link {% if active_page == 'foulard' %}active{% endif %}">FOULARD & SEU</a>
+            <a href="/shop" class="topbar-apartat-link {% if active_page == 'shop' %}active{% endif %}">BOTIGA</a>
           </nav>
         </div>
       </header>
 
-      <!-- Static Vertical Center Navigation Bar with Hide/Show Toggle -->
+      <!-- Static Vertical Navigation Bar (Alternative) -->
       <button class="nav-hide-btn" style="display: none;" id="nav-hide-toggle" aria-label="Amagar o Mostrar Menú">
         <span class="hide-icon">☰</span>
       </button>
@@ -67,7 +75,7 @@
         {% block content %}{% endblock %}
       </main>
 
-      <!-- Retro Modal Popup Shell -->
+      <!-- Standard Retro Modal Popup Shell -->
       <div class="retro-modal-backdrop" id="retro-modal">
         <div class="retro-modal-box">
           <button class="modal-close-btn" id="modal-close-btn" type="button" aria-label="Tanca">✕</button>
@@ -82,6 +90,34 @@
             </div>
             <img id="modal-img" src="" alt="Modal media"
               style="width:100%; max-height:220px; object-fit:cover; border:1px solid #121212; margin-bottom:15px; display:none;">
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-Div Centered Day Popup Modal -->
+      <div class="retro-modal-backdrop day-modal-backdrop" id="day-detail-modal">
+        <div class="retro-modal-box day-modal-box">
+          <button class="modal-close-btn" id="day-modal-close-btn" type="button" aria-label="Tanca">✕</button>
+          <div class="day-modal-layout">
+            <!-- Left Div: Opened Day & Events List with Hours -->
+            <div class="day-modal-left">
+              <div class="day-modal-header">
+                <div class="day-number-badge" id="day-modal-day-num">12</div>
+                <div>
+                  <div class="day-modal-weekday" id="day-modal-weekday">DISSABTE</div>
+                  <h3 class="day-modal-full-date" id="day-modal-date-text">12 de Setembre de 2026</h3>
+                </div>
+              </div>
+              <div class="day-events-section-title">ESDEVENIMENTS D'AQUEST DIA</div>
+              <div class="day-modal-events-list" id="day-modal-events-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Right Lateral Div: Detailed Event Information -->
+            <div class="day-modal-right" id="day-modal-event-detail">
+              <!-- Injected via JS when an event is selected -->
+            </div>
           </div>
         </div>
       </div>

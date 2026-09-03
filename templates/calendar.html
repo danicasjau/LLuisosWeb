@@ -1,209 +1,229 @@
 {% extends 'base.html' %}
 
-{% block title %}CALENDARI D'ACTIVITATS 2026 | AE Lluïsos de Gràcia{% endblock %}
+{% block title %}CALENDARI D'ACTIVITATS 2026-2027 | AE Lluïsos de Gràcia{% endblock %}
 
 {% block content %}
 <div class="page-container calendar-page-layout">
 
-  <!-- Breadcrumb & Return Nav -->
-  <div class="page-top-nav animate-on-scroll fade-down">
-    <a href="/" class="btn-retro btn-retro-blue btn-back-home">← TORNAR A L'INICI</a>
-    <div class="page-badge-counter">CURS ESCOLTA 2026-2027</div>
-  </div>
-
   <!-- Page Header -->
-  <div class="section-header animate-on-scroll fade-left" style="margin-top: 15px;">
+  <div class="section-header animate-on-scroll fade-left" style="margin-top: 10px;">
     <div>
-      <h2 class="section-title" style="font-size: clamp(2rem, 4vw, 3.5rem);">CALENDARI D'ACTIVITATS I SORTIDES 2026</h2>
-      <div class="section-subtitle">DISSABTES DE CAU, EXCURSIONS DE CAP DE SETMANA, CAMPAMENTS I ASSEMBLEES</div>
-    </div>
-    <div class="calendar-header-actions">
-      <button class="btn-retro btn-retro-orange" onclick="exportICalAlert()">
-        📅 SINCRONITZAR CALENDARI
-      </button>
+      <div class="header-pretitle" style="font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; color: var(--retro-orange); letter-spacing: 2px;">
+        CURS ESCOLTA 2026 - 2027 • AE LLUÏSOS DE GRÀCIA
+      </div>
+      <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">CAULENDARI D'ACTIVITATS</h2>
+      <div class="section-subtitle">DISSABTES DE CAU, SORTIDES, CAMPAMENTS, ASSEMBLEES I TROBADES MEG</div>
     </div>
   </div>
 
-  <!-- Unit Category Filter Buttons -->
-  <div class="calendar-filters-strip animate-on-scroll scale-up">
-    <button class="btn-filter active" data-unit="all" onclick="filterCalendar('all', this)">TOTES LES UNITATS</button>
-    <button class="btn-filter" data-unit="castors" onclick="filterCalendar('Castúdrigues', this)">CASTÚDRIGUES (6-8)</button>
-    <button class="btn-filter" data-unit="llops" onclick="filterCalendar('Dainops', this)">DAINOPS (9-11)</button>
-    <button class="btn-filter" data-unit="ranguis" onclick="filterCalendar('Ranguis', this)">RANGUIS (12-14)</button>
-    <button class="btn-filter" data-unit="pios" onclick="filterCalendar('Pioners', this)">PIONEL·LES (15-17)</button>
-    <button class="btn-filter" data-unit="truk" onclick="filterCalendar('Truk', this)">TRUK (18-20)</button>
-    <button class="btn-filter" data-unit="general" onclick="filterCalendar('Famílies', this)">ASSEMBLEA & GENERAL</button>
+  <!-- Calendar Page Layout: Lateral Sidebar + Main Calendar Area -->
+  <div class="calendar-two-col-layout animate-on-scroll scale-up">
+
+    <!-- Lateral Sidebar: Totes les Unitats & MEG Panels -->
+    <aside class="calendar-lateral-sidebar">
+      <div class="sidebar-panel-header">
+        <span class="panel-icon">⛺</span>
+        <h3 class="panel-title">TOTES LES UNITATS</h3>
+      </div>
+      <p class="sidebar-panel-desc">Filtra per veure les sortides i activitats de cada branca o del sector MEG:</p>
+
+      <div class="lateral-units-list" id="lateral-units-filter">
+        <button class="lateral-unit-btn active" data-unit="all" onclick="setCalendarUnitFilter('all', this)">
+          <div class="unit-btn-indicator" style="background: linear-gradient(135deg, var(--retro-orange), var(--retro-blue));"></div>
+          <div class="unit-btn-content">
+            <span class="unit-btn-title">TOTES LES UNITATS</span>
+            <span class="unit-btn-subtitle">Tot l'agrupament i MEG</span>
+          </div>
+          <span class="unit-count-badge" id="count-all">0</span>
+        </button>
+
+        <button class="lateral-unit-btn" data-unit="Castúdrigues" onclick="setCalendarUnitFilter('Castúdrigues', this)">
+          <div class="unit-btn-indicator" style="background: #F97316;"></div>
+          <div class="unit-btn-content">
+            <span class="unit-btn-title">CASTÚDRIGUES</span>
+            <span class="unit-btn-subtitle">6 a 8 anys • Castors i Llúdrigues</span>
+          </div>
+          <span class="unit-count-badge" id="count-castors">0</span>
+        </button>
+
+        <button class="lateral-unit-btn" data-unit="Dainops" onclick="setCalendarUnitFilter('Dainops', this)">
+          <div class="unit-btn-indicator" style="background: #F59E0B;"></div>
+          <div class="unit-btn-content">
+            <span class="unit-btn-title">DAINOPS</span>
+            <span class="unit-btn-subtitle">9 a 11 anys • Llops i Daines</span>
+          </div>
+          <span class="unit-count-badge" id="count-llops">0</span>
+        </button>
+
+        <button class="lateral-unit-btn" data-unit="Ranguis" onclick="setCalendarUnitFilter('Ranguis', this)">
+          <div class="unit-btn-indicator" style="background: #0284C7;"></div>
+          <div class="unit-btn-content">
+            <span class="unit-btn-title">RANGUIS</span>
+            <span class="unit-btn-subtitle">12 a 14 anys • Ràngers i Noies Guia</span>
+          </div>
+          <span class="unit-count-badge" id="count-ranguis">0</span>
+        </button>
+
+        <button class="lateral-unit-btn" data-unit="Pionel·les" onclick="setCalendarUnitFilter('Pionel·les', this)">
+          <div class="unit-btn-indicator" style="background: #E11D48;"></div>
+          <div class="unit-btn-content">
+            <span class="unit-btn-title">PIONEL·LES</span>
+            <span class="unit-btn-subtitle">15 a 17 anys • Pioners i Caravel·les</span>
+          </div>
+          <span class="unit-count-badge" id="count-pios">0</span>
+        </button>
+
+        <button class="lateral-unit-btn" data-unit="Truk" onclick="setCalendarUnitFilter('Truk', this)">
+          <div class="unit-btn-indicator" style="background: #059669;"></div>
+          <div class="unit-btn-content">
+            <span class="unit-btn-title">TRUK</span>
+            <span class="unit-btn-subtitle">18 a 20 anys • Joves Truc</span>
+          </div>
+          <span class="unit-count-badge" id="count-truk">0</span>
+        </button>
+
+        <button class="lateral-unit-btn" data-unit="Assemblea & General" onclick="setCalendarUnitFilter('Assemblea & General', this)">
+          <div class="unit-btn-indicator" style="background: #0B2545;"></div>
+          <div class="unit-btn-content">
+            <span class="unit-btn-title">ASSEMBLEA & GENERAL</span>
+            <span class="unit-btn-subtitle">Famílies, Caps i Barri</span>
+          </div>
+          <span class="unit-count-badge" id="count-general">0</span>
+        </button>
+
+        <button class="lateral-unit-btn" data-unit="MEG" onclick="setCalendarUnitFilter('MEG', this)">
+          <div class="unit-btn-indicator" style="background: #7C3AED;"></div>
+          <div class="unit-btn-content">
+            <span class="unit-btn-title">MEG (FEDERACIÓ)</span>
+            <span class="unit-btn-subtitle">Minyons Escoltes i Guies</span>
+          </div>
+          <span class="unit-count-badge" id="count-meg">0</span>
+        </button>
+      </div>
+
+      <!-- Quick Info / Today Indicator Card -->
+      <div class="lateral-today-indicator">
+        <div class="today-indicator-header">
+          <span class="today-dot"></span>
+          <span class="today-title">DIA ACTUAL DESTACAT</span>
+        </div>
+        <div class="today-indicator-body">
+          El dia d'avui es troba ressaltat en <strong>groc llampant</strong> al calendari mensual.
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Calendar Area -->
+    <main class="calendar-main-stage">
+
+      <!-- Calendar Top Navigation Controls -->
+      <div class="calendar-top-controls">
+        <!-- Month Navigation: Left Arrow, Dropdown, Right Arrow -->
+        <div class="month-nav-cluster">
+          <button class="btn-month-arrow" id="btn-prev-month" onclick="prevMonth()" title="Mes anterior">
+            <span>‹</span>
+          </button>
+
+          <div class="month-selector-wrap">
+            <select id="month-dropdown-select" class="month-dropdown" onchange="onMonthDropdownChange(this.value)">
+              <option value="2026-09">Setembre 2026</option>
+              <option value="2026-10">Octubre 2026</option>
+              <option value="2026-11">Novembre 2026</option>
+              <option value="2026-12">Desembre 2026</option>
+              <option value="2027-01">Gener 2027</option>
+              <option value="2027-02">Febrer 2027</option>
+              <option value="2027-03">Març 2027</option>
+              <option value="2027-04">Abril 2027</option>
+              <option value="2027-05">Maig 2027</option>
+              <option value="2027-06">Juny 2027</option>
+              <option value="2027-07">Juliol 2027</option>
+              <option value="2027-08">Agost 2027</option>
+              <option value="2027-09">Setembre 2027</option>
+            </select>
+          </div>
+
+          <button class="btn-month-arrow" id="btn-next-month" onclick="nextMonth()" title="Mes següent">
+            <span>›</span>
+          </button>
+        </div>
+
+        <!-- View Switcher & Actions (PDF Download) -->
+        <div class="calendar-action-cluster">
+          <div class="view-mode-toggle">
+            <button class="btn-view-toggle active" id="btn-view-month" onclick="setCalendarView('month')">VISTA MES</button>
+            <button class="btn-view-toggle" id="btn-view-year" onclick="setCalendarView('year')">VISTA ANUAL (13 MESOS)</button>
+          </div>
+
+          <button class="btn-retro btn-download-pdf" onclick="downloadCalendarPDF()" title="Descarrega o imprimeix el calendari">
+            <span>📥</span> DESCARREGAR PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Calendar Month View Container -->
+      <div id="calendar-month-container" class="calendar-view-container">
+        <div class="calendar-month-bar">
+          <h3 class="calendar-month-heading" id="current-month-heading">SETEMBRE 2026</h3>
+          <div class="calendar-quick-legend">
+            <span class="legend-badge" style="background-color: #FEF08A; color: #854D0E; border: 1px solid #CA8A04;">● AVUI</span>
+            <span class="legend-badge" style="background-color: rgba(249, 115, 22, 0.15); color: #C2410C;">● CASTÚDRIGUES</span>
+            <span class="legend-badge" style="background-color: rgba(2, 132, 199, 0.15); color: #0369A1;">● RANGUIS</span>
+            <span class="legend-badge" style="background-color: rgba(124, 58, 237, 0.15); color: #6D28D9;">● MEG</span>
+          </div>
+        </div>
+
+        <!-- Month Grid -->
+        <div class="calendar-grid-box">
+          <div class="calendar-day-header">DL</div>
+          <div class="calendar-day-header">DT</div>
+          <div class="calendar-day-header">DC</div>
+          <div class="calendar-day-header">DJ</div>
+          <div class="calendar-day-header">DV</div>
+          <div class="calendar-day-header">DS</div>
+          <div class="calendar-day-header">DM</div>
+
+          <!-- 42 Dynamic Grid Cells Injected via JS -->
+          <div id="calendar-cells-grid" class="calendar-cells-wrapper"></div>
+        </div>
+      </div>
+
+      <!-- Calendar Full Year (13 Months) View Container -->
+      <div id="calendar-year-container" class="calendar-year-container" style="display: none;">
+        <div class="year-view-header">
+          <h3 class="calendar-month-heading">CURS COMPLET 2026 - 2027 (SETEMBRE 26 - SETEMBRE 27)</h3>
+          <p style="font-size: 0.9rem; color: var(--ink-muted);">Clica qualsevol dia d'un mes per obrir la finestra emergent amb el detall.</p>
+        </div>
+        <div class="year-grid-13-months" id="year-months-grid">
+          <!-- 13 Mini Months injected via JS -->
+        </div>
+      </div>
+
+    </main>
   </div>
 
-  <!-- Calendar Grid Interactive View -->
-  <div class="calendar-wrapper animate-on-scroll scale-up" style="margin-top: 25px;">
-    <div class="calendar-month-bar">
-      <h3 class="calendar-month-title">SETEMBRE / OCTUBRE 2026</h3>
-      <div class="calendar-legend">
-        <span class="legend-item" style="color: var(--retro-orange);">■ TOTES LES UNITATS</span>
-        <span class="legend-item" style="color: var(--retro-blue);">■ RÀNGERS & PIONERS</span>
-        <span class="legend-item" style="color: #0B2545;">■ ASSEMBLEA & BARRI</span>
+  <!-- Upcoming Events Detailed List: Next 6 Events -->
+  <section class="upcoming-events-section animate-on-scroll fade-right" id="upcoming-events-section" style="margin-top: 60px;">
+    <div class="section-header">
+      <div>
+        <div class="header-pretitle" style="font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; color: var(--retro-orange); letter-spacing: 2px;">
+          AGENDA I SORTIDES
+        </div>
+        <h3 class="section-title" style="font-size: clamp(1.8rem, 2.8vw, 2.5rem);">DETALL DELS PRÒXIMS ESDEVENIMENTS</h3>
+        <div class="section-subtitle">ELS PROPERS 6 ESDEVENIMENTS DESTACATS • CLICA PER VEURE LA FITXA COMPLETA AMB HORARIS</div>
       </div>
     </div>
 
-    <!-- 7 Day Header -->
-    <div class="calendar-grid">
-      <div class="calendar-day-header">DL</div>
-      <div class="calendar-day-header">DT</div>
-      <div class="calendar-day-header">DC</div>
-      <div class="calendar-day-header">DJ</div>
-      <div class="calendar-day-header">DV</div>
-      <div class="calendar-day-header">DS</div>
-      <div class="calendar-day-header">DM</div>
-
-      <!-- Empty padding -->
-      <div class="calendar-cell empty"></div>
-      <div class="calendar-cell empty"></div>
-
-      <!-- Days of September -->
-      <div class="calendar-cell"><span class="cell-number">1</span></div>
-      <div class="calendar-cell"><span class="cell-number">2</span></div>
-      <div class="calendar-cell"><span class="cell-number">3</span></div>
-      <div class="calendar-cell"><span class="cell-number">4</span></div>
-      <div class="calendar-cell"><span class="cell-number">5</span></div>
-
-      <div class="calendar-cell"><span class="cell-number">6</span></div>
-      <div class="calendar-cell"><span class="cell-number">7</span></div>
-      <div class="calendar-cell"><span class="cell-number">8</span></div>
-      <div class="calendar-cell"><span class="cell-number">9</span></div>
-      <div class="calendar-cell"><span class="cell-number">10</span></div>
-      <div class="calendar-cell"><span class="cell-number">11</span></div>
-
-      <!-- Event 1: Benvinguda (12 Setembre) -->
-      <div class="calendar-cell has-event" data-event="true" data-unit-tag="Totes les unitats"
-        data-title="Cau de Benvinguda i Passos d'Unitat" data-unit="Totes les unitats"
-        data-timeloc="12 Setembre • 16:00 - 19:30 @ Plaça del Nord"
-        data-desc="Benvinguda al nou curs escolta! Jocs de retrobament, presentació de nous caps i cerimònia dels passos de branca. Porteu el foulard!">
-        <span class="cell-number">12</span>
-        <div class="cell-event-badge" style="background-color: var(--retro-orange);">Benvinguda Cau</div>
-      </div>
-
-      <div class="calendar-cell"><span class="cell-number">13</span></div>
-      <div class="calendar-cell"><span class="cell-number">14</span></div>
-      <div class="calendar-cell"><span class="cell-number">15</span></div>
-      <div class="calendar-cell"><span class="cell-number">16</span></div>
-      <div class="calendar-cell"><span class="cell-number">17</span></div>
-      <div class="calendar-cell"><span class="cell-number">18</span></div>
-      <div class="calendar-cell"><span class="cell-number">19</span></div>
-
-      <div class="calendar-cell"><span class="cell-number">20</span></div>
-      <div class="calendar-cell"><span class="cell-number">21</span></div>
-      <div class="calendar-cell"><span class="cell-number">22</span></div>
-      <div class="calendar-cell"><span class="cell-number">23</span></div>
-      <div class="calendar-cell"><span class="cell-number">24</span></div>
-      <div class="calendar-cell"><span class="cell-number">25</span></div>
-
-      <!-- Event 2: Excursió Montseny (26 Setembre) -->
-      <div class="calendar-cell has-event" data-event="true" data-unit-tag="Pioners"
-        data-title="Excursió de cap de setmana al Montseny" data-unit="Ràngers i Pioners"
-        data-timeloc="26-27 Setembre • Turó de l'Home"
-        data-desc="Primera sortida amb nit en tendes del curs. Ruta de 18km amb desnivell positiu i taller d'orientació amb estrelles.">
-        <span class="cell-number">26</span>
-        <div class="cell-event-badge" style="background-color: var(--retro-blue);">Excursió Montseny</div>
-      </div>
-
-      <div class="calendar-cell"><span class="cell-number">27</span></div>
-      <div class="calendar-cell"><span class="cell-number">28</span></div>
-      <div class="calendar-cell"><span class="cell-number">29</span></div>
-      <div class="calendar-cell"><span class="cell-number">30</span></div>
-
-      <!-- Event 3: Assemblea (3 Octubre) -->
-      <div class="calendar-cell has-event" data-event="true" data-unit-tag="Famílies"
-        data-title="Assemblea General d'Agrupament (AGA)" data-unit="Famílies i Caps"
-        data-timeloc="3 Octubre • 18:30 - 21:00 @ Local AE Lluïsos"
-        data-desc="Presentació del projecte educatiu anual, pressupostos i elecció de la nova línia pedagògica de l'agrupament.">
-        <span class="cell-number">3 Oct</span>
-        <div class="cell-event-badge" style="background-color: #0B2545;">Assemblea AGA</div>
-      </div>
-
-      <!-- Event 4: Fira (17 Octubre) -->
-      <div class="calendar-cell has-event" data-event="true" data-unit-tag="Totes les unitats"
-        data-title="Fira d'Agrupament i Trobada de Tardor" data-unit="Comunitat i Barri"
-        data-timeloc="17 Octubre • 10:00 - 20:00 @ Plaça Revolució"
-        data-desc="Paradetes artesanes, intercanvi de material escolta, vermut musical i jocs per a la mainada de Gràcia.">
-        <span class="cell-number">17 Oct</span>
-        <div class="cell-event-badge" style="background-color: var(--retro-orange);">Fira d'Agrupament</div>
-      </div>
+    <div class="next-6-events-grid" id="next-6-events-container">
+      <!-- 6 cards dynamically populated by JavaScript -->
     </div>
-  </div>
-
-  <!-- Upcoming Events Detailed List -->
-  <div class="section-header animate-on-scroll fade-right" style="margin-top: 50px;">
-    <div>
-      <h3 class="section-title" style="font-size: 1.8rem;">DETALL DELS PROXIMS ESDEVENIMENTS</h3>
-      <div class="section-subtitle">CLICA CADA TARGETA PER VEURE LA FITXA COMPLETA O PARTICIPAR</div>
-    </div>
-  </div>
-
-  <div class="calendar-events-list stagger-grid" id="events-list-container">
-    {% for ev in events %}
-    <div class="calendar-event-item" data-unit="{{ ev.unit }}"
-      onclick="openModal('{{ ev.title|escape }}', '{{ ev.unit }}', '{{ ev.date }} • {{ ev.time }} @ {{ ev.location }}', `<p>{{ ev.description|escape }}</p>`)">
-      <div class="event-date-badge" style="background-color: {{ ev.badge_color|default('#FF5722') }};">
-        <span class="event-badge-day">{{ ev.date[-2:] }}</span>
-        <span class="event-badge-month">{{ ev.date[5:7] }}</span>
-      </div>
-      <div class="event-info-body">
-        <div class="event-meta-tag">{{ ev.unit }}</div>
-        <h4 class="event-item-title">{{ ev.title }}</h4>
-        <div class="event-item-location">📍 {{ ev.location }} &nbsp;•&nbsp; ⏰ {{ ev.time }}</div>
-        <p class="event-item-desc">{{ ev.description }}</p>
-      </div>
-      <div class="event-action-col">
-        <span class="btn-retro btn-retro-blue btn-view-event">VEURE FITXA →</span>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+  </section>
 
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-  function filterCalendar(unitKeyword, btn) {
-    document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-
-    const eventCards = document.querySelectorAll('.calendar-event-item');
-    eventCards.forEach(card => {
-      const cardUnit = card.getAttribute('data-unit') || '';
-      if (unitKeyword === 'all' || cardUnit.toLowerCase().includes(unitKeyword.toLowerCase())) {
-        card.style.display = 'flex';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-
-    const cells = document.querySelectorAll('.calendar-cell[data-event="true"]');
-    cells.forEach(cell => {
-      const cellUnit = cell.getAttribute('data-unit-tag') || cell.getAttribute('data-unit') || '';
-      if (unitKeyword === 'all' || cellUnit.toLowerCase().includes(unitKeyword.toLowerCase())) {
-        cell.style.opacity = '1';
-        cell.style.filter = 'none';
-      } else {
-        cell.style.opacity = '0.3';
-        cell.style.filter = 'grayscale(100%)';
-      }
-    });
-  }
-
-  function exportICalAlert() {
-    openModal(
-      'Sincronització de Calendari',
-      'AE LLUÏSOS 2026',
-      'iCal / Google Calendar Feed',
-      `<p>Pots subscriure't al calendari oficial de l'Agrupament Escolta Lluïsos de Gràcia per rebre actualitzacions automàtiques al teu telèfon mòbil.</p>
-       <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
-         <a href="https://calendar.google.com" target="_blank" class="btn-retro btn-retro-orange" style="text-decoration:none;">GOOGLE CALENDAR</a>
-         <button class="btn-retro btn-retro-blue" onclick="navigator.clipboard.writeText(window.location.href); alert('Enllaç copiat al porta-retalls!')">COPIAR ENLLAÇ FEED</button>
-       </div>`
-    );
-  }
+  // Expose backend events to JavaScript engine
+  window.RAW_CALENDAR_EVENTS = {{ events|tojson|safe }};
 </script>
 {% endblock %}

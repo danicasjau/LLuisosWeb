@@ -155,51 +155,410 @@ class GSheetsDB:
         ]
 
     def get_calendar_events(self):
-        """Fetch events for calendari.html"""
+        """Fetch events for calendar.html and calendari.html across the 2026-2027 scout year"""
         records = self._fetch_sheet_records("Calendari")
         if records:
             return records
         
         return [
+            # --- SETEMBRE 2026 ---
             {
                 "id": 101,
-                "title": "Cau de Benvinguda i Passos d'Unitat",
+                "title": "Passos d'Unitat i Cau de Benvinguda",
                 "date": "2026-09-12",
                 "time": "16:00 - 19:30",
                 "location": "Plaça del Nord, Gràcia",
-                "unit": "Totes les unitats",
-                "badge_color": "#FF5722",
-                "description": "Benvinguda al nou curs escolta! Jocs de retrobament, presentació de nous caps i cerimònia dels passos de branca."
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Inici oficial del curs 2026-2027. Jocs de retrobament, presentació dels equips de caps i cerimònia de passos de branca a la plaça."
             },
             {
                 "id": 102,
-                "title": "Excursió de cap de setmana al Montseny",
-                "date": "2026-09-26",
-                "time": "Dissabte 08:00 - Diumenge 18:00",
-                "location": "Sant Celoni - Turó de l'Home",
-                "unit": "Ràngers i Pioners",
-                "badge_color": "#1B4965",
-                "description": "Primera sortida amb nit en tendes del curs. Ruta de 18km amb desnivell positiu i taller d'estrelles."
+                "title": "Primer Cau de Branca i Dinàmica de Colla",
+                "date": "2026-09-19",
+                "time": "16:30 - 19:00",
+                "location": "Local Lluïsos de Gràcia",
+                "unit": "Castúdrigues",
+                "badge_color": "#F97316",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Coneixença dels nous castors i llúdrigues, creació de les sisenes i descoberta del cau secret."
             },
             {
                 "id": 103,
+                "title": "Excursió de Bivac al Montseny",
+                "date": "2026-09-26",
+                "time": "Dissabte 08:00 - Diumenge 18:00",
+                "location": "Sant Celoni - Turó de l'Home",
+                "unit": "Ranguis",
+                "badge_color": "#0284C7",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Primera sortida amb nit sota les estrelles del curs. Ruta de muntanya de 14km i taller d'orientació amb brúixola."
+            },
+            {
+                "id": 104,
+                "title": "Trobada de Responsables de Sector MEG",
+                "date": "2026-09-27",
+                "time": "10:00 - 14:00",
+                "location": "Seu Central MEG (Barcelona)",
+                "unit": "MEG",
+                "badge_color": "#7C3AED",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Coordinació pedagògica de la Demarcació del Barcelonès i planificació dels projectes de sector per al curs."
+            },
+
+            # --- OCTUBRE 2026 ---
+            {
+                "id": 105,
                 "title": "Assemblea General d'Agrupament (AGA)",
                 "date": "2026-10-03",
                 "time": "18:30 - 21:00",
                 "location": "Local AE Lluïsos de Gràcia",
-                "unit": "Famílies i Caps",
+                "unit": "Assemblea & General",
                 "badge_color": "#0B2545",
-                "description": "Presentació del projecte educatiu anual, pressupostos i elecció de la nova línia pedagògica."
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Aprovació del projecte educatiu de curs, memòria econòmica, renovació de càrrecs i trobada de famílies."
             },
             {
-                "id": 104,
-                "title": "Fira d'Agrupament i Trobada de Tardor",
-                "date": "2026-10-17",
+                "id": 106,
+                "title": "Gran Cacera de Tardor dels Llops",
+                "date": "2026-10-10",
+                "time": "10:00 - 18:30",
+                "location": "Parc de Collserola (Can Masdeu)",
+                "unit": "Dainops",
+                "badge_color": "#F59E0B",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Joc de pistes a la natura basat en el Llibre de la Selva, rastreig de petjades i dinar de carmanyola."
+            },
+            {
+                "id": 107,
+                "title": "Fira d'Agrupament i Castanyada Popular",
+                "date": "2026-10-24",
                 "time": "10:00 - 20:00",
                 "location": "Plaça de la Revolució, Gràcia",
-                "unit": "Comunitat i Barri",
-                "badge_color": "#FF5722",
-                "description": "Paradetes artesanes, intercanvi de material escolta vintage, vermut musical i jocs per a la mainada."
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Parades d'artesania, mercadet vintage, tast de castanyes i moniatos, i actuació musical de l'agrupament."
+            },
+            {
+                "id": 108,
+                "title": "Ruta de Descobriment i Servei Truk",
+                "date": "2026-10-31",
+                "time": "08:00 - 20:00",
+                "location": "Serra de Marina (Badalona)",
+                "unit": "Truk",
+                "badge_color": "#059669",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Projecte comunitari de recuperació de camins forestals i debat sobre sobirania alimentària."
+            },
+
+            # --- NOVEMBRE 2026 ---
+            {
+                "id": 109,
+                "title": "Raid de Supervivència i Pionerisme",
+                "date": "2026-11-07",
+                "time": "Dissabte 08:30 - Diumenge 17:00",
+                "location": "Parc Natural de Sant Llorenç del Munt",
+                "unit": "Pionel·les",
+                "badge_color": "#E11D48",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Construccions de fusta amb amarratges i nusos, cuina d'acampada i ascensió a la Mola."
+            },
+            {
+                "id": 110,
+                "title": "Taller d'Ecologia i Horta Urbana",
+                "date": "2026-11-14",
+                "time": "16:00 - 19:00",
+                "location": "Hort Comunitari de Gràcia",
+                "unit": "Castúdrigues",
+                "badge_color": "#F97316",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Descobrim la biodiversitat de l'hort, plantem llavors d'hivern i fem menjadores per a ocells."
+            },
+            {
+                "id": 111,
+                "title": "Consell de Roca i Consell d'Honor",
+                "date": "2026-11-21",
+                "time": "16:30 - 19:30",
+                "location": "Local Lluïsos de Gràcia",
+                "unit": "Dainops",
+                "badge_color": "#F59E0B",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Avaluació del primer trimestre i compromís dels llobatons amb la Llei de la Selva."
+            },
+            {
+                "id": 112,
+                "title": "Jornada de Formació MEG per a Caps",
+                "date": "2026-11-28",
+                "time": "09:30 - 18:00",
+                "location": "Casal de Joves Can Ricart (Poblenou)",
+                "unit": "MEG",
+                "badge_color": "#7C3AED",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Formació en primers auxilis en muntanya, gestió emocional i coeducació per als equips de caps de Catalunya."
+            },
+
+            # --- DESEMBRE 2026 ---
+            {
+                "id": 113,
+                "title": "Llum de la Pau de Betlem (MEG)",
+                "date": "2026-12-12",
+                "time": "17:00 - 20:30",
+                "location": "Basílica de Santa Maria del Mar",
+                "unit": "MEG",
+                "badge_color": "#7C3AED",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Acte central de rebuda de la Llum de la Pau i distribució pels barris i agrupaments escoltes."
+            },
+            {
+                "id": 114,
+                "title": "Campament d'Hivern d'Agrupament",
+                "date": "2026-12-27",
+                "time": "27 Desembre - 30 Desembre",
+                "location": "Casa de Colònies La Traüna (Montseny)",
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "4 dies de convivència de totes les branques, focs de camp, vetllades d'hivern i tallers artesanals."
+            },
+
+            # --- GENER 2027 ---
+            {
+                "id": 115,
+                "title": "Cau de Reis i Jocs de Taula Gegants",
+                "date": "2027-01-09",
+                "time": "16:00 - 19:30",
+                "location": "Plaça del Nord, Gràcia",
+                "unit": "Castúdrigues",
+                "badge_color": "#F97316",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Retrobament després de festes, jocs tradicionals cooperatius i berenar amb xocolatada."
+            },
+            {
+                "id": 116,
+                "title": "Travessa de Neu i Raquetes",
+                "date": "2027-01-23",
+                "time": "Dissabte 06:30 - Diumenge 19:00",
+                "location": "Vall de Núria - Puigmal",
+                "unit": "Truk",
+                "badge_color": "#059669",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Itinerari d'alta muntanya amb raquetes de neu, bivac hivernal i formació en seguretat davant allaus."
+            },
+
+            # --- FEBRER 2027 ---
+            {
+                "id": 117,
+                "title": "Gran Calçotada Escoltes de Gràcia",
+                "date": "2027-02-06",
+                "time": "11:00 - 18:00",
+                "location": "Masia Can Soler (Collserola)",
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Trobada festiva per a famílies, antics escoltes, caps i infants amb foc de llenya i dinar comunitari."
+            },
+            {
+                "id": 118,
+                "title": "Dia del Pensament Escolta (Thinking Day - MEG)",
+                "date": "2027-02-20",
+                "time": "10:00 - 18:00",
+                "location": "Parc de la Ciutadella",
+                "unit": "MEG",
+                "badge_color": "#7C3AED",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Commemoració mundial del naixement de Baden-Powell amb més de 2.000 escoltes d'arreu de Catalunya."
+            },
+            {
+                "id": 119,
+                "title": "Campionat d'Orientació i Rastreig",
+                "date": "2027-02-27",
+                "time": "09:00 - 16:30",
+                "location": "Parc del Laberint d'Horta",
+                "unit": "Ranguis",
+                "badge_color": "#0284C7",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Cursa d'orientació amb balises cronometrades i reptes de lògica per patrulles."
+            },
+
+            # --- MARÇ 2027 ---
+            {
+                "id": 120,
+                "title": "Projecte Comunitari: Neteja del Litoral",
+                "date": "2027-03-13",
+                "time": "09:30 - 15:00",
+                "location": "Platja de la Mar Bella",
+                "unit": "Pionel·les",
+                "badge_color": "#E11D48",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Acció de voluntariat ambiental per recollir microplàstics i sensibilitzar sobre l'impacte marí."
+            },
+            {
+                "id": 121,
+                "title": "Excursió de Primavera al Pedraforca",
+                "date": "2027-03-27",
+                "time": "Dissabte 07:00 - Diumenge 18:00",
+                "location": "Gósol - Refugi Lluís Estasen",
+                "unit": "Truk",
+                "badge_color": "#059669",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Ruta clàssica als contraforts del Pedraforca, observació de fauna pirinenca i nit al refugi."
+            },
+
+            # --- ABRIL 2027 ---
+            {
+                "id": 122,
+                "title": "Campament de Pasqua per Branques",
+                "date": "2027-04-10",
+                "time": "10 Abril - 12 Abril",
+                "location": "Ripollès / Garrotxa",
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Sortides simultànies de cap de setmana llarg per a totes les unitats en terreny de muntanya."
+            },
+            {
+                "id": 123,
+                "title": "Diada de Sant Jordi a la Plaça del Nord",
+                "date": "2027-04-23",
+                "time": "09:00 - 20:30",
+                "location": "Plaça del Nord, Gràcia",
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Parada oficial de roses, llibres escoltes de segona mà, punt de lectura infantil i cançons de bressol."
+            },
+
+            # --- MAIG 2027 ---
+            {
+                "id": 124,
+                "title": "Gran Bivac d'Unitat sota el Cel de Montserrat",
+                "date": "2027-05-08",
+                "time": "Dissabte 08:00 - Diumenge 17:00",
+                "location": "Monestir de Montserrat - Sant Jeroni",
+                "unit": "Ranguis",
+                "badge_color": "#0284C7",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Pujada per les escales dels Pobres, nit al cim de Sant Jeroni i observació d'estels amb telescopi."
+            },
+            {
+                "id": 125,
+                "title": "Assemblea de Primavera MEG del Barcelonès",
+                "date": "2027-05-15",
+                "time": "10:00 - 17:00",
+                "location": "Ateneu de Gràcia",
+                "unit": "MEG",
+                "badge_color": "#7C3AED",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Balanç dels projectes de la demarcació i aprovació de les línies de campaments d'estiu."
+            },
+            {
+                "id": 126,
+                "title": "Olimpíades Escoltes Inter-Agrupaments",
+                "date": "2027-05-29",
+                "time": "10:00 - 18:30",
+                "location": "Pista Poliesportiva del Guinardó",
+                "unit": "Dainops",
+                "badge_color": "#F59E0B",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Jocs esportius, curses de sacs, estirar la corda i relleus cooperatius amb agrupaments veïns."
+            },
+
+            # --- JUNY 2027 ---
+            {
+                "id": 127,
+                "title": "Assemblea de Pares i Presentació de Campaments",
+                "date": "2027-06-05",
+                "time": "18:00 - 20:30",
+                "location": "Local Lluïsos de Gràcia",
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Reunió informativa clau sobre la logística, material i fitxes mèdiques dels campaments d'estiu 2027."
+            },
+            {
+                "id": 128,
+                "title": "Festa de Cloenda del Curs i Sopar de Carmanyola",
+                "date": "2027-06-19",
+                "time": "17:00 - 23:00",
+                "location": "Plaça del Nord, Gràcia",
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Vídeo resum de curs, actuacions de les unitats, lliurament d'insígnies i concert acústic de caps."
+            },
+
+            # --- JULIOL 2027 ---
+            {
+                "id": 129,
+                "title": "Campament d'Estiu: Pirineus 2027",
+                "date": "2027-07-10",
+                "time": "10 Juliol - 24 Juliol",
+                "location": "Vall de Cardós (Pallars Sobirà)",
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "El gran esdeveniment de l'any! 15 dies de tendes, cuina de campament, rutes de muntanya i banys de riu."
+            },
+            {
+                "id": 130,
+                "title": "Expedició Internacional Pionel·les & Truk",
+                "date": "2027-07-26",
+                "time": "26 Juliol - 08 Agost",
+                "location": "Kandersteg International Scout Centre (Suïssa)",
+                "unit": "Pionel·les",
+                "badge_color": "#E11D48",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Experiència internacional al centre scout mundial dels Alps suïssos amb joves de més de 50 països."
+            },
+
+            # --- AGOST 2027 ---
+            {
+                "id": 131,
+                "title": "Travessa d'Alta Ruta Truk al Mont Blanc",
+                "date": "2027-08-10",
+                "time": "10 Agost - 18 Agost",
+                "location": "Massís del Mont Blanc (Chamonix)",
+                "unit": "Truk",
+                "badge_color": "#059669",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Ruta circular alpina d'alta exigència per als nois i noies de la unitat gran de l'agrupament."
+            },
+            {
+                "id": 132,
+                "title": "Reunió de Coordinació Pedagògica MEG Estiu",
+                "date": "2027-08-28",
+                "time": "11:00 - 15:00",
+                "location": "Seu Central MEG (Barcelona)",
+                "unit": "MEG",
+                "badge_color": "#7C3AED",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Avaluació dels campaments d'estiu i preparació de la campanya d'inscripcions 2027-2028."
+            },
+
+            # --- SETEMBRE 2027 ---
+            {
+                "id": 133,
+                "title": "Consell de Caps d'Inici de Curs 2027-2028",
+                "date": "2027-09-04",
+                "time": "09:30 - 18:00",
+                "location": "Local Lluïsos de Gràcia",
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Planificació estratègica de l'equip de caps per al nou curs i assignació de responsabilitats."
+            },
+            {
+                "id": 134,
+                "title": "Passos de Branca i Obertura Curs 2027-2028",
+                "date": "2027-09-18",
+                "time": "16:00 - 19:30",
+                "location": "Plaça del Nord, Gràcia",
+                "unit": "Assemblea & General",
+                "badge_color": "#0B2545",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Benvinguda al curs 2027-2028, cerimònia dels passos d'unitat i retrobament de tota la comunitat escolta."
             }
         ]
 
