@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log("AE Lluïsos de Gràcia Web Engine Initialized");
 
   initNavHideToggle();
-  //initNavAutoHide();
+  initTopBarAutoHide();
   initBarcode();
   initModalSystem();
   initCalendarViewer();
@@ -34,47 +34,45 @@ function initNavHideToggle() {
 }
 
 /* ==========================================================================
-   AUTO-HIDE MENU ON INACTIVITY (5 SECONDS NO SCROLL)
-   ========================================================================== */
-function initNavAutoHide() {
-  const navMenu = document.getElementById('main-nav');
-  if (!navMenu) return;
+  TOP BAR AUTO-HIDE ON SCROLL AND INACTIVITY
+  ========================================================================== */
+function initTopBarAutoHide() {
+  const topBar = document.getElementById('main-top-bar');
+  if (!topBar) return;
 
-  let scrollTimer = null;
-  const HIDE_DELAY = 2000; // 5 seconds of inactivity
+  const HIDE_DELAY = 4000;
+  let hideTimer = null;
 
-  function hideNav() {
-    navMenu.classList.add('is-autohidden');
+  function hideTopBar() {
+    topBar.classList.add('is-autohidden');
   }
 
-  function showNav() {
-    navMenu.classList.remove('is-autohidden');
+  function showTopBar() {
+    topBar.classList.remove('is-autohidden');
   }
 
-  function resetTimer() {
-    showNav();
-    if (scrollTimer) {
-      clearTimeout(scrollTimer);
+  function scheduleHide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hideTopBar, HIDE_DELAY);
+  }
+
+  function getScrollY() {
+    return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  }
+
+  function handleScroll() {
+    const currentScrollY = getScrollY();
+    showTopBar();
+
+    if (currentScrollY > 0) {
+      scheduleHide();
+    } else {
+      clearTimeout(hideTimer);
     }
-    scrollTimer = setTimeout(hideNav, HIDE_DELAY);
   }
 
-  // Listen to window scroll events to reveal menu and reset the 5-second timer
-  window.addEventListener('scroll', resetTimer, { passive: true });
-
-  // Pause auto-hide timer when user hovers over the navigation menu
-  navMenu.addEventListener('mouseenter', () => {
-    if (scrollTimer) clearTimeout(scrollTimer);
-    showNav();
-  });
-
-  // Resume auto-hide timer when mouse leaves navigation menu
-  navMenu.addEventListener('mouseleave', () => {
-    resetTimer();
-  });
-
-  // Start initial 5-second timer on page load
-  resetTimer();
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  showTopBar();
 }
 
 /* ==========================================================================

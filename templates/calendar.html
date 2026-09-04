@@ -8,11 +8,7 @@
   <!-- Page Header -->
   <div class="section-header animate-on-scroll fade-left" style="margin-top: 10px;">
     <div>
-      <div class="header-pretitle" style="font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; color: var(--retro-orange); letter-spacing: 2px;">
-        CURS ESCOLTA 2026 - 2027 • AE LLUÏSOS DE GRÀCIA
-      </div>
       <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">CAULENDARI D'ACTIVITATS</h2>
-      <div class="section-subtitle">DISSABTES DE CAU, SORTIDES, CAMPAMENTS, ASSEMBLEES I TROBADES MEG</div>
     </div>
   </div>
 
@@ -21,18 +17,11 @@
 
     <!-- Lateral Sidebar: Totes les Unitats & MEG Panels -->
     <aside class="calendar-lateral-sidebar">
-      <div class="sidebar-panel-header">
-        <span class="panel-icon">⛺</span>
-        <h3 class="panel-title">TOTES LES UNITATS</h3>
-      </div>
-      <p class="sidebar-panel-desc">Filtra per veure les sortides i activitats de cada branca o del sector MEG:</p>
-
       <div class="lateral-units-list" id="lateral-units-filter">
         <button class="lateral-unit-btn active" data-unit="all" onclick="setCalendarUnitFilter('all', this)">
           <div class="unit-btn-indicator" style="background: linear-gradient(135deg, var(--retro-orange), var(--retro-blue));"></div>
           <div class="unit-btn-content">
             <span class="unit-btn-title">TOTES LES UNITATS</span>
-            <span class="unit-btn-subtitle">Tot l'agrupament i MEG</span>
           </div>
           <span class="unit-count-badge" id="count-all">0</span>
         </button>
@@ -41,7 +30,6 @@
           <div class="unit-btn-indicator" style="background: #F97316;"></div>
           <div class="unit-btn-content">
             <span class="unit-btn-title">CASTÚDRIGUES</span>
-            <span class="unit-btn-subtitle">6 a 8 anys • Castors i Llúdrigues</span>
           </div>
           <span class="unit-count-badge" id="count-castors">0</span>
         </button>
@@ -50,7 +38,6 @@
           <div class="unit-btn-indicator" style="background: #F59E0B;"></div>
           <div class="unit-btn-content">
             <span class="unit-btn-title">DAINOPS</span>
-            <span class="unit-btn-subtitle">9 a 11 anys • Llops i Daines</span>
           </div>
           <span class="unit-count-badge" id="count-llops">0</span>
         </button>
@@ -59,7 +46,6 @@
           <div class="unit-btn-indicator" style="background: #0284C7;"></div>
           <div class="unit-btn-content">
             <span class="unit-btn-title">RANGUIS</span>
-            <span class="unit-btn-subtitle">12 a 14 anys • Ràngers i Noies Guia</span>
           </div>
           <span class="unit-count-badge" id="count-ranguis">0</span>
         </button>
@@ -68,7 +54,6 @@
           <div class="unit-btn-indicator" style="background: #E11D48;"></div>
           <div class="unit-btn-content">
             <span class="unit-btn-title">PIONEL·LES</span>
-            <span class="unit-btn-subtitle">15 a 17 anys • Pioners i Caravel·les</span>
           </div>
           <span class="unit-count-badge" id="count-pios">0</span>
         </button>
@@ -77,7 +62,6 @@
           <div class="unit-btn-indicator" style="background: #059669;"></div>
           <div class="unit-btn-content">
             <span class="unit-btn-title">TRUK</span>
-            <span class="unit-btn-subtitle">18 a 20 anys • Joves Truc</span>
           </div>
           <span class="unit-count-badge" id="count-truk">0</span>
         </button>
@@ -86,7 +70,6 @@
           <div class="unit-btn-indicator" style="background: #0B2545;"></div>
           <div class="unit-btn-content">
             <span class="unit-btn-title">ASSEMBLEA & GENERAL</span>
-            <span class="unit-btn-subtitle">Famílies, Caps i Barri</span>
           </div>
           <span class="unit-count-badge" id="count-general">0</span>
         </button>
@@ -95,7 +78,6 @@
           <div class="unit-btn-indicator" style="background: #7C3AED;"></div>
           <div class="unit-btn-content">
             <span class="unit-btn-title">MEG (FEDERACIÓ)</span>
-            <span class="unit-btn-subtitle">Minyons Escoltes i Guies</span>
           </div>
           <span class="unit-count-badge" id="count-meg">0</span>
         </button>
@@ -154,12 +136,6 @@
       <div id="calendar-month-container" class="calendar-view-container">
         <div class="calendar-month-bar">
           <h3 class="calendar-month-heading" id="current-month-heading">SETEMBRE 2026</h3>
-          <div class="calendar-quick-legend">
-            <span class="legend-badge" style="background-color: #FEF08A; color: #854D0E; border: 1px solid #CA8A04;">● AVUI</span>
-            <span class="legend-badge" style="background-color: rgba(249, 115, 22, 0.15); color: #C2410C;">● CASTÚDRIGUES</span>
-            <span class="legend-badge" style="background-color: rgba(2, 132, 199, 0.15); color: #0369A1;">● RANGUIS</span>
-            <span class="legend-badge" style="background-color: rgba(124, 58, 237, 0.15); color: #6D28D9;">● MEG</span>
-          </div>
         </div>
 
         <!-- Month Grid -->
