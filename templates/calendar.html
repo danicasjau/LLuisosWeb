@@ -101,16 +101,6 @@
         </button>
       </div>
 
-      <!-- Quick Info / Today Indicator Card -->
-      <div class="lateral-today-indicator">
-        <div class="today-indicator-header">
-          <span class="today-dot"></span>
-          <span class="today-title">DIA ACTUAL DESTACAT</span>
-        </div>
-        <div class="today-indicator-body">
-          El dia d'avui es troba ressaltat en <strong>groc llampant</strong> al calendari mensual.
-        </div>
-      </div>
     </aside>
 
     <!-- Main Calendar Area -->
@@ -151,7 +141,7 @@
         <div class="calendar-action-cluster">
           <div class="view-mode-toggle">
             <button class="btn-view-toggle active" id="btn-view-month" onclick="setCalendarView('month')">VISTA MES</button>
-            <button class="btn-view-toggle" id="btn-view-year" onclick="setCalendarView('year')">VISTA ANUAL (13 MESOS)</button>
+            <button class="btn-view-toggle" id="btn-view-year" onclick="setCalendarView('year')">VISTA ANUAL (12 MESOS)</button>
           </div>
 
           <button class="btn-retro btn-download-pdf" onclick="downloadCalendarPDF()" title="Descarrega o imprimeix el calendari">
@@ -187,14 +177,14 @@
         </div>
       </div>
 
-      <!-- Calendar Full Year (13 Months) View Container -->
+      <!-- Calendar Full Year (12 Months) View Container -->
       <div id="calendar-year-container" class="calendar-year-container" style="display: none;">
         <div class="year-view-header">
-          <h3 class="calendar-month-heading">CURS COMPLET 2026 - 2027 (SETEMBRE 26 - SETEMBRE 27)</h3>
+          <h3 class="calendar-month-heading">CURS COMPLET 2026 - 2027 (SETEMBRE 26 - AGOST 27)</h3>
           <p style="font-size: 0.9rem; color: var(--ink-muted);">Clica qualsevol dia d'un mes per obrir la finestra emergent amb el detall.</p>
         </div>
-        <div class="year-grid-13-months" id="year-months-grid">
-          <!-- 13 Mini Months injected via JS -->
+        <div class="year-grid-12-months" id="year-months-grid">
+          <!-- 12 Mini Months injected via JS -->
         </div>
       </div>
 

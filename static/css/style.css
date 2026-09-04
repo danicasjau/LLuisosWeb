@@ -1545,9 +1545,65 @@ body {
 /* Base Team Grid for Standalone Views */
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 30px;
   margin-bottom: 40px;
+}
+
+.equips-full-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.equip-full-card {
+  padding: 0;
+}
+
+.equip-full-card .team-polaroid-frame {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+}
+
+.equip-full-card .team-photo {
+  display: block;
+  height: 320px;
+  border-radius: var(--nor-br) var(--nor-br) 0 0;
+}
+
+.equip-full-card .compact-card-content {
+  padding: 14px 16px 16px;
+  text-align: center;
+}
+
+.equip-full-card .team-name {
+  margin: 0 0 8px;
+}
+
+@media (max-width: 1100px) {
+  .equips-full-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .equips-full-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1100px) {
+  .team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .team-card {
@@ -2186,7 +2242,7 @@ body {
 }
 
 /* ==========================================================================
-   YEAR VIEW (13 MONTHS: SEP 2026 - SEP 2027)
+    YEAR VIEW (12 MONTHS: SEP 2026 - AUG 2027)
    ========================================================================== */
 .calendar-year-container {
   background: rgba(255, 255, 255, 0.95);
@@ -2204,7 +2260,7 @@ body {
   margin-bottom: 20px;
 }
 
-.year-grid-13-months {
+.year-grid-12-months {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;

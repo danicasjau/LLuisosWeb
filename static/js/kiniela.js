@@ -49,7 +49,8 @@ const NEW_CAPS = [
   { id: 1002, name: "Joan Nuet", isNewCap: true },
   { id: 1003, name: "Jana Bosc", isNewCap: true },
   { id: 1004, name: "Iris de Cook", isNewCap: true },
-  { id: 1005, name: "Aniol Rovira", isNewCap: true }
+  { id: 1005, name: "Aniol Rovira", isNewCap: true },
+  { id: 1006, name: "Júlia Muntada", isNewCap: true }
 ];
 
 // State Management: memberId -> groupCode (or 'pool')

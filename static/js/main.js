@@ -145,7 +145,7 @@ function openModal(title, badge, dateLoc, content, imageSrc = null) {
 }
 
 /* ==========================================================================
-   CALENDAR & EVENT SYSTEM ENGINE (FULL 2026-2027 YEAR)
+    CALENDAR & EVENT SYSTEM ENGINE (2026-2027 SCOUT YEAR)
    ========================================================================== */
 let calendarState = {
   currentYear: 2026,
@@ -436,8 +436,7 @@ function renderCalendarYear() {
     { y: 2027, m: 5 },
     { y: 2027, m: 6 },
     { y: 2027, m: 7 },
-    { y: 2027, m: 8 },
-    { y: 2027, m: 9 }
+    { y: 2027, m: 8 }
   ];
 
   const now = new Date();
