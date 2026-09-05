@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Expedició Karakoram Trail",
+    "location": "K2 Base Camp, Baltoro Glacier",
+    "country": "Pakistan / Himàlaia",
+    "lat": 35.8808,
+    "lng": 76.5158,
+    "year": "2025",
+    "unit": "Trucs",
+    "description": "Expedició internacional dels Trucs per donar suport a projectes educatius de muntanya.",
+    "type": "expedition"
+  },
+  {
+    "id": 2,
+    "title": "Local Social AE Lluïsos de Gràcia",
+    "location": "Plaça del Nord, Gràcia (Barcelona)",
+    "country": "Catalunya",
+    "lat": 41.4048,
+    "lng": 2.1554,
+    "year": "Des de 1957",
+    "unit": "Seu Central",
+    "description": "El cor de l'agrupament. Punt de trobada de cada dissabte de cau.",
+    "type": "headquarters"
+  }
+]

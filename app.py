@@ -6,6 +6,7 @@ from gsheets_db import db, sanitize_text
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'ae-lluisos-gracia-retro-k2-key-2026')
+application = app
 
 
 @app.after_request

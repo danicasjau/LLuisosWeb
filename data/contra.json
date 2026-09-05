@@ -1,0 +1,6 @@
+{
+  "algorithm": "sha256_salted",
+  "salt": "ae_lluisos_gracia_salt_2026",
+  "contra_hash": "c094c028a64a793b24d8bbca8024d85bbf2711c23f6f885aed9f9875e19b6436",
+  "note": "AE Lluïsos de Gràcia - Contrasenya mestra encriptada per a l'Espai del Cap (per defecte: caps2026)"
+}

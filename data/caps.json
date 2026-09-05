@@ -1,0 +1,233 @@
+[
+  {
+    "id": 1,
+    "name": "Joana Solà",
+    "role": "Cap de Branca",
+    "unit": "Castúdrigues",
+    "unit_code": "castors",
+    "years": "3 anys a l'agrupament",
+    "bio": "Creu que la millor manera d'aprendre és riure, jugar i fer petits grans projectes amb la gent del cau.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"Cada aventura comença amb un gran somriure.\""
+  },
+  {
+    "id": 2,
+    "name": "Maia de Cook",
+    "role": "Cap de Branca",
+    "unit": "Castúdrigues",
+    "unit_code": "castors",
+    "years": "2 anys a l'agrupament",
+    "bio": "Entusiasta de la natura i dels jocs d'orientació. Vol ajudar cada infant a trobar el seu ritme i confiança.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"Que cada passejada ens ajudi a créixer.\""
+  },
+  {
+    "id": 3,
+    "name": "Guillem Rodon",
+    "role": "Cap de Branca",
+    "unit": "Castúdrigues",
+    "unit_code": "castors",
+    "years": "4 anys a l'agrupament",
+    "bio": "Apassionat de les rutes, la convivència i els projectes col·lectius que fan créixer l'equip.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"El bon camí es fa amb companys.\""
+  },
+  {
+    "id": 4,
+    "name": "Bernat Escolà",
+    "role": "Cap de Branca",
+    "unit": "Castúdrigues",
+    "unit_code": "castors",
+    "years": "5 anys a l'agrupament",
+    "bio": "Lidera projectes de muntanya i de grup amb molta cura, previsió i energia positiva.",
+    "image": "/static/images/caps/bernatescola.png",
+    "quote": "\"Cada repte és una oportunitat per aprendre.\""
+  },
+  {
+    "id": 5,
+    "name": "Sol Font",
+    "role": "Cap de Branca",
+    "unit": "Dainops",
+    "unit_code": "llops",
+    "years": "6 anys a l'agrupament",
+    "bio": "Treballa per donar espai a la iniciativa dels joves i promoure la responsabilitat compartida.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"L'autonomia es construeix amb confiança.\""
+  },
+  {
+    "id": 6,
+    "name": "Clara Torres",
+    "role": "Cap de Branca",
+    "unit": "Dainops",
+    "unit_code": "llops",
+    "years": "4 anys a l'agrupament",
+    "bio": "Especialista en dinamització de grup, lideratge i crear espais on tots es sentin part del projecte.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"La millor pinya s'aconsegueix escoltant-s'hi.\""
+  },
+  {
+    "id": 7,
+    "name": "Èlia Coll",
+    "role": "Cap de Branca",
+    "unit": "Dainops",
+    "unit_code": "llops",
+    "years": "3 anys a l'agrupament",
+    "bio": "Té l'hàbit de convertir cada joc en una experiència d'aprenentatge, companyonia i respecte.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"La natura ens ensenya a compartir.\""
+  },
+  {
+    "id": 8,
+    "name": "Maür Roda",
+    "role": "Cap de Branca",
+    "unit": "Dainops",
+    "unit_code": "llops",
+    "years": "2 anys a l'agrupament",
+    "bio": "Va descobrir que els petits detalls també són grans aventures i que la curiositat és la millor eina.",
+    "image": "/static/images/caps/maurroda.png",
+    "quote": "\"Petits passos, grans descobertes.\""
+  },
+  {
+    "id": 9,
+    "name": "Dani Casadevall",
+    "role": "Cap de Branca",
+    "unit": "Ranguis",
+    "unit_code": "ranguis",
+    "years": "4 anys a l'agrupament",
+    "bio": "Implicat en activitats de muntanya i en construir una dinàmica de grup segura i divertida.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"La millor aventura es comparteix.\""
+  },
+  {
+    "id": 10,
+    "name": "Helena Herranz",
+    "role": "Coordinació",
+    "unit": "Ranguis",
+    "unit_code": "ranguis",
+    "years": "6 anys a l'agrupament",
+    "bio": "Coordina els equips amb una mirada pedagògica i alhora molt pràctica, sempre amb voluntat de cuidar l'agrupament.",
+    "image": "/static/images/caps/helenaherranz.png",
+    "quote": "\"L'organització és el motor de la creativitat.\""
+  },
+  {
+    "id": 11,
+    "name": "Iu Sales",
+    "role": "Cap de Branca",
+    "unit": "Ranguis",
+    "unit_code": "ranguis",
+    "years": "5 anys a l'agrupament",
+    "bio": "Aplica el pensament crític i l'autonomia a cada projecte per ajudar el grup a créixer amb criteri.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"Quan hi ha confiança, hi ha aventura.\""
+  },
+  {
+    "id": 12,
+    "name": "Nil Mitjavila",
+    "role": "Cap de Branca",
+    "unit": "Pionel·les",
+    "unit_code": "pios",
+    "years": "3 anys a l'agrupament",
+    "bio": "Acosta els nens i nenes al món de l'escoltisme amb creativitat, calma i mucha energia positiva.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"Els petits detalls fan grans records.\""
+  },
+  {
+    "id": 13,
+    "name": "Aina Salinas",
+    "role": "Cap de Branca",
+    "unit": "Pionel·les",
+    "unit_code": "pios",
+    "years": "5 anys a l'agrupament",
+    "bio": "Mou el grup amb mirada servicial, idees clares i molt de compromís amb les persones i la comunitat.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"Serveix i aprèn amb el grup.\""
+  },
+  {
+    "id": 14,
+    "name": "Neus Lloses",
+    "role": "Coordinació",
+    "unit": "Pionel·les",
+    "unit_code": "pios",
+    "years": "7 anys a l'agrupament",
+    "bio": "Aporta calma, rigor i visió de conjunt per acompanyar els caps i fer créixer el projecte educatiu.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"La comunitat és la nostra gran aventura.\""
+  },
+  {
+    "id": 15,
+    "name": "Joan Roig",
+    "role": "Cap de Branca",
+    "unit": "Pionel·les",
+    "unit_code": "pios",
+    "years": "4 anys a l'agrupament",
+    "bio": "Motiva els joves amb il·lusió per la muntanya, la feina en equip i l'exploració responsable.",
+    "image": "/static/images/caps/joanroig.png",
+    "quote": "\"Cada viatge ens fa més grans.\""
+  },
+  {
+    "id": 16,
+    "name": "Pol Mer",
+    "role": "Cap de Branca",
+    "unit": "Pionel·les",
+    "unit_code": "pios",
+    "years": "4 anys a l'agrupament",
+    "bio": "Aporta energia, rigor i curiositat per ajudar els joves a organitzar projectes amb propòsit.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"Amb voluntat, cap projecte és massa gran.\""
+  },
+  {
+    "id": 17,
+    "name": "Arnau Escolà",
+    "role": "Cap de Branca",
+    "unit": "Truk",
+    "unit_code": "truk",
+    "years": "3 anys a l'agrupament",
+    "bio": "Parla amb naturalitat i seguretat, i sap connectar amb cada infant per crear un ambient de confiança.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"La confiança és la base de tot.\""
+  },
+  {
+    "id": 18,
+    "name": "Ivet Roig",
+    "role": "Cap de Branca",
+    "unit": "Truk",
+    "unit_code": "truk",
+    "years": "2 anys a l'agrupament",
+    "bio": "Especialista en crear espais on cada nen i nena pot jugar, explorar i sentir-se acollit.",
+    "image": "/static/images/caps/ivetroig.png",
+    "quote": "\"La creativitat obre moltes portes.\""
+  },
+  {
+    "id": 19,
+    "name": "Júlia Franquesa",
+    "role": "Coordinació",
+    "unit": "Truk",
+    "unit_code": "truk",
+    "years": "6 anys a l'agrupament",
+    "bio": "Dona forma a les activitats i projectes amb mirada pedagògica, compromís i molta energia.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"La millor educació és la que fa estimar.\""
+  },
+  {
+    "id": 20,
+    "name": "Lluc Roda",
+    "role": "Cap de Branca",
+    "unit": "Truk",
+    "unit_code": "truk",
+    "years": "5 anys a l'agrupament",
+    "bio": "Acompanya els joves en la seva autonomia, fent que cada decisió es converteixi en aprenentatge.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"Un bon equip és la millor eina de transformació.\""
+  },
+  {
+    "id": 21,
+    "name": "Simone García",
+    "role": "Cap de Branca",
+    "unit": "Truk",
+    "unit_code": "truk",
+    "years": "3 anys a l'agrupament",
+    "bio": "Busca provocar reflexió, diversió i compromís a través de projectes amb valor i sentit.",
+    "image": "/static/images/caps/deafult.png",
+    "quote": "\"La millor manera d'aprendre és fent.\""
+  }
+]

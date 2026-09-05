@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Foulard Oficial Lluïsos de Gràcia",
+    "price": 12.0,
+    "category": "Foulards",
+    "tag": "RETRO EDITION",
+    "image": "/static/images/scout_foulard.jpg",
+    "description": "El foulard tradicional de l'agrupament en blau marí i verd ampolla amb la sanefa cosida a mà.",
+    "in_stock": true
+  },
+  {
+    "id": 2,
+    "name": "Dessuadora Vintage Scouting",
+    "price": 32.0,
+    "category": "Roba",
+    "tag": "BESTSELLER",
+    "image": "/static/images/backgroundmountains.png",
+    "description": "Dessuadora de cotó d'alta gramatge amb caputxa i logotip de l'agrupament.",
+    "in_stock": true
+  }
+]

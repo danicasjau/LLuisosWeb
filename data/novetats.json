@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "title": "CIM AL K2: L'EXPEDICIÓ D'HIVERN DELS TRUCS",
+    "date": "15 AGOST 2026",
+    "tag": "EXPEDICIÓ",
+    "author": "Equip de Caps",
+    "excerpt": "28,000 PEUS. PENJATS DELS DITS. L'adrenalina pura dels nostres equips conquerint els pics més alts del Pirineu en la nova ruta d'hivern.",
+    "content": "Els nois i noies de la unitat de Trucs han completat amb èxit la travessa d'alta muntanya. Inspirats en l'esperit d'assalt als grans cims, l'activitat ha demostrat el valor del treball en equip, la superació personal i el respecte per la natura.",
+    "image": "/static/images/backgroundmountains.png",
+    "read_time": "4 min de lectura"
+  },
+  {
+    "id": 2,
+    "title": "INICI DEL CURS ESCOLTA 2026-2027 A GRÀCIA",
+    "date": "10 AGOST 2026",
+    "tag": "ANUNCI",
+    "author": "Cap de Agrupament",
+    "excerpt": "Obrim inscripcions per a totes les unitats! Des dels més petits Esquirols fins als Pioners i Trucs. Fem barri, fem escoltisme.",
+    "content": "Aquest setembre tornem a omplir la Plaça del Nord i el local dels Lluïsos de Gràcia. Prepareu els foulards i les motxilles per a un any ple d'excursions, cau i projectes comunitaris.",
+    "image": "/static/images/scout_foulard.jpg",
+    "read_time": "3 min de lectura"
+  },
+  {
+    "id": 3,
+    "title": "GRANDIOSA FIRA DEL MERCAU DE TARDOR",
+    "date": "02 AGOST 2026",
+    "tag": "MERCAU",
+    "author": "Comissió de Festes",
+    "excerpt": "Roba retro, material d'acampada vintage, samarretes de l'agrupament i parada de menjar casolà per finançar el projecte d'estiu.",
+    "content": "Us esperem a tots dissabte vinent. Tindrem música en directe, tallers d'amarratges i nusos escoltes, i paradetes amb productes exclusius del nostre Mercau.",
+    "image": "/static/images/scout_foulard.jpg",
+    "read_time": "5 min de lectura"
+  },
+  {
+    "id": 4,
+    "title": "TALLER D'ORIENTACIÓ I CARTOGRAFIA A COLLSEROLA",
+    "date": "25 JULIOL 2026",
+    "tag": "FORMACIÓ",
+    "author": "Muntanya & Natura",
+    "excerpt": "Com orientar-se amb mapa topogràfic i brúixola sense GPS. Una jornada pràctica per a Ràngers i Noies Guies.",
+    "content": "Saber llegir les corbes de nivell i interpretar el relleu és fonamental per a qualsevol escolta. La sortida pràctica de dissabte va ser un èxit total.",
+    "image": "/static/images/backgroundmountains.png",
+    "read_time": "2 min de lectura"
+  }
+]
