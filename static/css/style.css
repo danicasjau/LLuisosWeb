@@ -167,7 +167,7 @@ body {
 .topbar-inner-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   max-width: 1600px;
   min-height: 58px;
@@ -408,8 +408,8 @@ body {
 /* Layered 3D Hero Poster Section */
 .hero-poster-container {
   position: relative;
-  height: 180vh;
-  min-height: 180vh;
+  height: 100vh;
+  min-height: 100vh;
   display: flex;
   margin: 0;
   margin-top: -85px;
@@ -428,7 +428,8 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  min-height: 180vh;
+  min-height: 100vh;
+  max-height: 100vh;
   background: url('/static/images/backgroundmountains.png') center top/cover no-repeat;
   z-index: 1;
 }
@@ -682,6 +683,36 @@ body {
   box-shadow: var(--shadow-hover);
 }
 
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 2.3fr;
+  gap: 58px;
+  align-items: start;
+}
+
+.about-left.camera-roll {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.camera-photo {
+  width: 100%;
+  height: auto;
+  border-radius: var(--nor-br);
+  box-shadow: var(--shadow-soft);
+  margin: 6px 0;
+  transform-origin: center center;
+  outline: 6px solid rgba(170, 171, 167, 0.85);
+}
+
+.camera-photo:nth-child(1) { transform: rotate(-6deg); }
+.camera-photo:nth-child(2) { transform: rotate(4deg); }
+.camera-photo:nth-child(3) { transform: rotate(-3deg); }
+.camera-photo:nth-child(4) { transform: rotate(8deg); }
+
+.about-right { width: 100%; }
+
 .about-lead {
   font-family: var(--font-title);
   font-size: 1.35rem;
@@ -695,6 +726,19 @@ body {
   font-size: 1.05rem;
   color: var(--ink-muted);
   line-height: 1.8;
+}
+
+.person-profile-questions p {
+  margin: 8px 0;
+  font-size: 0.98rem;
+  color: var(--ink-black);
+}
+
+.person-profile-questions p strong {
+  display: inline-block;
+  width: 140px;
+  color: var(--retro-blue);
+  font-weight: 800;
 }
 
 .units-heading-wrap {
@@ -3035,30 +3079,33 @@ body {
 .retro-modal-box {
   background: var(--bg-cream);
   border: 1px solid var(--border-dark);
+  border-left: none;
+  border-right: none;
   border-radius: var(--big-br);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   max-width: 900px;
   width: 100%;
-  padding: 30px;
+  padding: 18px 20px 28px 20px;
   position: relative;
 }
 
 .caps-person-modal .retro-modal-box {
   max-width: 980px;
-  padding: 42px;
+  padding: 18px 22px 26px 22px;
 }
 
 .caps-person-modal .modal-person-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
-  gap: 34px;
-  align-items: start;
-  margin-top: 20px;
+  display: block;
+  margin-top: 12px;
 }
 
 .caps-person-modal #modal-img {
+  width: 100%;
   max-height: 420px !important;
-  margin-bottom: 0 !important;
+  object-fit: cover;
+  display: block;
+  margin: 0 0 12px 0 !important;
+  border: none !important;
 }
 
 .caps-person-modal #modal-title {
@@ -3447,4 +3494,5 @@ body {
   .section-block {
     padding: 50px 20px;
   }
+  .about-layout { grid-template-columns: 1fr; }
 }
