@@ -51,8 +51,9 @@ def equips():
 
 @app.route('/foulard')
 def foulard():
-    pins = db.get_foulard_pins()
-    return render_template('foulard.html', active_page='foulard', pins=pins)
+    expeditions = db.get_foulard_expeditions()
+    pins = expeditions
+    return render_template('foulard.html', active_page='foulard', pins=pins, expeditions=expeditions)
 
 @app.route('/shop')
 @app.route('/botiga')
