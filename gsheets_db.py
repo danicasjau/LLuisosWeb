@@ -1120,7 +1120,7 @@ class GSheetsDB:
 
     def get_foulard_expeditions(self):
         """Return example expeditions displayed below the Foulard map."""
-        return [
+        expeditions = [
             {
                 "id": 1,
                 "title": "Travessa dels Pirineus",
@@ -1426,7 +1426,7 @@ class GSheetsDB:
                 "title": "Camins del Pedraforca",
                 "author": "Judit Camps",
                 "image": "/static/images/scout_foulard.jpg",
-                "location": "Saldes, Catalunya",
+                "location": "Catalunya",
                 "lat": 42.2272,
                 "lng": 1.7358,
                 "year": "2026",
@@ -1482,6 +1482,21 @@ class GSheetsDB:
                 "description": "Raquetes, neu i una sortida per tancar l'any compartint reptes i paisatges."
             }
         ]
+
+        photo_pool = [
+            "/static/images/backgroundmountains.png",
+            "/static/images/mountains_cutout.png",
+            "/static/images/skyline.jpg",
+            "/static/images/scout_foulard.jpg"
+        ]
+        for index, expedition in enumerate(expeditions):
+            expedition["images"] = [
+                expedition["image"],
+                photo_pool[(index + 1) % len(photo_pool)],
+                photo_pool[(index + 2) % len(photo_pool)]
+            ]
+
+        return expeditions
 
     def get_shop_products(self):
         """Fetch e-commerce shop products from JSON store."""

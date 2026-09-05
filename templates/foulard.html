@@ -43,7 +43,6 @@
           <span class="expedition-card-date">{{ expedition.date }}</span>
           <strong>{{ expedition.title }}</strong>
           <span>{{ expedition.author }}</span>
-          <small>{{ expedition.location }}</small>
         </span>
       </button>
       {% endfor %}
@@ -54,14 +53,15 @@
   <div class="expedition-detail-backdrop" id="expedition-detail" aria-hidden="true">
     <article class="expedition-detail-modal" role="dialog" aria-modal="true" aria-labelledby="expedition-detail-title">
       <button class="expedition-detail-close" id="expedition-detail-close" type="button" aria-label="Tanca">&times;</button>
-      <div class="expedition-detail-image-wrap">
+      <div class="expedition-detail-image-wrap" id="expedition-detail-image-wrap">
         <img id="expedition-detail-image" src="" alt="" class="expedition-detail-image">
+        <button class="expedition-previous-image" id="expedition-previous-image" type="button" aria-label="Veure la imatge anterior">&#8592;</button>
+        <button class="expedition-next-image" id="expedition-next-image" type="button" aria-label="Veure la imatge següent">&#8594;</button>
       </div>
       <div class="expedition-detail-copy">
         <p class="expedition-detail-kicker" id="expedition-detail-year"></p>
         <h3 id="expedition-detail-title"></h3>
         <p class="expedition-detail-author" id="expedition-detail-author"></p>
-        <p class="expedition-detail-location" id="expedition-detail-location"></p>
         <p class="expedition-detail-description" id="expedition-detail-description"></p>
         <div class="expedition-mini-map" id="expedition-mini-map" aria-label="Mapa de localització de l'expedició"></div>
       </div>
@@ -77,6 +77,8 @@
   let markers = [];
   let expeditionDetailMap;
   let expeditionDetailMarker;
+  let activeExpeditionImages = [];
+  let activeExpeditionImageIndex = 0;
 
   document.addEventListener('DOMContentLoaded', () => {
     map = L.map('leaflet-map').setView([41.75, 1.75], 7);
@@ -193,12 +195,12 @@
 
   function openExpeditionDetail(expedition) {
     focusPin(expedition.lat, expedition.lng, expedition.title);
-    document.getElementById('expedition-detail-image').src = expedition.image;
-    document.getElementById('expedition-detail-image').alt = expedition.title;
+    activeExpeditionImages = expedition.images || [expedition.image];
+    activeExpeditionImageIndex = 0;
+    updateExpeditionImage();
     document.getElementById('expedition-detail-year').textContent = expedition.date;
     document.getElementById('expedition-detail-title').textContent = expedition.title;
-    document.getElementById('expedition-detail-author').textContent = `Expedició feta per ${expedition.author}`;
-    document.getElementById('expedition-detail-location').textContent = expedition.location;
+    document.getElementById('expedition-detail-author').textContent = expedition.author;
     document.getElementById('expedition-detail-description').textContent = expedition.description;
 
     expeditionDetail.classList.add('is-open');
@@ -219,6 +221,28 @@
     setTimeout(() => expeditionDetailMap.invalidateSize(), 80);
   }
 
+  function updateExpeditionImage() {
+    const image = document.getElementById('expedition-detail-image');
+    const previousButton = document.getElementById('expedition-previous-image');
+    const nextButton = document.getElementById('expedition-next-image');
+    image.src = activeExpeditionImages[activeExpeditionImageIndex];
+    image.alt = `Imatge ${activeExpeditionImageIndex + 1} de l'expedició`;
+    previousButton.disabled = activeExpeditionImageIndex === 0;
+    nextButton.disabled = activeExpeditionImageIndex === activeExpeditionImages.length - 1;
+  }
+
+  function showNextExpeditionImage() {
+    if (activeExpeditionImageIndex >= activeExpeditionImages.length - 1) return;
+    activeExpeditionImageIndex += 1;
+    updateExpeditionImage();
+  }
+
+  function showPreviousExpeditionImage() {
+    if (activeExpeditionImageIndex <= 0) return;
+    activeExpeditionImageIndex -= 1;
+    updateExpeditionImage();
+  }
+
   function closeExpeditionDetail() {
     expeditionDetail.classList.remove('is-open');
     expeditionDetail.setAttribute('aria-hidden', 'true');
@@ -232,6 +256,8 @@
   });
 
   expeditionDetailClose.addEventListener('click', closeExpeditionDetail);
+  document.getElementById('expedition-previous-image').addEventListener('click', showPreviousExpeditionImage);
+  document.getElementById('expedition-next-image').addEventListener('click', showNextExpeditionImage);
   expeditionDetail.addEventListener('click', event => {
     if (event.target === expeditionDetail) closeExpeditionDetail();
   });
