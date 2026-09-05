@@ -799,6 +799,7 @@ body {
 
 .units-card {
   padding: 30px 30px 18px;
+      min-height: 1000px;
 }
 
 .units-intro {
@@ -814,54 +815,109 @@ body {
 
 .units-list {
   display: grid;
-  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  height: 400px;
 }
 
 .unit-item {
-  padding: 20px 18px;
-  border: 1px solid rgba(15, 23, 42, 0.12);
+  --unit-accent: var(--unit-general);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 400px;
+  padding: 14px 14px 18px;
+  border: 0;
   border-radius: var(--big-br);
-  background: rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, var(--unit-accent) 12%, white);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.unit-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.14);
+}
+
+.unit-item-orange { --unit-accent: var(--unit-castors); }
+.unit-item-yellow { --unit-accent: var(--unit-llops); }
+.unit-item-blue { --unit-accent: var(--unit-ranguis); }
+.unit-item-red { --unit-accent: var(--unit-pioners); }
+.unit-item-green { --unit-accent: var(--unit-truk); }
+
+.unit-item-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--unit-accent);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+}
+
+.unit-image-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 132px;
+  margin: 12px auto 14px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.unit-image {
+  display: block;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  filter: saturate(0.9) contrast(1.05);
 }
 
 .unit-item h4 {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   font-family: var(--font-title);
-  font-size: 1.15rem;
-  line-height: 1.5;
+  font-size: 1.02rem;
+  line-height: 1.2;
   color: var(--ink-black);
 }
 
 .unit-color {
-  font-weight: 800;
-  letter-spacing: 0.04em;
-}
-
-.unit-orange {
-  color: #ff7a1a;
-}
-
-.unit-yellow {
-  color: #d9a300;
-}
-
-.unit-blue {
-  color: #1d4ed8;
-}
-
-.unit-red {
-  color: #d62828;
-}
-
-.unit-green {
-  color: #1f9d55;
+  color: var(--unit-accent);
 }
 
 .unit-item p {
   margin: 0;
-  font-size: 0.98rem;
-  line-height: 1.7;
+  font-size: 0.86rem;
+  line-height: 1.5;
   color: var(--ink-muted);
+}
+
+.unit-motto {
+  margin-top: auto !important;
+  padding-top: 14px;
+  color: var(--unit-accent) !important;
+  font-family: var(--font-title);
+  font-size: 0.92rem !important;
+  font-weight: 800;
+}
+
+@media (max-width: 1100px) {
+  .units-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .units-list {
+    grid-template-columns: 1fr;
+  }
+
+  .unit-item {
+    min-height: 0;
+  }
 }
 
 /* Values Grid - Ultra Modern Floating Cards */
