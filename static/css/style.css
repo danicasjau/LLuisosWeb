@@ -3093,11 +3093,7 @@ body {
   max-width: 980px;
   max-height: calc(100vh - 32px);
   overflow-y: auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
-  grid-template-rows: auto 1fr;
-  column-gap: 40px;
-  padding: 18px 22px 26px 22px;
+  padding: 18px 400px 26px 22px;
 }
 
 .caps-person-modal .modal-person-layout {
@@ -3108,16 +3104,18 @@ body {
 }
 
 .caps-person-modal #modal-img {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  width: 100%;
-  max-height: min(420px, 36vh) !important;
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  height: calc(100% - 28px);
+  width: 370px;
+  max-height: none !important;
   object-fit: cover;
+  object-position: center;
   display: block;
-  align-self: center;
-  justify-self: center;
-  margin: 12px 0 0 auto !important;
+  margin: 0 !important;
   border: none !important;
+  transform: translateY(-50%);
 }
 
 .caps-person-modal .retro-modal-box > div[style*="text-align:center"] {
@@ -3161,8 +3159,12 @@ body {
   }
 
   .caps-person-modal #modal-img {
+    position: static;
+    width: 100%;
+    height: auto;
     max-height: 25vh !important;
     margin-bottom: 8px !important;
+    transform: none;
   }
 
   .caps-person-modal #modal-title {
