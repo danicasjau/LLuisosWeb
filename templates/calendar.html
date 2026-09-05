@@ -12,79 +12,8 @@
     </div>
   </div>
 
-  <!-- Calendar Page Layout: Lateral Sidebar + Main Calendar Area -->
-  <div class="calendar-two-col-layout animate-on-scroll scale-up">
-
-    <!-- Lateral Sidebar: Totes les Unitats & MEG Panels -->
-    <aside class="calendar-lateral-sidebar">
-      <div class="lateral-units-list" id="lateral-units-filter">
-        <button class="lateral-unit-btn active" data-unit="all" onclick="setCalendarUnitFilter('all', this)">
-          <div class="unit-btn-indicator" style="background: linear-gradient(135deg, var(--retro-orange), var(--retro-blue));"></div>
-          <div class="unit-btn-content">
-            <span class="unit-btn-title">TOTES LES UNITATS</span>
-          </div>
-          <span class="unit-count-badge" id="count-all">0</span>
-        </button>
-
-        <button class="lateral-unit-btn" data-unit="Castúdrigues" onclick="setCalendarUnitFilter('Castúdrigues', this)">
-          <div class="unit-btn-indicator" style="background: #F97316;"></div>
-          <div class="unit-btn-content">
-            <span class="unit-btn-title">CASTÚDRIGUES</span>
-          </div>
-          <span class="unit-count-badge" id="count-castors">0</span>
-        </button>
-
-        <button class="lateral-unit-btn" data-unit="Dainops" onclick="setCalendarUnitFilter('Dainops', this)">
-          <div class="unit-btn-indicator" style="background: #F59E0B;"></div>
-          <div class="unit-btn-content">
-            <span class="unit-btn-title">DAINOPS</span>
-          </div>
-          <span class="unit-count-badge" id="count-llops">0</span>
-        </button>
-
-        <button class="lateral-unit-btn" data-unit="Ranguis" onclick="setCalendarUnitFilter('Ranguis', this)">
-          <div class="unit-btn-indicator" style="background: #0284C7;"></div>
-          <div class="unit-btn-content">
-            <span class="unit-btn-title">RANGUIS</span>
-          </div>
-          <span class="unit-count-badge" id="count-ranguis">0</span>
-        </button>
-
-        <button class="lateral-unit-btn" data-unit="Pionel·les" onclick="setCalendarUnitFilter('Pionel·les', this)">
-          <div class="unit-btn-indicator" style="background: #E11D48;"></div>
-          <div class="unit-btn-content">
-            <span class="unit-btn-title">PIONEL·LES</span>
-          </div>
-          <span class="unit-count-badge" id="count-pios">0</span>
-        </button>
-
-        <button class="lateral-unit-btn" data-unit="Truk" onclick="setCalendarUnitFilter('Truk', this)">
-          <div class="unit-btn-indicator" style="background: #059669;"></div>
-          <div class="unit-btn-content">
-            <span class="unit-btn-title">TRUK</span>
-          </div>
-          <span class="unit-count-badge" id="count-truk">0</span>
-        </button>
-
-        <button class="lateral-unit-btn" data-unit="Assemblea & General" onclick="setCalendarUnitFilter('Assemblea & General', this)">
-          <div class="unit-btn-indicator" style="background: #0B2545;"></div>
-          <div class="unit-btn-content">
-            <span class="unit-btn-title">ASSEMBLEA & GENERAL</span>
-          </div>
-          <span class="unit-count-badge" id="count-general">0</span>
-        </button>
-
-        <button class="lateral-unit-btn" data-unit="MEG" onclick="setCalendarUnitFilter('MEG', this)">
-          <div class="unit-btn-indicator" style="background: #7C3AED;"></div>
-          <div class="unit-btn-content">
-            <span class="unit-btn-title">MEG (FEDERACIÓ)</span>
-          </div>
-          <span class="unit-count-badge" id="count-meg">0</span>
-        </button>
-      </div>
-
-    </aside>
-
+  <!-- Calendar Page Layout: Full-Width Main Calendar Area (Totes les Unitats) -->
+  <div class="calendar-two-col-layout calendar-full-layout animate-on-scroll scale-up">
     <!-- Main Calendar Area -->
     <main class="calendar-main-stage">
 
@@ -166,23 +95,6 @@
 
     </main>
   </div>
-
-  <!-- Upcoming Events Detailed List: Next 6 Events -->
-  <section class="upcoming-events-section animate-on-scroll fade-right" id="upcoming-events-section" style="margin-top: 60px;">
-    <div class="section-header">
-      <div>
-        <div class="header-pretitle" style="font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; color: var(--retro-orange); letter-spacing: 2px;">
-          AGENDA I SORTIDES
-        </div>
-        <h3 class="section-title" style="font-size: clamp(1.8rem, 2.8vw, 2.5rem);">DETALL DELS PRÒXIMS ESDEVENIMENTS</h3>
-        <div class="section-subtitle">ELS PROPERS 6 ESDEVENIMENTS DESTACATS • CLICA PER VEURE LA FITXA COMPLETA AMB HORARIS</div>
-      </div>
-    </div>
-
-    <div class="next-6-events-grid" id="next-6-events-container">
-      <!-- 6 cards dynamically populated by JavaScript -->
-    </div>
-  </section>
 
 </div>
 {% endblock %}

@@ -71,6 +71,11 @@ def foulard():
 def cims():
     return render_template('cims.html', active_page='cims')
 
+@app.route('/api/cims')
+def api_cims():
+    """API endpoint to get the list of peaks as JSON."""
+    return jsonify(db.get_cims())
+
 @app.route('/shop')
 @app.route('/botiga')
 def shop():

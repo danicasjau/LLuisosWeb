@@ -11,132 +11,30 @@
   </div>
 
   <section class="peaks-intro">
-    <p>Els cims estan classificats en cinc categories depenent de la dificultat tècnica, el desnivell i els quilòmetres. Alguns cims tenen més d'una ruta per arribar-hi; en aquest llistat apareixen segons la ruta de nivell més baix.</p>
+    <p>Els cims estan classificats en cinc categories depenent de la dificultat tècnica, el desnivell i els quilòmetres.
+      Alguns cims tenen més d'una ruta per arribar-hi; en aquest llistat apareixen segons la ruta de nivell més baix.
+    </p>
   </section>
 
-  <div class="peaks-toolbar">
-    <h3>TOTS ELS CIMS</h3>
-    <div class="peaks-filters" role="group" aria-label="Filtrar per categoria">
-      <button class="peak-filter is-active" type="button" data-level="all">Tots</button>
-      <button class="peak-filter" type="button" data-level="CiLL">Castúdrigues</button>
-      <button class="peak-filter" type="button" data-level="LLiD">Dainops</button>
-      <button class="peak-filter" type="button" data-level="RNG">Ranguis</button>
-      <button class="peak-filter" type="button" data-level="PiC">Pionel·les</button>
-      <button class="peak-filter" type="button" data-level="Truk">Truk</button>
-    </div>
+  <div class="equips-filters-strip animate-on-scroll scale-up is-visible" style="margin-top: 25px; margin-bottom: 25px;"
+    role="group" aria-label="Filtrar per unitat">
+    <button class="btn-filter active" type="button" data-unit-filter="all" data-level="all">TOTS ELS CIMS</button>
+    <button class="btn-filter" type="button" data-unit-filter="castors" data-level="CiLL">CASTÚDRIGUES</button>
+    <button class="btn-filter" type="button" data-unit-filter="llops" data-level="LLiD">DAINOPS</button>
+    <button class="btn-filter" type="button" data-unit-filter="ranguis" data-level="RNG">RANGUIS</button>
+    <button class="btn-filter" type="button" data-unit-filter="pios" data-level="PiC">PIONEL·LES</button>
+    <button class="btn-filter" type="button" data-unit-filter="truk" data-level="Truk">TRUK</button>
   </div>
 
-  <ol class="peaks-grid">
-    <li class="peak-item" data-levels="RNG PiC"><span class="peak-number">01</span><strong>Bastiments</strong><span class="peak-levels-label">RNG / PiC</span></li>
-    <li class="peak-item" data-levels="PiC Truk"><span class="peak-number">02</span><strong>Besiberri Sud</strong><span class="peak-levels-label">PiC / Truk</span></li>
-    <li class="peak-item" data-levels="LLiD Truk"><span class="peak-number">03</span><strong>Canigó</strong><span class="peak-levels-label">LLiD / Truk</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">04</span><strong>Cap de la Gallina Pelada</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="PiC"><span class="peak-number">05</span><strong>Carlit</strong><span class="peak-levels-label">PiC</span></li>
-    <li class="peak-item" data-levels="CiLL LLiD"><span class="peak-number">06</span><strong>Castell de Burriac</strong><span class="peak-levels-label">CiLL / LLiD</span></li>
-    <li class="peak-item" data-levels="LLiD RNG"><span class="peak-number">07</span><strong>Cogulló d'Estela</strong><span class="peak-levels-label">LLiD / RNG</span></li>
-    <li class="peak-item" data-levels="LLiD"><span class="peak-number">08</span><strong>Comabona</strong><span class="peak-levels-label">LLiD</span></li>
-    <li class="peak-item" data-levels="LLiD"><span class="peak-number">09</span><strong>Comanegra</strong><span class="peak-levels-label">LLiD</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">10</span><strong>Comapedrosa</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="CiLL"><span class="peak-number">11</span><strong>El Negrell</strong><span class="peak-levels-label">CiLL</span></li>
-    <li class="peak-item" data-levels="LLiD"><span class="peak-number">12</span><strong>El Salabardar</strong><span class="peak-levels-label">LLiD</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">13</span><strong>L'Espina</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="LLiD"><span class="peak-number">14</span><strong>La Mola de Sant Llorenç del Munt</strong><span class="peak-levels-label">LLiD</span></li>
-    <li class="peak-item" data-levels="LLiD"><span class="peak-number">15</span><strong>La Talaia de Montmell</strong><span class="peak-levels-label">LLiD</span></li>
-    <li class="peak-item" data-levels="LLiD PiC"><span class="peak-number">16</span><strong>Matagalls</strong><span class="peak-levels-label">LLiD / PiC</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">17</span><strong>Mont-Roig</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">18</span><strong>Montardo</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="CiLL"><span class="peak-number">19</span><strong>Montcau</strong><span class="peak-levels-label">CiLL</span></li>
-    <li class="peak-item" data-levels="LLiD RNG PiC"><span class="peak-number">20</span><strong>Monteixo</strong><span class="peak-levels-label">LLiD / RNG / PiC</span></li>
-    <li class="peak-item" data-levels="CiLL LLiD"><span class="peak-number">21</span><strong>Muntanya del Montgrí</strong><span class="peak-levels-label">CiLL / LLiD</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">22</span><strong>Noufonts</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">23</span><strong>Pedraforca</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="CiLL LLiD"><span class="peak-number">24</span><strong>Penya Sant Alís</strong><span class="peak-levels-label">CiLL / LLiD</span></li>
-    <li class="peak-item" data-levels="LLiD"><span class="peak-number">25</span><strong>Penyagolosa</strong><span class="peak-levels-label">LLiD</span></li>
-    <li class="peak-item" data-levels="RNG PiC"><span class="peak-number">26</span><strong>Penyes Altes de Moixeró</strong><span class="peak-levels-label">RNG / PiC</span></li>
-    <li class="peak-item" data-levels="Truk"><span class="peak-number">27</span><strong>Perdiguero</strong><span class="peak-levels-label">Truk</span></li>
-    <li class="peak-item" data-levels="PiC"><span class="peak-number">28</span><strong>Pic d'Amitges</strong><span class="peak-levels-label">PiC</span></li>
-    <li class="peak-item" data-levels="Truk"><span class="peak-number">29</span><strong>Pic d'Aneto</strong><span class="peak-levels-label">Truk</span></li>
-    <li class="peak-item" data-levels="RNG PiC"><span class="peak-number">30</span><strong>Pic d'Eina</strong><span class="peak-levels-label">RNG / PiC</span></li>
-    <li class="peak-item" data-levels="PiC Truk"><span class="peak-number">31</span><strong>Pic de l'Infern</strong><span class="peak-levels-label">PiC / Truk</span></li>
-    <li class="peak-item" data-levels="PiC"><span class="peak-number">32</span><strong>Pic de Subenuix</strong><span class="peak-levels-label">PiC</span></li>
-    <li class="peak-item" data-levels="PiC Truk"><span class="peak-number">33</span><strong>Pica d'Estats</strong><span class="peak-levels-label">PiC / Truk</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">34</span><strong>Pica Roja</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="Truk"><span class="peak-number">35</span><strong>Posets</strong><span class="peak-levels-label">Truk</span></li>
-    <li class="peak-item" data-levels="LLiD RNG PiC"><span class="peak-number">36</span><strong>Puig de Bassegoda</strong><span class="peak-levels-label">LLiD / RNG / PiC</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">37</span><strong>Puig de Massanella</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="LLiD"><span class="peak-number">38</span><strong>Puig dels Bufadors</strong><span class="peak-levels-label">LLiD</span></li>
-    <li class="peak-item" data-levels="PiC"><span class="peak-number">39</span><strong>Puig Pedrós</strong><span class="peak-levels-label">PiC</span></li>
-    <li class="peak-item" data-levels="PiC"><span class="peak-number">40</span><strong>Puig Peric</strong><span class="peak-levels-label">PiC</span></li>
-    <li class="peak-item" data-levels="CiLL LLiD PiC"><span class="peak-number">41</span><strong>Puigllançada</strong><span class="peak-levels-label">CiLL / LLiD / PiC</span></li>
-    <li class="peak-item" data-levels="RNG PiC"><span class="peak-number">42</span><strong>Puigmal</strong><span class="peak-levels-label">RNG / PiC</span></li>
-    <li class="peak-item" data-levels="LLiD RNG PiC"><span class="peak-number">43</span><strong>Puigsacalm</strong><span class="peak-levels-label">LLiD / RNG / PiC</span></li>
-    <li class="peak-item" data-levels="PiC"><span class="peak-number">44</span><strong>Puigsagordi</strong><span class="peak-levels-label">PiC</span></li>
-    <li class="peak-item" data-levels="PiC"><span class="peak-number">45</span><strong>Punta Alta</strong><span class="peak-levels-label">PiC</span></li>
-    <li class="peak-item" data-levels="CiLL"><span class="peak-number">46</span><strong>Roques de Sant Benet</strong><span class="peak-levels-label">CiLL</span></li>
-    <li class="peak-item" data-levels="LLiD"><span class="peak-number">47</span><strong>Sant Jeroni</strong><span class="peak-levels-label">LLiD</span></li>
-    <li class="peak-item" data-levels="LLiD RNG"><span class="peak-number">48</span><strong>Sant Mamet</strong><span class="peak-levels-label">LLiD / RNG</span></li>
-    <li class="peak-item" data-levels="CiLL LLiD"><span class="peak-number">49</span><strong>Sant Salvador de les Espases</strong><span class="peak-levels-label">CiLL / LLiD</span></li>
-    <li class="peak-item" data-levels="CiLL LLiD"><span class="peak-number">50</span><strong>Sant Salvador de Saverdera</strong><span class="peak-levels-label">CiLL / LLiD</span></li>
-    <li class="peak-item" data-levels="CiLL RNG PiC"><span class="peak-number">51</span><strong>Taga</strong><span class="peak-levels-label">CiLL / RNG / PiC</span></li>
-    <li class="peak-item" data-levels="LLiD"><span class="peak-number">52</span><strong>Tagamanent</strong><span class="peak-levels-label">LLiD</span></li>
-    <li class="peak-item" data-levels="LLiD Truk"><span class="peak-number">53</span><strong>Tibidabo</strong><span class="peak-levels-label">LLiD / Truk</span></li>
-    <li class="peak-item" data-levels="LLiD RNG"><span class="peak-number">54</span><strong>Tossa d'Alp</strong><span class="peak-levels-label">LLiD / RNG</span></li>
-    <li class="peak-item" data-levels="PiC"><span class="peak-number">55</span><strong>Tossa Plana de Lles</strong><span class="peak-levels-label">PiC</span></li>
-    <li class="peak-item" data-levels="CiLL LLiD"><span class="peak-number">56</span><strong>Tossal de la Baltasana</strong><span class="peak-levels-label">CiLL / LLiD</span></li>
-    <li class="peak-item" data-levels="LLiD PiC"><span class="peak-number">57</span><strong>Tossal dels Tres Reis</strong><span class="peak-levels-label">LLiD / PiC</span></li>
-    <li class="peak-item" data-levels="PiC"><span class="peak-number">58</span><strong>Tuc de Ratera</strong><span class="peak-levels-label">PiC</span></li>
-    <li class="peak-item" data-levels="RNG"><span class="peak-number">59</span><strong>Turó de l'Home</strong><span class="peak-levels-label">RNG</span></li>
-    <li class="peak-item" data-levels="CiLL"><span class="peak-number">60</span><strong>Volcà de Santa Margarida</strong><span class="peak-levels-label">CiLL</span></li>
+  <ol class="peaks-grid" id="peaks-container">
+    <!-- Generat dinàmicament per cims.js a partir de cims.json -->
+    <li class="peaks-loading-hint" style="grid-column: 1 / -1; padding: 24px; text-align: center; color: #64748B; font-weight: 600;">
+      Carregant el llistat de cims...
+    </li>
   </ol>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-<script>
-  const peakLevelColors = {
-    CiLL: '#F97316',
-    LLiD: '#FACC15',
-    RNG: '#2563EB',
-    PiC: '#DC2626',
-    Truk: '#16A34A'
-  };
-
-  const peakLevelNames = {
-    CiLL: 'Castúdrigues',
-    LLiD: 'Dainops',
-    RNG: 'Ranguis',
-    PiC: 'Pionel·les',
-    Truk: 'Truk'
-  };
-
-  document.querySelectorAll('.peak-item').forEach(item => {
-    const levelLabel = item.querySelector('.peak-levels-label');
-    const levels = item.dataset.levels.split(' ');
-    const dots = document.createElement('span');
-    dots.className = 'peak-level-dots';
-    dots.setAttribute('aria-label', `Unitats: ${levels.map(level => peakLevelNames[level]).join(', ')}`);
-
-    levels.forEach(level => {
-      const dot = document.createElement('span');
-      dot.className = 'peak-level-dot';
-      dot.title = peakLevelNames[level];
-      dot.style.backgroundColor = peakLevelColors[level];
-      dots.appendChild(dot);
-    });
-
-    levelLabel.replaceChildren(dots);
-  });
-
-  document.querySelectorAll('.peak-filter').forEach(filter => {
-    filter.addEventListener('click', () => {
-      const selectedLevel = filter.dataset.level;
-      document.querySelectorAll('.peak-filter').forEach(button => {
-        button.classList.toggle('is-active', button === filter);
-      });
-      document.querySelectorAll('.peak-item').forEach(item => {
-        item.hidden = selectedLevel !== 'all' && !item.dataset.levels.split(' ').includes(selectedLevel);
-      });
-    });
-  });
-</script>
+<script src="{{ url_for('static', filename='js/cims.js') }}"></script>
 {% endblock %}

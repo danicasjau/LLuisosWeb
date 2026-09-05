@@ -6,16 +6,15 @@
 <script>
   window.CAPS_POOL = {{ team|tojson }};
 </script>
-<div class="page-container" style="padding: 40px 30px;">
+<div class="page-container kiniela-page-layout">
   
-  <!-- Header Banner (No icons) -->
-  <div class="section-header">
+  <!-- Header Banner (Same class as caps & calendari, without subtitle) -->
+  <div class="section-header animate-on-scroll fade-left" style="margin-top: 10px;">
     <div>
-      <h2 class="section-title">QUINIELA DE CAPS</h2>
-      <div class="section-subtitle">Reparteix els caps entre les 5 unitats del cau. No t'oblidis de triar qui marxa!</div>
+      <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">QUINIELA DE CAPS</h2>
     </div>
     
-    <!-- Action Controls (PUBLICAR & REINICIAR) -->
+    <!-- Action Controls (ALEATORI & REINICIAR) -->
     <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
       <button id="btn-publish-kiniela" class="btn-retro btn-retro-orange">
         ALEATORI

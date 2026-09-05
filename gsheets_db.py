@@ -82,6 +82,17 @@ class GSheetsDB:
         if not os.path.exists(caps_file):
             self._write_data("caps.json", self._default_caps())
 
+        # 7. Cims store
+        cims_file = self._data_file("cims.json")
+        if not os.path.exists(cims_file) or os.path.getsize(cims_file) == 0:
+            static_cims = os.path.join(self.base_dir, 'static', 'data', 'cims.json')
+            if os.path.exists(static_cims):
+                try:
+                    with open(static_cims, 'r', encoding='utf-8') as f:
+                        self._write_data("cims.json", json.load(f))
+                except Exception:
+                    pass
+
     def verify_contra(self, password):
         """Verify password against data/contra.json with basic salt+sha256 encryption."""
         data = self._read_data("contra.json", None)
@@ -1588,6 +1599,22 @@ class GSheetsDB:
                 "in_stock": True
             }
         ]
+
+    def get_cims(self):
+        """Retrieve peaks list from cims.json."""
+        records = self._read_data("cims.json", None)
+        if records and isinstance(records, list) and len(records) > 0:
+            return records
+        static_cims = os.path.join(self.base_dir, 'static', 'data', 'cims.json')
+        if os.path.exists(static_cims):
+            try:
+                with open(static_cims, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    self._write_data("cims.json", data)
+                    return data
+            except Exception:
+                pass
+        return []
 
 # Global DB Instance
 db = GSheetsDB()

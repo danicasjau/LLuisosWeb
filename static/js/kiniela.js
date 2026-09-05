@@ -34,14 +34,22 @@ const MEMBERS_POOL = [
   { id: 22, name: "Gemma Fortuny", initials: "GF", photo: "/static/images/scout_team.jpg" }
 ];
 
-// Five units plus Marxen for people who leave the active units.
+function getCssVariable(varName, fallback) {
+  if (typeof window !== 'undefined' && window.getComputedStyle) {
+    const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    if (val) return val;
+  }
+  return fallback;
+}
+
+// Five units plus Marxen reading internationalized top variables from CSS style
 const GROUPS = [
-  { code: "castors", name: "Castúdrigues", color: "#FF7A00" },
-  { code: "llops", name: "Dainops", color: "#FFD21F" },
-  { code: "ranguis", name: "Ranguis", color: "#2563EB" },
-  { code: "pios", name: "Pionel·les", color: "#DC2626" },
-  { code: "truk", name: "Truk", color: "#16A34A" },
-  { code: "marxen", name: "Marxen", color: "#7C3AED" }
+  { code: "castors", name: "Castúdrigues", cssVar: "--unit-castors", fallback: "#F97316", get color() { return getCssVariable('--unit-castors', this.fallback); } },
+  { code: "llops", name: "Dainops", cssVar: "--unit-llops", fallback: "#F59E0B", get color() { return getCssVariable('--unit-llops', this.fallback); } },
+  { code: "ranguis", name: "Ranguis", cssVar: "--unit-ranguis", fallback: "#0284C7", get color() { return getCssVariable('--unit-ranguis', this.fallback); } },
+  { code: "pios", name: "Pionel·les", cssVar: "--unit-pioners", fallback: "#E11D48", get color() { return getCssVariable('--unit-pioners', this.fallback); } },
+  { code: "truk", name: "Truk", cssVar: "--unit-truk", fallback: "#059669", get color() { return getCssVariable('--unit-truk', this.fallback); } },
+  { code: "marxen", name: "Marxen", cssVar: "--unit-marxen", fallback: "#7C3AED", get color() { return getCssVariable('--unit-marxen', this.fallback); } }
 ];
 
 const NEW_CAPS = [
