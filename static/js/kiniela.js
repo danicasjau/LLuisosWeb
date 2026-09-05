@@ -50,7 +50,8 @@ const NEW_CAPS = [
   { id: 1003, name: "Jana Bosc", isNewCap: true },
   { id: 1004, name: "Iris de Cook", isNewCap: true },
   { id: 1005, name: "Aniol Rovira", isNewCap: true },
-  { id: 1006, name: "Júlia Muntada", isNewCap: true }
+  { id: 1006, name: "Júlia Muntada", isNewCap: true },
+  { id: 1007, name: "Aina Franquesa", isNewCap: true }
 ];
 
 // State Management: memberId -> groupCode (or 'pool')
@@ -122,7 +123,7 @@ function renderPoolUI() {
   if (newCaps.length > 0) {
     const title = document.createElement('div');
     title.className = 'kiniela-new-caps-title';
-    title.textContent = 'Nous Caps';
+    title.textContent = 'Truks';
     poolContainer.appendChild(title);
 
     newCaps.forEach(member => {
