@@ -148,7 +148,7 @@ body {
   left: 0 !important;
   right: 0 !important;
   width: 100% !important;
-  z-index: 9999 !important;
+  z-index: 40 !important;
   background: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -825,11 +825,10 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: 400px;
   padding: 14px 14px 18px;
   border: 0;
   border-radius: var(--big-br);
-  background: color-mix(in srgb, var(--unit-accent) 12%, white);
+  background: color-mix(in srgb, var(--unit-accent) 42%, white);
   box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -860,7 +859,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 132px;
+  height: 100%;
   margin: 12px auto 14px;
   overflow: hidden;
   background: transparent;
@@ -868,10 +867,10 @@ body {
 
 .unit-image {
   display: block;
-  width: 150px;
-  height: 150px;
+  width: 100%;
+  height: 200px;
+  min-height: 300px;
   object-fit: cover;
-  border-radius: 50%;
   mix-blend-mode: multiply;
   filter: saturate(0.9) contrast(1.05);
 }
@@ -879,8 +878,9 @@ body {
 .unit-item h4 {
   margin: 0 0 8px;
   font-family: var(--font-title);
-  font-size: 1.02rem;
+  font-size: 1.8rem;
   line-height: 1.2;
+  letter-spacing: 0.5px;
   color: var(--ink-black);
 }
 
@@ -892,6 +892,7 @@ body {
   margin: 0;
   font-size: 0.86rem;
   line-height: 1.5;
+    letter-spacing: 0.5px;
   color: var(--ink-muted);
 }
 
@@ -900,8 +901,9 @@ body {
   padding-top: 14px;
   color: var(--unit-accent) !important;
   font-family: var(--font-title);
-  font-size: 0.92rem !important;
-  font-weight: 800;
+  font-size: 1.2rem !important;
+    letter-spacing: 2px;
+  font-weight: 400;
 }
 
 @media (max-width: 1100px) {
@@ -3372,6 +3374,7 @@ body {
   border: 1px solid var(--border-dark);
   border-radius: var(--big-br);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  z-index: 1101;
 }
 
 .expedition-detail-close {
@@ -3728,7 +3731,7 @@ body {
   padding: 45px 35px 25px 35px;
   margin-top: 200px !important;
   position: relative;
-  z-index: 40;
+  z-index: 0;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
 }
 

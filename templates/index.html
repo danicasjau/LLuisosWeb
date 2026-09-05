@@ -39,20 +39,22 @@
   </section>
 
   <!-- 02 NOVETATS (Text Left 30%, Image Right 70%) -->
-  <section class="distinction-panel distinction-panel-right animate-on-scroll scale-up" id="distinction-novetats">
+
+  <!-- 04 CALENDARI & VALORS (Text Left 30%, Image Right 70%) -->
+  <section class="distinction-panel distinction-panel-right animate-on-scroll scale-up" id="distinction-valors">
     <div class="distinction-media-wrap">
-      <img src="{{ url_for('static', filename='images/distincitiona_002.png') }}" alt="Novetats Escolta"
+      <img src="{{ url_for('static', filename='images/distincitiona_004.png') }}" alt="Calendari Escolta"
         class="distinction-image">
     </div>
     <div class="distinction-content-box">
-      <span class="distinction-badge">CRÒNIQUES I HISTÒRIES</span>
-      <h2 class="distinction-title-text">NOVETATS</h2>
+      <span class="distinction-badge">AGENDA I ACTIVITATS 2026</span>
+      <h2 class="distinction-title-text">CALENDARI</h2>
       <p class="distinction-desc">
-        Descobreix les últimes cròniques d'excursions, fotos de les sortides de cap de setmana, avisos de les
-        unitats pedagògiques i pròximes activitats destacades de l'agrupament.
+        Consulta totes les sortides de cap de setmana, campaments d'estiu, caus especials i assemblees generals
+        programades per a aquest curs 2026.
       </p>
       <div class="distinction-actions">
-        <a href="#novetats" class="btn-retro btn-retro-blue">VEURE TOTES LES NOVETATS →</a>
+        <a href="/calendar" class="btn-retro btn-retro-blue">VEURE CALENDARI COMPLET →</a>
       </div>
     </div>
   </section>
@@ -76,24 +78,6 @@
     </div>
   </section>
 
-  <!-- 04 CALENDARI & VALORS (Text Left 30%, Image Right 70%) -->
-  <section class="distinction-panel distinction-panel-right animate-on-scroll scale-up" id="distinction-valors">
-    <div class="distinction-media-wrap">
-      <img src="{{ url_for('static', filename='images/distincitiona_004.png') }}" alt="Calendari Escolta"
-        class="distinction-image">
-    </div>
-    <div class="distinction-content-box">
-      <span class="distinction-badge">AGENDA I ACTIVITATS 2026</span>
-      <h2 class="distinction-title-text">CALENDARI</h2>
-      <p class="distinction-desc">
-        Consulta totes les sortides de cap de setmana, campaments d'estiu, caus especials i assemblees generals
-        programades per a aquest curs 2026.
-      </p>
-      <div class="distinction-actions">
-        <a href="/calendar" class="btn-retro btn-retro-blue">VEURE CALENDARI COMPLET →</a>
-      </div>
-    </div>
-  </section>
 
 </div>
 
@@ -171,7 +155,7 @@
 
       <div class="units-list">
         <article class="unit-item unit-item-orange">
-          <div class="unit-item-topline"><span class="unit-color">TARONJA</span><span>6-7 ANYS</span></div>
+          <div class="unit-item-topline"><span>6-8 ANYS</span></div>
           <div class="unit-image-wrap"><img src="{{ url_for('static', filename='images/scout_team.jpg') }}"
               alt="Infants de Castors i Llúdrigues" class="unit-image"></div>
           <h4>Castors i Llúdrigues</h4>
@@ -180,8 +164,8 @@
         </article>
 
         <article class="unit-item unit-item-yellow">
-          <div class="unit-item-topline"><span class="unit-color">GROC</span><span>8-10 ANYS</span></div>
-          <div class="unit-image-wrap"><img src="{{ url_for('static', filename='images/scout_team.jpg') }}"
+          <div class="unit-item-topline"><span>8-11 ANYS</span></div>
+          <div class="unit-image-wrap"><img src="{{ url_for('static', filename='images/dainopsPose.png') }}"
               alt="Infants de Llops i Daines" class="unit-image"></div>
           <h4>Llops i Daines</h4>
           <p>Assaboreixen la natura, aprofundeixen en els valors de l’escoltisme i juguen sense parar.</p>
@@ -189,7 +173,7 @@
         </article>
 
         <article class="unit-item unit-item-blue">
-          <div class="unit-item-topline"><span class="unit-color">BLAU</span><span>11-13 ANYS</span></div>
+          <div class="unit-item-topline"><span>11-14 ANYS</span></div>
           <div class="unit-image-wrap"><img src="{{ url_for('static', filename='images/scout_team.jpg') }}"
               alt="Joves de Ràngers i Noies Guia" class="unit-image"></div>
           <h4>Ràngers i Noies Guia</h4>
@@ -198,7 +182,7 @@
         </article>
 
         <article class="unit-item unit-item-red">
-          <div class="unit-item-topline"><span class="unit-color">VERMELL</span><span>14-16 ANYS</span></div>
+          <div class="unit-item-topline"><span>14-17 ANYS</span></div>
           <div class="unit-image-wrap"><img src="{{ url_for('static', filename='images/scout_team.jpg') }}"
               alt="Joves de Pioners i Caravel·les" class="unit-image"></div>
           <h4>Pioners i Caravel·les</h4>
@@ -207,7 +191,7 @@
         </article>
 
         <article class="unit-item unit-item-green">
-          <div class="unit-item-topline"><span class="unit-color">VERD</span><span>17-18 ANYS</span></div>
+          <div class="unit-item-topline"><span>17-19 ANYS</span></div>
           <div class="unit-image-wrap"><img src="{{ url_for('static', filename='images/scout_team.jpg') }}"
               alt="Joves de Truc" class="unit-image"></div>
           <h4>TRUK</h4>
@@ -258,7 +242,7 @@
           data-unit="{{ member.unit|e }}" data-unit-code="{{ member.unit_code|default('') }}"
           data-role="{{ member.role|e }}" data-image="{{ member.image|e }}">
           <div class="team-polaroid-frame">
-            <img src="{{ member.image }}" alt="{{ member.name }}" class="team-photo">
+            <img src="{{ member.image }}" alt="{{ member.name }}" class="team-photo" onerror="this.onerror=null; this.src='/static/images/caps/deafult.png';">
           </div>
           <div class="team-card-content compact-card-content">
             <h3 class="team-name">{{ member.name }}</h3>
