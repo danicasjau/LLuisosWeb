@@ -67,6 +67,10 @@ def foulard():
     pins = expeditions
     return render_template('foulard.html', active_page='foulard', pins=pins, expeditions=expeditions)
 
+@app.route('/cims')
+def cims():
+    return render_template('cims.html', active_page='cims')
+
 @app.route('/shop')
 @app.route('/botiga')
 def shop():
