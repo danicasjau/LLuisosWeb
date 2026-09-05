@@ -14,37 +14,58 @@
   <div class="section-header">
     <div>
       <h2 class="section-title">MAPA DEL FOULARD VIATGER</h2>
-      <div class="section-subtitle">EXPEDICIONS DE MUNTANYA, PROJECTES COMUNITARIS I TROBADES MUNDIALS ESCOLTES</div>
-    </div>
-    <div style="font-family: var(--font-display); font-size: 1.1rem; background: var(--retro-blue); color: white; padding: 6px 14px; border: 1px solid var(--ink-black);">
-      RUTES PER TOT EL MÓN
     </div>
   </div>
 
   <div class="map-layout">
-    
     <!-- Leaflet Map Container -->
     <div class="map-container" id="leaflet-map"></div>
+  </div>
 
-    <!-- Sidebar Pinpoints Directory -->
-    <div class="map-sidebar-list">
-      <h3 style="font-family: var(--font-display); font-size: 1.4rem; border-bottom: 1px solid var(--ink-black); padding-bottom: 5px;">
-        PINPOINTS D'EXPEDICIÓ
-      </h3>
-      {% for pin in pins %}
-      <div class="pin-card" onclick="focusPin({{ pin.lat }}, {{ pin.lng }}, '{{ pin.title|escape }}')">
-        <span class="post-tag" style="font-size: 0.75rem;">{{ pin.unit }}</span>
-        <h4 style="font-family: var(--font-title); font-size: 1.1rem; margin: 4px 0;">{{ pin.title }}</h4>
-        <div style="font-size: 0.8rem; font-weight: 700; color: var(--retro-orange);">
-          {{ pin.location }} ({{ pin.year }})
-        </div>
-        <p style="font-size: 0.85rem; color: var(--ink-muted); margin-top: 5px;">
-          {{ pin.description }}
-        </p>
-      </div>
+  <section class="expedition-gallery" aria-labelledby="expedition-gallery-title">
+    <div class="expedition-gallery-header">
+      <h3 id="expedition-gallery-title">SORTIDES DEL FOULARD VIATGER</h3>
+      <label class="expedition-sort-control" for="expedition-sort-order">
+        <span>Ordenar per data</span>
+        <select id="expedition-sort-order">
+          <option value="newest">Més noves</option>
+          <option value="oldest">Més antigues</option>
+        </select>
+      </label>
+    </div>
+    <div class="expedition-grid">
+      {% for expedition in expeditions %}
+      <button class="expedition-card" type="button" data-expedition-id="{{ expedition.id }}">
+        <span class="expedition-card-image-wrap">
+          <img src="{{ expedition.image }}" alt="{{ expedition.title }}" class="expedition-card-image">
+        </span>
+        <span class="expedition-card-content">
+          <span class="expedition-card-date">{{ expedition.date }}</span>
+          <strong>{{ expedition.title }}</strong>
+          <span>{{ expedition.author }}</span>
+          <small>{{ expedition.location }}</small>
+        </span>
+      </button>
       {% endfor %}
     </div>
+    <button class="expedition-load-more" id="expedition-load-more" type="button">Veure més</button>
+  </section>
 
+  <div class="expedition-detail-backdrop" id="expedition-detail" aria-hidden="true">
+    <article class="expedition-detail-modal" role="dialog" aria-modal="true" aria-labelledby="expedition-detail-title">
+      <button class="expedition-detail-close" id="expedition-detail-close" type="button" aria-label="Tanca">&times;</button>
+      <div class="expedition-detail-image-wrap">
+        <img id="expedition-detail-image" src="" alt="" class="expedition-detail-image">
+      </div>
+      <div class="expedition-detail-copy">
+        <p class="expedition-detail-kicker" id="expedition-detail-year"></p>
+        <h3 id="expedition-detail-title"></h3>
+        <p class="expedition-detail-author" id="expedition-detail-author"></p>
+        <p class="expedition-detail-location" id="expedition-detail-location"></p>
+        <p class="expedition-detail-description" id="expedition-detail-description"></p>
+        <div class="expedition-mini-map" id="expedition-mini-map" aria-label="Mapa de localització de l'expedició"></div>
+      </div>
+    </article>
   </div>
 
 </div>
@@ -54,9 +75,11 @@
 <script>
   let map;
   let markers = [];
+  let expeditionDetailMap;
+  let expeditionDetailMarker;
 
   document.addEventListener('DOMContentLoaded', () => {
-    map = L.map('leaflet-map').setView([30.0000, 20.0000], 3);
+    map = L.map('leaflet-map').setView([41.75, 1.75], 7);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -74,15 +97,146 @@
 
     pins.forEach(pin => {
       const marker = L.marker([pin.lat, pin.lng], { icon: orangeIcon }).addTo(map);
-      marker.bindPopup(`
-        <div style="font-family:'Space Grotesk', sans-serif; padding:5px;">
-          <b style="font-size:1.1rem; color:#FF5722; font-family:'Syne', sans-serif;">${pin.title}</b><br>
-          <small style="font-weight:bold; color:#1B4965;">${pin.location} (${pin.year})</small>
-          <p style="margin-top:6px; font-size:0.85rem;">${pin.description}</p>
-        </div>
-      `);
+      const popupContent = document.createElement('div');
+      popupContent.className = 'expedition-pin-popup';
+
+      const title = document.createElement('strong');
+      title.className = 'expedition-pin-popup-title';
+      title.textContent = pin.title;
+
+      const date = document.createElement('span');
+      date.className = 'expedition-pin-popup-date';
+      date.textContent = pin.date;
+
+      const author = document.createElement('span');
+      author.className = 'expedition-pin-popup-author';
+      author.textContent = pin.author;
+
+      const detailButton = document.createElement('button');
+      detailButton.className = 'expedition-pin-popup-button';
+      detailButton.type = 'button';
+      detailButton.textContent = 'Veure sortida';
+      detailButton.addEventListener('click', () => openExpeditionDetail(pin));
+
+      popupContent.append(title, date, author, detailButton);
+      marker.bindPopup(popupContent);
       markers.push({ lat: pin.lat, lng: pin.lng, marker });
     });
+
+  });
+
+  const expeditions = {{ expeditions|tojson }};
+  const expeditionDetail = document.getElementById('expedition-detail');
+  const expeditionDetailClose = document.getElementById('expedition-detail-close');
+  const expeditionGrid = document.querySelector('.expedition-grid');
+  const expeditionLoadMore = document.getElementById('expedition-load-more');
+  const expeditionSortOrder = document.getElementById('expedition-sort-order');
+  const expeditionCards = Array.from(document.querySelectorAll('.expedition-card'));
+  const initialExpeditionCount = 12;
+  const expeditionBatchSize = 8;
+  let expeditionVisibleCount = Math.min(initialExpeditionCount, expeditionCards.length);
+  let expeditionOrder = 'newest';
+
+  const monthNumbers = {
+    Gener: 0, Febrer: 1, Març: 2, Abril: 3, Maig: 4, Juny: 5,
+    Juliol: 6, Agost: 7, Setembre: 8, Octubre: 9, Novembre: 10, Desembre: 11
+  };
+
+  function expeditionTimestamp(dateText) {
+    const match = dateText.match(/(\d{1,2})\s+(?:de|d')\s+([A-Za-zÀ-ÿ]+)\s+de\s+(\d{4})/i);
+    if (!match) return 0;
+    const monthName = Object.keys(monthNumbers).find(month => month.toLowerCase() === match[2].toLowerCase());
+    return new Date(Number(match[3]), monthNumbers[monthName] ?? 0, Number(match[1])).getTime();
+  }
+
+  const expeditionsById = new Map(expeditions.map(expedition => [String(expedition.id), expedition]));
+
+  function renderExpeditionOrder() {
+    const orderedCards = [...expeditionCards].sort((firstCard, secondCard) => {
+      const firstDate = expeditionTimestamp(expeditionsById.get(firstCard.dataset.expeditionId).date);
+      const secondDate = expeditionTimestamp(expeditionsById.get(secondCard.dataset.expeditionId).date);
+      return expeditionOrder === 'newest' ? secondDate - firstDate : firstDate - secondDate;
+    });
+
+    expeditionVisibleCount = Math.min(initialExpeditionCount, orderedCards.length);
+    orderedCards.forEach((card, index) => {
+      expeditionGrid.appendChild(card);
+      card.hidden = index >= expeditionVisibleCount;
+    });
+    expeditionLoadMore.hidden = expeditionVisibleCount >= orderedCards.length;
+  }
+
+  renderExpeditionOrder();
+
+  function revealMoreExpeditions() {
+    const orderedCards = Array.from(expeditionGrid.querySelectorAll('.expedition-card'));
+    const nextVisibleCount = Math.min(
+      expeditionVisibleCount + expeditionBatchSize,
+      orderedCards.length
+    );
+
+    orderedCards.slice(expeditionVisibleCount, nextVisibleCount).forEach(card => {
+      card.hidden = false;
+    });
+    expeditionVisibleCount = nextVisibleCount;
+
+    if (expeditionVisibleCount >= orderedCards.length) {
+      expeditionLoadMore.hidden = true;
+    }
+  }
+
+  expeditionLoadMore.addEventListener('click', revealMoreExpeditions);
+  expeditionSortOrder.addEventListener('change', event => {
+    expeditionOrder = event.target.value;
+    renderExpeditionOrder();
+  });
+
+  function openExpeditionDetail(expedition) {
+    focusPin(expedition.lat, expedition.lng, expedition.title);
+    document.getElementById('expedition-detail-image').src = expedition.image;
+    document.getElementById('expedition-detail-image').alt = expedition.title;
+    document.getElementById('expedition-detail-year').textContent = expedition.date;
+    document.getElementById('expedition-detail-title').textContent = expedition.title;
+    document.getElementById('expedition-detail-author').textContent = `Expedició feta per ${expedition.author}`;
+    document.getElementById('expedition-detail-location').textContent = expedition.location;
+    document.getElementById('expedition-detail-description').textContent = expedition.description;
+
+    expeditionDetail.classList.add('is-open');
+    expeditionDetail.setAttribute('aria-hidden', 'false');
+
+    if (!expeditionDetailMap) {
+      expeditionDetailMap = L.map('expedition-mini-map', {
+        zoomControl: false,
+        attributionControl: false
+      }).setView([expedition.lat, expedition.lng], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(expeditionDetailMap);
+    } else {
+      expeditionDetailMap.setView([expedition.lat, expedition.lng], 5);
+    }
+
+    if (expeditionDetailMarker) expeditionDetailMarker.remove();
+    expeditionDetailMarker = L.marker([expedition.lat, expedition.lng]).addTo(expeditionDetailMap);
+    setTimeout(() => expeditionDetailMap.invalidateSize(), 80);
+  }
+
+  function closeExpeditionDetail() {
+    expeditionDetail.classList.remove('is-open');
+    expeditionDetail.setAttribute('aria-hidden', 'true');
+  }
+
+  document.querySelectorAll('.expedition-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const expedition = expeditions.find(item => String(item.id) === card.dataset.expeditionId);
+      if (expedition) openExpeditionDetail(expedition);
+    });
+  });
+
+  expeditionDetailClose.addEventListener('click', closeExpeditionDetail);
+  expeditionDetail.addEventListener('click', event => {
+    if (event.target === expeditionDetail) closeExpeditionDetail();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeExpeditionDetail();
   });
 
   function focusPin(lat, lng, title) {

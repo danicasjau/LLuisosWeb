@@ -63,8 +63,9 @@ def equips():
 
 @app.route('/foulard')
 def foulard():
-    pins = db.get_foulard_pins()
-    return render_template('foulard.html', active_page='foulard', pins=pins)
+    expeditions = db.get_foulard_expeditions()
+    pins = expeditions
+    return render_template('foulard.html', active_page='foulard', pins=pins, expeditions=expeditions)
 
 @app.route('/shop')
 @app.route('/botiga')
@@ -331,7 +332,7 @@ def api_save_kiniela():
 # --------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5001))
+    port = int(os.getenv('PORT', 5002))
     print(f"==================================================")
     print(f">> AE LLUISOS DE GRACIA Website Running on http://127.0.0.1:{port}")
     print(f"==================================================")
