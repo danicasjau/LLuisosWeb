@@ -25,20 +25,16 @@
   <!-- Grid of All Caps Cards -->
   <div class="equips-full-grid" id="equips-container" style="margin-top: 35px;">
     {% for member in team %}
-    <div class="team-card equip-full-card"
-      data-unit-code="{{ member.unit_code|default('general') }}"
-      data-name="{{ member.name|e }}"
-      data-unit="{{ member.unit|e }}"
-      data-role="{{ member.role|e }}"
-      data-years="{{ member.years|e }}"
-      data-bio="{{ member.bio|e }}"
-      data-quote="{{ member.quote|e }}"
+    <div class="team-card equip-full-card" data-unit-code="{{ member.unit_code|default('general') }}"
+      data-name="{{ member.name|e }}" data-unit="{{ member.unit|e }}" data-role="{{ member.role|e }}"
+      data-years="{{ member.years|e }}" data-bio="{{ member.bio|e }}" data-quote="{{ member.quote|e }}"
       data-image="{{ member.image|e }}">
-      
+
       <div class="team-polaroid-frame">
-        <img src="{{ member.image }}" alt="{{ member.name }}" class="team-photo">
+        <img src="{{ member.image }}" alt="{{ member.name }}" class="team-photo"
+          onerror="this.onerror=null; this.src='/static/images/caps/deafult.png';">
       </div>
-      
+
       <div class="team-card-content compact-card-content">
         <h3 class="team-name">{{ member.name }}</h3>
         <span class="team-unit-badge unit-badge-{{ member.unit_code|default('') }}">{{ member.unit }}</span>

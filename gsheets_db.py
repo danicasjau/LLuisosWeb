@@ -4,6 +4,8 @@ import logging
 import datetime
 import hashlib
 import requests
+import unicodedata
+import re
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -74,6 +76,11 @@ class GSheetsDB:
         shop_file = self._data_file("shop.json")
         if not os.path.exists(shop_file):
             self._write_data("shop.json", self._default_shop_products())
+
+        # 6. Caps store
+        caps_file = self._data_file("caps.json")
+        if not os.path.exists(caps_file):
+            self._write_data("caps.json", self._default_caps())
 
     def verify_contra(self, password):
         """Verify password against data/contra.json with basic salt+sha256 encryption."""
@@ -738,12 +745,59 @@ class GSheetsDB:
             }
         ]
 
-    def get_caps(self):
-        """Fetch team members for caps.html and equips.html"""
-        records = self._fetch_sheet_records("Caps")
-        if records:
-            return records
-        
+    def _normalize_cap_name(self, name):
+        """Normalize cap name into lowercase alphanumeric characters without accents."""
+        if not name:
+            return ""
+        nfkd = unicodedata.normalize('NFKD', str(name))
+        ascii_text = nfkd.encode('ASCII', 'ignore').decode('utf-8')
+        return re.sub(r'[^a-zA-Z0-9]', '', ascii_text).lower()
+
+    def _resolve_cap_image(self, name, current_image=None):
+        """Resolve cap image link by matching name against files in static/images/caps/.
+        If name not found or file does not exist, places /static/images/caps/deafult.png.
+        """
+        caps_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "images", "caps")
+        default_img = "/static/images/caps/deafult.png"
+
+        norm_name = self._normalize_cap_name(name)
+        if not norm_name:
+            return default_img
+
+        # 1. Match against files in static/images/caps/ by normalized filename
+        if os.path.isdir(caps_dir):
+            try:
+                for fname in os.listdir(caps_dir):
+                    f_base, f_ext = os.path.splitext(fname)
+                    # Skip default fallback during name matching
+                    if f_base.lower() in ("deafult", "default"):
+                        continue
+                    if self._normalize_cap_name(f_base) == norm_name:
+                        return f"/static/images/caps/{fname}"
+            except Exception as e:
+                logger.warning(f"Error scanning caps directory: {e}")
+
+        # 2. Check if current_image is a valid custom local path or URL (and not a dicebear avatar placeholder)
+        if current_image and isinstance(current_image, str):
+            curr = current_image.strip()
+            if curr and not curr.startswith("https://api.dicebear.com") and not curr.startswith("http://api.dicebear.com"):
+                if curr.startswith("/static/"):
+                    local_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), curr.lstrip("/"))
+                    if os.path.exists(local_path):
+                        return curr
+                elif curr.startswith("http://") or curr.startswith("https://"):
+                    return curr
+
+        # 3. Fallback to default image
+        return default_img
+
+    def _enrich_cap_data(self, cap):
+        """Ensure cap has proper image link, matching by name with fallback to deafult.png"""
+        c = dict(cap)
+        c["image"] = self._resolve_cap_image(c.get("name", ""), c.get("image"))
+        return c
+
+    def _default_caps(self):
         return [
             {
                 "id": 1,
@@ -753,7 +807,7 @@ class GSheetsDB:
                 "unit_code": "castors",
                 "years": "3 anys a l'agrupament",
                 "bio": "Creu que la millor manera d'aprendre és riure, jugar i fer petits grans projectes amb la gent del cau.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Joana%20Sola&backgroundColor=FDE68A,FFC0CB,F8FAFC&hairColor=2F1B12&skinColor=F5D0A9",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"Cada aventura comença amb un gran somriure.\""
             },
             {
@@ -764,7 +818,7 @@ class GSheetsDB:
                 "unit_code": "castors",
                 "years": "2 anys a l'agrupament",
                 "bio": "Entusiasta de la natura i dels jocs d'orientació. Vol ajudar cada infant a trobar el seu ritme i confiança.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Maia%20de%20Cook&backgroundColor=C7D2FE,E0F2FE,F8FAFC&hairColor=3B2F2F&skinColor=E7C7A2",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"Que cada passejada ens ajudi a créixer.\""
             },
             {
@@ -775,7 +829,7 @@ class GSheetsDB:
                 "unit_code": "castors",
                 "years": "4 anys a l'agrupament",
                 "bio": "Apassionat de les rutes, la convivència i els projectes col·lectius que fan créixer l'equip.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Guillem%20Rodon&backgroundColor=FDE68A,DBEAFE,F8FAFC&hairColor=1F2937&skinColor=D8A47B",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"El bon camí es fa amb companys.\""
             },
             {
@@ -786,7 +840,7 @@ class GSheetsDB:
                 "unit_code": "castors",
                 "years": "5 anys a l'agrupament",
                 "bio": "Lidera projectes de muntanya i de grup amb molta cura, previsió i energia positiva.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Bernat%20Escola&backgroundColor=FECACA,FDE68A,F8FAFC&hairColor=201A1A&skinColor=D7A07F",
+                "image": "/static/images/caps/bernatescola.png",
                 "quote": "\"Cada repte és una oportunitat per aprendre.\""
             },
             {
@@ -797,7 +851,7 @@ class GSheetsDB:
                 "unit_code": "llops",
                 "years": "6 anys a l'agrupament",
                 "bio": "Treballa per donar espai a la iniciativa dels joves i promoure la responsabilitat compartida.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Sol%20Font&backgroundColor=BBF7D0,CCFBF1,F8FAFC&hairColor=4B2E2E&skinColor=EAC7A3",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"L'autonomia es construeix amb confiança.\""
             },
             {
@@ -808,7 +862,7 @@ class GSheetsDB:
                 "unit_code": "llops",
                 "years": "4 anys a l'agrupament",
                 "bio": "Especialista en dinamització de grup, lideratge i crear espais on tots es sentin part del projecte.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Clara%20Torres&backgroundColor=C7D2FE,FDE68A,F8FAFC&hairColor=2D1F1F&skinColor=E7C9A0",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"La millor pinya s'aconsegueix escoltant-s'hi.\""
             },
             {
@@ -819,7 +873,7 @@ class GSheetsDB:
                 "unit_code": "llops",
                 "years": "3 anys a l'agrupament",
                 "bio": "Té l'hàbit de convertir cada joc en una experiència d'aprenentatge, companyonia i respecte.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Elia%20Coll&backgroundColor=E0F2FE,FBCFE8,F8FAFC&hairColor=3A2D2D&skinColor=E4BE95",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"La natura ens ensenya a compartir.\""
             },
             {
@@ -830,7 +884,7 @@ class GSheetsDB:
                 "unit_code": "llops",
                 "years": "2 anys a l'agrupament",
                 "bio": "Va descobrir que els petits detalls també són grans aventures i que la curiositat és la millor eina.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Maur%20Roda&backgroundColor=FDE68A,FECACA,F8FAFC&hairColor=3D2A22&skinColor=D6A57E",
+                "image": "/static/images/caps/maurroda.png",
                 "quote": "\"Petits passos, grans descobertes.\""
             },
             {
@@ -841,7 +895,7 @@ class GSheetsDB:
                 "unit_code": "ranguis",
                 "years": "4 anys a l'agrupament",
                 "bio": "Implicat en activitats de muntanya i en construir una dinàmica de grup segura i divertida.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Dani%20Casadevall&backgroundColor=DBEAFE,FDE68A,F8FAFC&hairColor=1B1B1B&skinColor=C3895C",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"La millor aventura es comparteix.\""
             },
             {
@@ -852,7 +906,7 @@ class GSheetsDB:
                 "unit_code": "ranguis",
                 "years": "6 anys a l'agrupament",
                 "bio": "Coordina els equips amb una mirada pedagògica i alhora molt pràctica, sempre amb voluntat de cuidar l'agrupament.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Helena%20Herranz&backgroundColor=DDD6FE,E0F2FE,F8FAFC&hairColor=4A2F2F&skinColor=E7C7A2",
+                "image": "/static/images/caps/helenaherranz.png",
                 "quote": "\"L'organització és el motor de la creativitat.\""
             },
             {
@@ -863,7 +917,7 @@ class GSheetsDB:
                 "unit_code": "ranguis",
                 "years": "5 anys a l'agrupament",
                 "bio": "Aplica el pensament crític i l'autonomia a cada projecte per ajudar el grup a créixer amb criteri.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Iu%20Sales&backgroundColor=FDE68A,C7D2FE,F8FAFC&hairColor=2B1D1A&skinColor=C98C56",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"Quan hi ha confiança, hi ha aventura.\""
             },
             {
@@ -874,7 +928,7 @@ class GSheetsDB:
                 "unit_code": "pios",
                 "years": "3 anys a l'agrupament",
                 "bio": "Acosta els nens i nenes al món de l'escoltisme amb creativitat, calma i mucha energia positiva.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Nil%20Mitjavila&backgroundColor=DBEAFE,FECACA,F8FAFC&hairColor=171717&skinColor=C58D5C",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"Els petits detalls fan grans records.\""
             },
             {
@@ -885,7 +939,7 @@ class GSheetsDB:
                 "unit_code": "pios",
                 "years": "5 anys a l'agrupament",
                 "bio": "Mou el grup amb mirada servicial, idees clares i molt de compromís amb les persones i la comunitat.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Aina%20Salinas&backgroundColor=E0F2FE,BBF7D0,F8FAFC&hairColor=4B2E2E&skinColor=E4B48B",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"Serveix i aprèn amb el grup.\""
             },
             {
@@ -896,7 +950,7 @@ class GSheetsDB:
                 "unit_code": "pios",
                 "years": "7 anys a l'agrupament",
                 "bio": "Aporta calma, rigor i visió de conjunt per acompanyar els caps i fer créixer el projecte educatiu.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Neus%20Lloses&backgroundColor=C7D2FE,FDE68A,F8FAFC&hairColor=392B2B&skinColor=D9A77A",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"La comunitat és la nostra gran aventura.\""
             },
             {
@@ -907,7 +961,7 @@ class GSheetsDB:
                 "unit_code": "pios",
                 "years": "4 anys a l'agrupament",
                 "bio": "Motiva els joves amb il·lusió per la muntanya, la feina en equip i l'exploració responsable.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Joan%20Roig&backgroundColor=FDE68A,DBEAFE,F8FAFC&hairColor=202020&skinColor=C89067",
+                "image": "/static/images/caps/joanroig.png",
                 "quote": "\"Cada viatge ens fa més grans.\""
             },
             {
@@ -918,7 +972,7 @@ class GSheetsDB:
                 "unit_code": "pios",
                 "years": "4 anys a l'agrupament",
                 "bio": "Aporta energia, rigor i curiositat per ajudar els joves a organitzar projectes amb propòsit.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Pol%20Mer&backgroundColor=C7D2FE,FECACA,F8FAFC&hairColor=1F2937&skinColor=D8A577",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"Amb voluntat, cap projecte és massa gran.\""
             },
             {
@@ -929,7 +983,7 @@ class GSheetsDB:
                 "unit_code": "truk",
                 "years": "3 anys a l'agrupament",
                 "bio": "Parla amb naturalitat i seguretat, i sap connectar amb cada infant per crear un ambient de confiança.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Arnau%20Escola&backgroundColor=DBEAFE,FDE68A,F8FAFC&hairColor=2D1F1F&skinColor=D4A792",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"La confiança és la base de tot.\""
             },
             {
@@ -940,7 +994,7 @@ class GSheetsDB:
                 "unit_code": "truk",
                 "years": "2 anys a l'agrupament",
                 "bio": "Especialista en crear espais on cada nen i nena pot jugar, explorar i sentir-se acollit.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Ivet%20Roig&backgroundColor=E0F2FE,FBCFE8,F8FAFC&hairColor=3a2b2b&skinColor=E6BA88",
+                "image": "/static/images/caps/ivetroig.png",
                 "quote": "\"La creativitat obre moltes portes.\""
             },
             {
@@ -951,7 +1005,7 @@ class GSheetsDB:
                 "unit_code": "truk",
                 "years": "6 anys a l'agrupament",
                 "bio": "Dona forma a les activitats i projectes amb mirada pedagògica, compromís i molta energia.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Julia%20Franquesa&backgroundColor=FDE68A,E0F2FE,F8FAFC&hairColor=3C2C2A&skinColor=E3BA8A",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"La millor educació és la que fa estimar.\""
             },
             {
@@ -962,7 +1016,7 @@ class GSheetsDB:
                 "unit_code": "truk",
                 "years": "5 anys a l'agrupament",
                 "bio": "Acompanya els joves en la seva autonomia, fent que cada decisió es converteixi en aprenentatge.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Lluc%20Roda&backgroundColor=C7D2FE,FECACA,F8FAFC&hairColor=2B2B2B&skinColor=C9865B",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"Un bon equip és la millor eina de transformació.\""
             },
             {
@@ -973,10 +1027,21 @@ class GSheetsDB:
                 "unit_code": "truk",
                 "years": "3 anys a l'agrupament",
                 "bio": "Busca provocar reflexió, diversió i compromís a través de projectes amb valor i sentit.",
-                "image": "https://api.dicebear.com/9.x/bottts/svg?seed=Simone%20Garcia&backgroundColor=BBF7D0,FDE68A,F8FAFC&hairColor=1E1B4B&skinColor=D7A47E",
+                "image": "/static/images/caps/deafult.png",
                 "quote": "\"La millor manera d'aprendre és fent.\""
             }
         ]
+
+    def get_caps(self):
+        """Fetch team members for caps.html and equips.html, resolving images by name or default fallback."""
+        records = self._fetch_sheet_records("Caps")
+        if not records:
+            records = self._read_data("caps.json", None)
+            if not records:
+                records = self._default_caps()
+                self._write_data("caps.json", records)
+
+        return [self._enrich_cap_data(cap) for cap in records]
 
     def get_foulard_pins(self):
         """Fetch map pinpoints from JSON store."""
