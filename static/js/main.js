@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log("AE Lluïsos de Gràcia Web Engine Initialized");
 
   initNavHideToggle();
-  //initNavAutoHide();
+  initTopBarAutoHide();
   initBarcode();
   initModalSystem();
   initCalendarViewer();
@@ -34,47 +34,14 @@ function initNavHideToggle() {
 }
 
 /* ==========================================================================
-   AUTO-HIDE MENU ON INACTIVITY (5 SECONDS NO SCROLL)
-   ========================================================================== */
-function initNavAutoHide() {
-  const navMenu = document.getElementById('main-nav');
-  if (!navMenu) return;
+  TOP BAR AUTO-HIDE ON SCROLL AND INACTIVITY
+  ========================================================================== */
+function initTopBarAutoHide() {
+  const topBar = document.getElementById('main-top-bar');
+  if (!topBar) return;
 
-  let scrollTimer = null;
-  const HIDE_DELAY = 2000; // 5 seconds of inactivity
-
-  function hideNav() {
-    navMenu.classList.add('is-autohidden');
-  }
-
-  function showNav() {
-    navMenu.classList.remove('is-autohidden');
-  }
-
-  function resetTimer() {
-    showNav();
-    if (scrollTimer) {
-      clearTimeout(scrollTimer);
-    }
-    scrollTimer = setTimeout(hideNav, HIDE_DELAY);
-  }
-
-  // Listen to window scroll events to reveal menu and reset the 5-second timer
-  window.addEventListener('scroll', resetTimer, { passive: true });
-
-  // Pause auto-hide timer when user hovers over the navigation menu
-  navMenu.addEventListener('mouseenter', () => {
-    if (scrollTimer) clearTimeout(scrollTimer);
-    showNav();
-  });
-
-  // Resume auto-hide timer when mouse leaves navigation menu
-  navMenu.addEventListener('mouseleave', () => {
-    resetTimer();
-  });
-
-  // Start initial 5-second timer on page load
-  resetTimer();
+  // Always keep top bar visible on view (no auto-hiding)
+  topBar.classList.remove('is-autohidden');
 }
 
 /* ==========================================================================
@@ -145,7 +112,7 @@ function openModal(title, badge, dateLoc, content, imageSrc = null) {
 }
 
 /* ==========================================================================
-   CALENDAR & EVENT SYSTEM ENGINE (FULL 2026-2027 YEAR)
+    CALENDAR & EVENT SYSTEM ENGINE (2026-2027 SCOUT YEAR)
    ========================================================================== */
 let calendarState = {
   currentYear: 2026,
@@ -436,8 +403,7 @@ function renderCalendarYear() {
     { y: 2027, m: 5 },
     { y: 2027, m: 6 },
     { y: 2027, m: 7 },
-    { y: 2027, m: 8 },
-    { y: 2027, m: 9 }
+    { y: 2027, m: 8 }
   ];
 
   const now = new Date();
