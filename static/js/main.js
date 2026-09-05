@@ -86,6 +86,17 @@ function initModalSystem() {
   });
 }
 
+function sanitizeClientHTML(input) {
+  if (!input) return '';
+  return String(input)
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<(iframe|object|embed|svg|link|meta|style|form|input|button|applet|base)[^>]*>.*?<\/\1>/gi, '')
+    .replace(/<(iframe|object|embed|svg|link|meta|style|form|input|button|applet|base)[^>]*\/?>/gi, '')
+    .replace(/\bon\w+\s*=\s*(['"]).*?\1/gi, '')
+    .replace(/\bon\w+\s*=\s*[^\s>]+/gi, '')
+    .replace(/(javascript|vbscript|data):/gi, 'blocked:');
+}
+
 function openModal(title, badge, dateLoc, content, imageSrc = null) {
   const modalBackdrop = document.getElementById('retro-modal');
   const titleEl = document.getElementById('modal-title');
@@ -99,9 +110,9 @@ function openModal(title, badge, dateLoc, content, imageSrc = null) {
   titleEl.textContent = title;
   badgeEl.textContent = badge;
   metaEl.textContent = dateLoc;
-  bodyEl.innerHTML = content;
+  bodyEl.innerHTML = sanitizeClientHTML(content);
 
-  if (imageSrc && imgEl) {
+  if (imageSrc && imgEl && (imageSrc.startsWith('/') || imageSrc.startsWith('http://') || imageSrc.startsWith('https://'))) {
     imgEl.src = imageSrc;
     imgEl.style.display = 'block';
   } else if (imgEl) {

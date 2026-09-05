@@ -183,7 +183,10 @@ function createMemberCard(member) {
   card.setAttribute('draggable', 'true');
   card.setAttribute('data-id', member.id);
 
-  card.innerHTML = `<span class="person-name">${member.name}</span>`;
+  const nameSpan = document.createElement('span');
+  nameSpan.className = 'person-name';
+  nameSpan.textContent = member.name;
+  card.appendChild(nameSpan);
 
   if (!member.isNewCap) card.addEventListener('click', () => {
     const modal = document.getElementById('retro-modal');

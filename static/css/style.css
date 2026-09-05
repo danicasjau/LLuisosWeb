@@ -470,6 +470,56 @@ body {
   z-index: 1;
 }
 
+/* Center of hero-mountain-bg: Giant 3D Hero Title Layer (z-index: 5) */
+.hero-mountain-title-center {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  width: 100%;
+  max-width: 1500px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-poster-title-giant {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3.2rem, 9.5vw, 7.5rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: clamp(1px, 0.4vw, 4px) !important;
+  color: var(--retro-orange) !important;
+  line-height: 0.95 !important;
+  text-align: center;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  text-shadow: 0 6px 30px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.4);
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
+}
+
+.hero-poster-title-giant .smalltext {
+  font-family: 'Nohemi-Light', sans-serif;
+  font-size: 0.62em;
+  font-weight: 800;
+  margin: 0 0.12em;
+  letter-spacing: -0.02em;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.45);
+}
+
+.hero-poster-title-giant d,
+.hero-poster-title-giant em {
+  font-style: normal;
+  font-weight: 900;
+}
+
 /* Front Layer: Mountain Ridge Cutout Mask in Front of Title (z-index: 10) */
 .hero-mountain-cutout {
   position: absolute;
@@ -4268,67 +4318,345 @@ body {
   color: #CBD5E1;
 }
 
-/* Responsive adjustments */
+/* ==========================================================================
+   COMPREHENSIVE RESPONSIVE STYLING FOR ALL SCREEN TYPES (320px - 1024px+)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .page-container {
+    padding: 35px 24px;
+  }
+}
+
 @media (max-width: 768px) {
   .poster-outer-wrapper {
-    padding: 4px;
+    padding: 2px;
   }
 
+  /* Hero Poster Responsive Height (Fix 1200px legacy bug) */
   .hero-poster-container {
-    height: 1200px;
-    min-height: 120vh;
+    height: 80vh;
+    min-height: 480px;
+    max-height: 680px;
+    padding: 20px 14px;
+    margin-top: -65px;
   }
 
+  .hero-mountain-bg {
+    min-height: 100%;
+    max-height: 100%;
+    height: 100%;
+  }
+
+  .hero-mountain-cutout {
+    height: 100%;
+    object-position: center bottom;
+  }
+
+  /* Centered Giant Hero Title on Mobile Screens */
+  .hero-mountain-title-center {
+    top: 36%;
+    padding: 0 10px;
+  }
+
+  .hero-poster-title-giant {
+    font-size: clamp(2.1rem, 10.5vw, 3.6rem) !important;
+    letter-spacing: 0.8px !important;
+    white-space: nowrap;
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero-poster-title-giant .smalltext {
+    font-size: 0.6em;
+    margin: 0 0.1em;
+  }
+
+  /* Always-Visible Compact Responsive Topbar */
   .poster-top-bar {
-    padding: 8px 6px;
+    padding: 5px 4px;
     margin: 0;
   }
 
-  .poster-title-fill {
-    font-size: clamp(1.35rem, 6vw, 2rem);
+  .topbar-inner-container {
+    padding: 7px 10px;
+    border-radius: 12px;
+    gap: 6px;
   }
 
-  .topbar-inner-container {
-    padding: 10px;
-    border-radius: 15px;
+  .poster-title-fill {
+    font-size: clamp(1.15rem, 5.5vw, 1.6rem);
+  }
+
+  /* Horizontal swipe apartats strip on mobile */
+  .topbar-apartats-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    width: 100%;
+    padding: 2px 0 3px;
+    gap: 4px;
+    justify-content: flex-start;
+  }
+
+  .topbar-apartats-nav::-webkit-scrollbar {
+    display: none;
   }
 
   .topbar-apartat-link {
     font-size: 0.66rem;
-    padding: 9px 10px;
+    padding: 6px 9px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    border-radius: 6px;
   }
 
-  .poster-nav {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: none;
-    padding: 15px;
+  /* General Page Containers */
+  .page-container {
+    padding: 24px 14px;
   }
 
-  .poster-nav a:hover,
-  .poster-nav a.active {
-    transform: translateX(6px);
+  /* Distinction Editorial Panels on Mobile */
+  .distinction-panel .distinction-media-wrap {
+    height: 230px;
+    min-height: 190px;
+    max-height: 270px;
   }
 
-  .distinction-item,
-  .distinction-image {
-    height: 140px;
-    max-height: 140px;
+  .distinction-panel .distinction-image {
+    height: 100%;
+    min-height: 100%;
+    max-height: none;
   }
 
+  .distinction-panel .distinction-content-box {
+    padding: 26px 18px;
+  }
+
+  .distinction-panel .distinction-title-text {
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    margin-bottom: 12px;
+  }
+
+  /* Calendar Component on Mobile */
+  .calendar-top-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 14px;
+  }
+
+  .month-nav-cluster {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .btn-month-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
+  }
+
+  .month-dropdown {
+    font-size: 0.95rem;
+    padding: 6px 12px;
+  }
+
+  .calendar-action-cluster {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .view-mode-toggle {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .btn-view-toggle {
+    font-size: 0.65rem;
+    padding: 7px 10px;
+  }
+
+  .btn-download-pdf {
+    font-size: 0.65rem;
+    padding: 7px 10px;
+  }
+
+  .calendar-grid-box,
+  .calendar-cells-wrapper {
+    gap: 3px;
+  }
+
+  .calendar-day-header {
+    font-size: 0.72rem;
+    padding: 6px 2px;
+    border-radius: 2px;
+  }
+
+  .calendar-cell {
+    min-height: 60px;
+    padding: 3px 2px;
+    border-radius: 4px;
+  }
+
+  .calendar-cell .cell-number {
+    font-size: 0.76rem;
+  }
+
+  .today-pill-tag {
+    display: none;
+  }
+
+  .event-indicator-pill {
+    font-size: 0.54rem;
+    padding: 1px 2px;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Peaks / Cims Grid on Mobile */
+  .peaks-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .peak-item {
+    padding: 10px 12px;
+    font-size: 0.88rem;
+  }
+
+  .equips-filters-strip {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    width: 100%;
+    padding: 4px;
+    gap: 5px;
+  }
+
+  .equips-filters-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .equips-filters-strip .btn-filter {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 7px 12px;
+    font-size: 0.68rem;
+  }
+
+  /* Kiniela on Mobile */
+  .kiniela-main-split-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .kiniela-lateral-sidebar {
+    width: 100%;
+  }
+
+  .kiniela-groups-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .group-column {
+    padding: 14px 12px;
+    border-radius: 12px;
+  }
+
+  .group-column-header {
+    font-size: 1.15rem;
+  }
+
+  /* Shop on Mobile */
+  .shop-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .product-card {
+    padding: 14px;
+  }
+
+  /* Footer on Mobile */
   .poster-footer-bar {
-    margin-top: 100px !important;
-    padding: 30px 20px;
+    margin-top: 60px !important;
+    padding: 24px 14px;
   }
 
   .footer-bottom-line {
     flex-direction: column;
     text-align: center;
+    gap: 12px;
   }
 
   .retro-barcode {
     align-items: center;
+  }
+}
+
+/* Extra Small Screens (Smartphones < 420px: iPhone SE, Galaxy S, small viewports) */
+@media (max-width: 420px) {
+  .hero-poster-container {
+    height: 75vh;
+    min-height: 440px;
+    max-height: 600px;
+  }
+
+  .hero-mountain-title-center {
+    top: 34%;
+    padding: 0 6px;
+  }
+
+  .hero-poster-title-giant {
+    font-size: clamp(1.75rem, 9.2vw, 2.5rem) !important;
+    letter-spacing: 0.4px !important;
+  }
+
+  .hero-poster-title-giant .smalltext {
+    font-size: 0.58em;
+  }
+
+  .page-container {
+    padding: 18px 10px;
+  }
+
+  .calendar-cell {
+    min-height: 52px;
+    padding: 2px;
+  }
+
+  .calendar-cell .cell-number {
+    font-size: 0.7rem;
+  }
+
+  .calendar-day-header {
+    font-size: 0.65rem;
+    padding: 4px 1px;
+  }
+
+  .topbar-apartat-link {
+    font-size: 0.62rem;
+    padding: 5px 7px;
+  }
+
+  .btn-month-arrow {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+  }
+
+  .month-dropdown {
+    font-size: 0.85rem;
+    padding: 5px 8px;
   }
 }
 

@@ -7,8 +7,116 @@ import requests
 import unicodedata
 import re
 
+import html
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# ==============================================================================
+# CYBERSECURITY & DATA FILTRATION (Anti-XSS, Script & Payload Sanitization)
+# ==============================================================================
+
+def sanitize_text(value, max_length=1000, allow_newlines=False):
+    """
+    Sanitizes user text inputs:
+    - Removes null bytes and control chars.
+    - Strips dangerous <script>, <iframe>, <object>, <embed>, <svg>, etc.
+    - Strips 'javascript:', 'data:', 'vbscript:' URIs.
+    - Strips HTML event handlers ('onerror=', 'onload=', 'onclick=', etc.).
+    - Strips raw HTML tags and escapes remaining HTML entities.
+    - Truncates to max_length to prevent payload overflows.
+    """
+    if value is None:
+        return ""
+    val_str = str(value).strip()
+    val_str = val_str.replace('\x00', '')
+    # Strip script blocks completely
+    val_str = re.sub(r'(?is)<script.*?>.*?</script>', '', val_str)
+    # Strip dangerous HTML tags
+    val_str = re.sub(r'(?is)<(iframe|object|embed|svg|link|meta|style|form|input|button|applet|base).*?>.*?</\1>', '', val_str)
+    # Strip remaining HTML tags
+    val_str = re.sub(r'<[^>]+>', '', val_str)
+    # Neutralize javascript/data pseudo-protocols
+    val_str = re.sub(r'(?i)(javascript|vbscript|data):', '', val_str)
+    # Neutralize inline event handlers
+    val_str = re.sub(r'(?i)\bon\w+\s*=', '', val_str)
+    # Escape entities
+    val_str = html.escape(val_str, quote=True)
+    if not allow_newlines:
+        val_str = re.sub(r'[\r\n]+', ' ', val_str)
+    return val_str[:max_length].strip()
+
+def sanitize_url(url, default='/static/images/backgroundmountains.png'):
+    """
+    Validates and sanitizes media/resource URLs:
+    - Rejects dangerous schemes: javascript:, data:, vbscript:, file:
+    - Prevents quote breakouts and tag injection.
+    - Accepts valid local paths (/static/...) or http/https URLs.
+    """
+    if not url or not isinstance(url, str):
+        return default
+    clean = str(url).strip()
+    clean = clean.replace('\x00', '')
+    if re.search(r'^(javascript|data|vbscript|file):', clean, re.I):
+        return default
+    if any(ch in clean for ch in ['<', '>', '"', "'", '`', '{', '}']):
+        return default
+    if not (clean.startswith('/') or clean.startswith('http://') or clean.startswith('https://')):
+        return default
+    return clean[:500]
+
+def sanitize_float(value, default=0.0, min_val=None, max_val=None):
+    """Safely parses float with boundary checks."""
+    try:
+        val = float(value)
+        if min_val is not None and val < min_val:
+            return min_val
+        if max_val is not None and val > max_val:
+            return max_val
+        return val
+    except (ValueError, TypeError):
+        return default
+
+def sanitize_int(value, default=0, min_val=None, max_val=None):
+    """Safely parses integer with boundary checks."""
+    try:
+        val = int(value)
+        if min_val is not None and val < min_val:
+            return min_val
+        if max_val is not None and val > max_val:
+            return max_val
+        return val
+    except (ValueError, TypeError):
+        return default
+
+def sanitize_hex_color(color, default='#0B2545'):
+    """Validates 3 or 6 hex digit CSS color strings."""
+    if not color or not isinstance(color, str):
+        return default
+    color_str = str(color).strip()
+    if re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color_str):
+        return color_str
+    return default
+
+def sanitize_data_struct(item, max_depth=5):
+    """
+    Recursively sanitizes JSON data structures (dicts, lists, primitives)
+    to prevent script or HTML injection in nested JSON payloads (e.g. kiniela assignments).
+    """
+    if max_depth <= 0:
+        return ""
+    if isinstance(item, dict):
+        return {
+            sanitize_text(k, max_length=100): sanitize_data_struct(v, max_depth - 1)
+            for k, v in item.items()
+        }
+    elif isinstance(item, list):
+        return [sanitize_data_struct(x, max_depth - 1) for x in item]
+    elif isinstance(item, str):
+        return sanitize_text(item, max_length=1000, allow_newlines=True)
+    elif isinstance(item, (int, float, bool)) or item is None:
+        return item
+    return sanitize_text(str(item), max_length=500)
 
 class GSheetsDB:
     def __init__(self, credentials_path="credentials.json", sheet_name="AE_Lluisos_Database"):
@@ -105,9 +213,12 @@ class GSheetsDB:
         return computed == expected
 
     def set_contra(self, new_password):
-        """Update password in data/contra.json."""
+        """Update password in data/contra.json with sanitization and salted sha256."""
+        clean_pwd = str(new_password).replace('\x00', '').strip()[:100]
+        if not clean_pwd:
+            return False
         salt = "ae_lluisos_gracia_salt_2026"
-        computed = hashlib.sha256((salt + str(new_password).strip()).encode('utf-8')).hexdigest()
+        computed = hashlib.sha256((salt + clean_pwd).encode('utf-8')).hexdigest()
         payload = {
             "algorithm": "sha256_salted",
             "salt": salt,
@@ -155,9 +266,11 @@ class GSheetsDB:
         return None
 
     def save_kiniela(self, creator_name, kiniela_data):
-        """Save a new Kiniela prediction to Google Sheets (Worksheet: 'Kiniela')"""
+        """Save a new Kiniela prediction to Google Sheets (Worksheet: 'Kiniela') with full payload sanitization."""
+        clean_creator = sanitize_text(creator_name, max_length=100) or 'Anònim/a'
+        clean_assignments = sanitize_data_struct(kiniela_data)
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data_str = json.dumps(kiniela_data, ensure_ascii=False)
+        data_str = json.dumps(clean_assignments, ensure_ascii=False)
         
         saved_online = False
         if self.client:
@@ -169,37 +282,30 @@ class GSheetsDB:
                     worksheet = spreadsheet.add_worksheet(title="Kiniela", rows="500", cols="4")
                     worksheet.append_row(["Timestamp", "Creator Name", "Assignments JSON"])
                 
-                worksheet.append_row([timestamp, creator_name, data_str])
+                worksheet.append_row([timestamp, clean_creator, data_str])
                 saved_online = True
-                logger.info(f"Successfully saved Kiniela prediction for '{creator_name}' to Google Sheets!")
+                logger.info(f"Successfully saved Kiniela prediction for '{clean_creator}' to Google Sheets!")
             except Exception as e:
                 logger.warning(f"Failed to save to Google Sheets directly: {e}")
 
-        # Fallback local persistence (kiniela_submissions.json)
-        local_file = "kiniela_submissions.json"
-        submissions = []
-        if os.path.exists(local_file):
-            try:
-                with open(local_file, "r", encoding="utf-8") as f:
-                    submissions = json.load(f)
-            except Exception:
-                submissions = []
+        # Local persistence in data/kiniela_submissions.json
+        submissions = self._read_data("kiniela_submissions.json", [])
+        if not isinstance(submissions, list):
+            submissions = []
         
         new_entry = {
             "id": len(submissions) + 1,
             "timestamp": timestamp,
-            "creator_name": creator_name,
-            "assignments": kiniela_data,
+            "creator_name": clean_creator,
+            "assignments": clean_assignments,
             "saved_online": saved_online
         }
         submissions.append(new_entry)
-        
-        with open(local_file, "w", encoding="utf-8") as f:
-            json.dump(submissions, f, indent=2, ensure_ascii=False)
+        self._write_data("kiniela_submissions.json", submissions)
             
         return {
             "status": "success",
-            "message": f"Kiniela de {creator_name} guardada correctament a la base de dades!",
+            "message": f"Kiniela de {clean_creator} guardada correctament a la base de dades!",
             "saved_online": saved_online,
             "timestamp": timestamp
         }
@@ -214,19 +320,19 @@ class GSheetsDB:
         return defaults
 
     def add_novetat(self, data):
-        """Add a new novetat to JSON database."""
+        """Add a new novetat to JSON database with complete input sanitization."""
         items = self.get_novetats()
         next_id = max([item.get('id', 0) for item in items], default=0) + 1
         new_post = {
             "id": next_id,
-            "title": data.get('title', '').strip(),
-            "date": data.get('date', datetime.datetime.now().strftime("%d %b %Y")).strip().upper(),
-            "tag": data.get('tag', 'GENERAL').strip().upper(),
-            "author": data.get('author', 'Equip de Caps').strip(),
-            "excerpt": data.get('excerpt', '').strip(),
-            "content": data.get('content', '').strip(),
-            "image": data.get('image', '/static/images/scout_foulard.jpg').strip() or '/static/images/scout_foulard.jpg',
-            "read_time": data.get('read_time', '3 min de lectura').strip()
+            "title": sanitize_text(data.get('title', ''), max_length=200),
+            "date": sanitize_text(data.get('date', datetime.datetime.now().strftime("%d %b %Y")), max_length=50).upper(),
+            "tag": sanitize_text(data.get('tag', 'GENERAL'), max_length=50).upper(),
+            "author": sanitize_text(data.get('author', 'Equip de Caps'), max_length=100),
+            "excerpt": sanitize_text(data.get('excerpt', ''), max_length=500, allow_newlines=True),
+            "content": sanitize_text(data.get('content', ''), max_length=15000, allow_newlines=True),
+            "image": sanitize_url(data.get('image', '/static/images/scout_foulard.jpg')),
+            "read_time": sanitize_text(data.get('read_time', '3 min de lectura'), max_length=50)
         }
         items.insert(0, new_post)
         self._write_data("novetats.json", items)
@@ -302,19 +408,19 @@ class GSheetsDB:
         return defaults
 
     def add_calendar_event(self, data):
-        """Add a new calendar event."""
+        """Add a new calendar event with complete input sanitization."""
         events = self.get_calendar_events()
         next_id = max([e.get('id', 0) for e in events], default=100) + 1
         new_event = {
             "id": next_id,
-            "title": data.get('title', '').strip(),
-            "date": data.get('date', '').strip(),
-            "time": data.get('time', '16:30 - 19:00').strip(),
-            "location": data.get('location', 'Local AE Lluïsos de Gràcia').strip(),
-            "unit": data.get('unit', 'Assemblea & General').strip(),
-            "badge_color": data.get('badge_color', '#0B2545').strip(),
-            "image": data.get('image', '/static/images/scout_foulard.jpg').strip() or '/static/images/scout_foulard.jpg',
-            "description": data.get('description', '').strip()
+            "title": sanitize_text(data.get('title', ''), max_length=200),
+            "date": sanitize_text(data.get('date', ''), max_length=50),
+            "time": sanitize_text(data.get('time', '16:30 - 19:00'), max_length=50),
+            "location": sanitize_text(data.get('location', 'Local AE Lluïsos de Gràcia'), max_length=200),
+            "unit": sanitize_text(data.get('unit', 'Assemblea & General'), max_length=100),
+            "badge_color": sanitize_hex_color(data.get('badge_color', '#0B2545')),
+            "image": sanitize_url(data.get('image', '/static/images/scout_foulard.jpg')),
+            "description": sanitize_text(data.get('description', ''), max_length=5000, allow_newlines=True)
         }
         events.append(new_event)
         events.sort(key=lambda x: str(x.get('date', '')))
@@ -322,19 +428,26 @@ class GSheetsDB:
         return new_event
 
     def update_calendar_event(self, event_id, data):
-        """Update an existing calendar event by id."""
+        """Update an existing calendar event by id with complete input sanitization."""
         events = self.get_calendar_events()
         for idx, event in enumerate(events):
             if str(event.get('id')) == str(event_id):
-                event['title'] = data.get('title', event['title']).strip()
-                event['date'] = data.get('date', event['date']).strip()
-                event['time'] = data.get('time', event.get('time', '')).strip()
-                event['location'] = data.get('location', event.get('location', '')).strip()
-                event['unit'] = data.get('unit', event.get('unit', '')).strip()
-                event['badge_color'] = data.get('badge_color', event.get('badge_color', '#0B2545')).strip()
-                if data.get('image'):
-                    event['image'] = data.get('image').strip()
-                event['description'] = data.get('description', event.get('description', '')).strip()
+                if 'title' in data and data.get('title') is not None:
+                    event['title'] = sanitize_text(data['title'], max_length=200)
+                if 'date' in data and data.get('date') is not None:
+                    event['date'] = sanitize_text(data['date'], max_length=50)
+                if 'time' in data and data.get('time') is not None:
+                    event['time'] = sanitize_text(data['time'], max_length=50)
+                if 'location' in data and data.get('location') is not None:
+                    event['location'] = sanitize_text(data['location'], max_length=200)
+                if 'unit' in data and data.get('unit') is not None:
+                    event['unit'] = sanitize_text(data['unit'], max_length=100)
+                if 'badge_color' in data and data.get('badge_color') is not None:
+                    event['badge_color'] = sanitize_hex_color(data['badge_color'])
+                if 'image' in data and data.get('image'):
+                    event['image'] = sanitize_url(data['image'])
+                if 'description' in data and data.get('description') is not None:
+                    event['description'] = sanitize_text(data['description'], max_length=5000, allow_newlines=True)
                 events[idx] = event
                 events.sort(key=lambda x: str(x.get('date', '')))
                 self._write_data("calendari.json", events)
@@ -1064,26 +1177,23 @@ class GSheetsDB:
         return defaults
 
     def add_foulard_pin(self, data):
-        """Add a new foulard destination pin."""
+        """Add a new foulard destination pin with complete input sanitization."""
         pins = self.get_foulard_pins()
         next_id = max([p.get('id', 0) for p in pins], default=0) + 1
-        try:
-            lat = float(data.get('lat', 41.4048))
-            lng = float(data.get('lng', 2.1554))
-        except (ValueError, TypeError):
-            lat, lng = 41.4048, 2.1554
+        lat = sanitize_float(data.get('lat', 41.4048), default=41.4048, min_val=-90.0, max_val=90.0)
+        lng = sanitize_float(data.get('lng', 2.1554), default=2.1554, min_val=-180.0, max_val=180.0)
 
         new_pin = {
             "id": next_id,
-            "title": data.get('title', '').strip(),
-            "location": data.get('location', '').strip(),
-            "country": data.get('country', '').strip(),
+            "title": sanitize_text(data.get('title', ''), max_length=200),
+            "location": sanitize_text(data.get('location', ''), max_length=200),
+            "country": sanitize_text(data.get('country', ''), max_length=100),
             "lat": lat,
             "lng": lng,
-            "year": str(data.get('year', datetime.datetime.now().year)).strip(),
-            "unit": data.get('unit', 'General').strip(),
-            "description": data.get('description', '').strip(),
-            "type": data.get('type', 'expedition').strip()
+            "year": sanitize_text(str(data.get('year', datetime.datetime.now().year)), max_length=20),
+            "unit": sanitize_text(data.get('unit', 'General'), max_length=100),
+            "description": sanitize_text(data.get('description', ''), max_length=5000, allow_newlines=True),
+            "type": sanitize_text(data.get('type', 'expedition'), max_length=50)
         }
         pins.append(new_pin)
         self._write_data("foulard.json", pins)
@@ -1519,22 +1629,19 @@ class GSheetsDB:
         return defaults
 
     def add_shop_product(self, data):
-        """Add a new product to the shop."""
+        """Add a new product to the shop with complete input sanitization."""
         products = self.get_shop_products()
         next_id = max([p.get('id', 0) for p in products], default=0) + 1
-        try:
-            price = float(data.get('price', 0.0))
-        except (ValueError, TypeError):
-            price = 0.0
+        price = sanitize_float(data.get('price', 0.0), default=0.0, min_val=0.0, max_val=100000.0)
 
         new_prod = {
             "id": next_id,
-            "name": data.get('name', '').strip(),
+            "name": sanitize_text(data.get('name', ''), max_length=200),
             "price": price,
-            "category": data.get('category', 'Material').strip(),
-            "tag": data.get('tag', 'NOU').strip().upper(),
-            "image": data.get('image', '/static/images/scout_foulard.jpg').strip() or '/static/images/scout_foulard.jpg',
-            "description": data.get('description', '').strip(),
+            "category": sanitize_text(data.get('category', 'Material'), max_length=100),
+            "tag": sanitize_text(data.get('tag', 'NOU'), max_length=50).upper(),
+            "image": sanitize_url(data.get('image', '/static/images/scout_foulard.jpg')),
+            "description": sanitize_text(data.get('description', ''), max_length=5000, allow_newlines=True),
             "in_stock": True if str(data.get('in_stock', 'true')).lower() in ['true', '1', 'on', 'yes'] else False
         }
         products.append(new_prod)
@@ -1542,21 +1649,22 @@ class GSheetsDB:
         return new_prod
 
     def update_shop_product(self, prod_id, data):
-        """Update an existing shop product by id."""
+        """Update an existing shop product by id with complete input sanitization."""
         products = self.get_shop_products()
         for idx, prod in enumerate(products):
             if str(prod.get('id')) == str(prod_id):
-                prod['name'] = data.get('name', prod['name']).strip()
+                if 'name' in data and data.get('name') is not None:
+                    prod['name'] = sanitize_text(data['name'], max_length=200)
                 if 'price' in data and data.get('price') != '':
-                    try:
-                        prod['price'] = float(data['price'])
-                    except (ValueError, TypeError):
-                        pass
-                prod['category'] = data.get('category', prod.get('category', 'Material')).strip()
-                prod['tag'] = data.get('tag', prod.get('tag', 'NOU')).strip().upper()
+                    prod['price'] = sanitize_float(data['price'], default=prod.get('price', 0.0), min_val=0.0, max_val=100000.0)
+                if 'category' in data and data.get('category') is not None:
+                    prod['category'] = sanitize_text(data['category'], max_length=100)
+                if 'tag' in data and data.get('tag') is not None:
+                    prod['tag'] = sanitize_text(data['tag'], max_length=50).upper()
                 if data.get('image'):
-                    prod['image'] = data.get('image').strip()
-                prod['description'] = data.get('description', prod.get('description', '')).strip()
+                    prod['image'] = sanitize_url(data['image'])
+                if 'description' in data and data.get('description') is not None:
+                    prod['description'] = sanitize_text(data['description'], max_length=5000, allow_newlines=True)
                 if 'in_stock' in data:
                     prod['in_stock'] = True if str(data.get('in_stock')).lower() in ['true', '1', 'on', 'yes'] else False
                 products[idx] = prod

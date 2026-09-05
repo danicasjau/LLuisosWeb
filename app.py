@@ -2,10 +2,20 @@ import os
 import random
 from functools import wraps
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session, flash
-from gsheets_db import db
+from gsheets_db import db, sanitize_text
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'ae-lluisos-gracia-retro-k2-key-2026')
+
+
+@app.after_request
+def set_security_headers(response):
+    """Adds essential cybersecurity headers against XSS, clickjacking, and MIME sniffing."""
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    return response
 
 
 def shuffle_caps_team(team):
@@ -155,7 +165,8 @@ def update_contra():
 @app.route('/espaidelcap/novetats/add', methods=['POST'])
 @login_required_cap
 def add_novetat():
-    title = request.form.get('title')
+    raw_title = request.form.get('title', '')
+    title = sanitize_text(raw_title, max_length=150)
     if title:
         db.add_novetat({
             'title': title,
@@ -182,8 +193,8 @@ def delete_novetat(post_id):
 @app.route('/espaidelcap/calendari/add', methods=['POST'])
 @login_required_cap
 def add_calendar_event():
-    title = request.form.get('title')
-    date = request.form.get('date')
+    title = sanitize_text(request.form.get('title', ''), max_length=150)
+    date = sanitize_text(request.form.get('date', ''), max_length=50)
     if title and date:
         db.add_calendar_event({
             'title': title,
@@ -229,8 +240,8 @@ def delete_calendar_event(event_id):
 def foulardviatger():
     """Dedicated endpoint requested for Foulard Viatger form submissions."""
     if request.method == 'POST':
-        title = request.form.get('title')
-        location = request.form.get('location')
+        title = sanitize_text(request.form.get('title', ''), max_length=150)
+        location = sanitize_text(request.form.get('location', ''), max_length=150)
         if title and location:
             db.add_foulard_pin({
                 'title': title,
@@ -260,7 +271,7 @@ def delete_foulard_pin(pin_id):
 @app.route('/espaidelcap/shop/add', methods=['POST'])
 @login_required_cap
 def add_shop_product():
-    name = request.form.get('name')
+    name = sanitize_text(request.form.get('name', ''), max_length=150)
     if name:
         db.add_shop_product({
             'name': name,
@@ -326,12 +337,8 @@ def api_shop():
 @app.route('/api/kiniela/save', methods=['POST'])
 def api_save_kiniela():
     payload = request.get_json() or {}
-    creator_name = payload.get('creator_name', 'Anònim/a').strip()
+    creator_name = sanitize_text(payload.get('creator_name', 'Anònim/a'), max_length=100) or 'Anònim/a'
     kiniela_data = payload.get('assignments', {})
-
-    if not creator_name:
-        creator_name = 'Anònim/a'
-
     result = db.save_kiniela(creator_name, kiniela_data)
     return jsonify(result)
 
