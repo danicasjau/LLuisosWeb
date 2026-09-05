@@ -229,11 +229,6 @@ function handleDrop(e, targetGroupCode) {
 
   const memberId = Number(e.dataTransfer.getData('text/plain'));
   if (Number.isInteger(memberId)) {
-    const member = MEMBERS_POOL.find(candidate => candidate.id === memberId);
-    if (member?.isNewCap && targetGroupCode === 'marxen') {
-      showMarxenRestrictionMessage(e.currentTarget);
-      return;
-    }
     assignMember(memberId, targetGroupCode);
   }
 }
