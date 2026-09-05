@@ -4,13 +4,14 @@
 
 {% block content %}
 <div class="page-container">
-  
+
   <div class="section-header">
     <div>
       <h2 class="section-title">NOVETATS I ANUNCIS</h2>
       <div class="section-subtitle">PUBLICACIONS, CRÒNIQUES D'ALTA MUNTANYA I ANUNCIS D'AGRUPAMENT</div>
     </div>
-    <div style="font-family: var(--font-display); font-size: 1.2rem; background: var(--bg-paper); padding: 6px 14px; border: 1px solid var(--ink-black);">
+    <div
+      style="font-family: var(--font-display); font-size: 1.2rem; background: var(--bg-paper); padding: 6px 14px; border: 1px solid var(--ink-black);">
       TOTAL POSTS: {{ posts|length }}
     </div>
   </div>
@@ -18,7 +19,8 @@
   <!-- Posts Grid -->
   <div class="posts-grid">
     {% for post in posts %}
-    <div class="post-card" onclick="openModal('{{ post.title|escape }}', '{{ post.tag }}', '{{ post.date }} • {{ post.author }}', '{{ post.content|escape }}', '{{ post.image }}')">
+    <div class="post-card"
+      onclick="openModal('{{ post.title|escape }}', '{{ post.tag }}', '{{ post.date }} • {{ post.author }}', '{{ post.content|escape }}', '{{ post.image }}')">
       <img src="{{ post.image }}" alt="{{ post.title }}" class="post-thumb">
       <div class="post-body">
         <span class="post-tag">{{ post.tag }}</span>

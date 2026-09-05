@@ -23,3 +23,5 @@ kiniela_submissions.json
 .idea/
 *.swp
 *.swo
+
+data/*

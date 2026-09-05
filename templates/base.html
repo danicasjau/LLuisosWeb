@@ -41,10 +41,14 @@
             <a href="/#qui-som" class="topbar-apartat-link">QUI SOM</a>
             <a href="/#novetats" class="topbar-apartat-link">NOVETATS</a>
             <a href="/equips" class="topbar-apartat-link {% if active_page == 'equips' %}active{% endif %}">CAPS</a>
-            <a href="/kiniela" class="topbar-apartat-link {% if active_page == 'kiniela' %}active{% endif %}">QUINIELA</a>
-            <a href="/calendar" class="topbar-apartat-link {% if active_page == 'calendar' %}active{% endif %}">CAULENDARI</a>
-            <a href="/foulard" class="topbar-apartat-link {% if active_page == 'foulard' %}active{% endif %}">FOULARD & SEU</a>
+            <a href="/kiniela"
+              class="topbar-apartat-link {% if active_page == 'kiniela' %}active{% endif %}">QUINIELA</a>
+            <a href="/calendar"
+              class="topbar-apartat-link {% if active_page == 'calendar' %}active{% endif %}">CAULENDARI</a>
+            <a href="/foulard" class="topbar-apartat-link {% if active_page == 'foulard' %}active{% endif %}">FOULARD VIATGER</a>
             <a href="/shop" class="topbar-apartat-link {% if active_page == 'shop' %}active{% endif %}">BOTIGA</a>
+            <a href="/espaidelcap"
+              class="topbar-apartat-link {% if active_page == 'espaidelcap' %}active{% endif %}">ESPAI DEL CAP</a>
           </nav>
         </div>
       </header>
@@ -63,6 +67,7 @@
         <a href="/calendar">CAULENDARI</a>
         <a href="/foulard">FOULARD VIATGER</a>
         <a href="/shop">BOTIGA</a>
+        <a href="/espaidelcap">ESPAI DEL CAP</a>
       </nav>
 
       <!-- Dynamic Page Content -->
@@ -81,7 +86,9 @@
           <div style="text-align:center; margin-top:12px;">
             <div id="modal-badge" class="post-tag" style="margin-bottom: 8px; display:inline-block;">BADGE</div>
             <h2 id="modal-title" class="section-title" style="font-size: 2.2rem; margin:6px 0;">Modal Title</h2>
-            <div id="modal-meta" style="font-size: 0.9rem; font-weight: 700; color: var(--retro-blue); margin-bottom: 12px;">Date / Location</div>
+            <div id="modal-meta"
+              style="font-size: 0.9rem; font-weight: 700; color: var(--retro-blue); margin-bottom: 12px;">Date /
+              Location</div>
           </div>
 
           <div class="modal-person-layout">
@@ -139,14 +146,17 @@
               <li><a href="/calendar">CAULENDARI</a></li>
               <li><a href="/foulard">FOULARD VIATGER</a></li>
               <li><a href="/shop">BOTIGA</a></li>
+              <li><a href="/espaidelcap">ESPAI DEL CAP</a></li>
             </ul>
           </div>
           <div class="footer-col">
-            <div class="footer-title">CONTACTE & SEU</div>
+            <div class="footer-title">CONTACTE</div>
             <div style="font-size: 0.85rem; color: #CBD5E1; line-height: 1.6;">
               Plaça del Nord, 4<br>
               08024 Barcelona (Gràcia)<br>
-              Email: info@lluisosdegracia.cat
+              <a href="#" id="email-link" data-user="Y29udGFjdGU=" data-domain="ZXhhbXBsZS5jb20=">
+                Envia'ns un correu electrònic
+              </a>
             </div>
           </div>
         </div>
@@ -168,5 +178,22 @@
   <script src="{{ url_for('static', filename='js/animations.js') }}"></script>
   {% block extra_js %}{% endblock %}
 </body>
+<script>
+  const emailLink = document.getElementById("email-link");
+
+  emailLink.addEventListener("mouseover", setupEmail);
+  emailLink.addEventListener("focus", setupEmail); // Per a accessibilitat amb teclat
+
+  function setupEmail() {
+    const user = atob(emailLink.getAttribute("data-user"));
+    const domain = atob(emailLink.getAttribute("data-domain"));
+    emailLink.href = `mailto:${user}@${domain}`;
+
+    // Eliminem els esdeveniments un cop ja s'ha xifrat
+    emailLink.removeEventListener("mouseover", setupEmail);
+    emailLink.removeEventListener("focus", setupEmail);
+  }
+
+</script>
 
 </html>

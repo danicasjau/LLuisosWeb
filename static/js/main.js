@@ -40,39 +40,8 @@ function initTopBarAutoHide() {
   const topBar = document.getElementById('main-top-bar');
   if (!topBar) return;
 
-  const HIDE_DELAY = 4000;
-  let hideTimer = null;
-
-  function hideTopBar() {
-    topBar.classList.add('is-autohidden');
-  }
-
-  function showTopBar() {
-    topBar.classList.remove('is-autohidden');
-  }
-
-  function scheduleHide() {
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(hideTopBar, HIDE_DELAY);
-  }
-
-  function getScrollY() {
-    return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-  }
-
-  function handleScroll() {
-    const currentScrollY = getScrollY();
-    showTopBar();
-
-    if (currentScrollY > 0) {
-      scheduleHide();
-    } else {
-      clearTimeout(hideTimer);
-    }
-  }
-
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  showTopBar();
+  // Always keep top bar visible on view (no auto-hiding)
+  topBar.classList.remove('is-autohidden');
 }
 
 /* ==========================================================================

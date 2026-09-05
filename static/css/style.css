@@ -138,52 +138,78 @@ body {
   flex-direction: column;
   overflow: hidden;
   box-shadow: var(--shadow-soft);
+  top: 70px
 }
 
-/* Main Top Bar Banner - Always Sticky on Top & Vertically Centered Across All Pages */
+/* Main Top Bar Banner - Always Fixed on Top, Centered, Always in View */
 .poster-top-bar {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
-  background: rgba(236, 230, 221, 0.78);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  padding: 10px 22px;
-  display: flex;
-  align-items: center;
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  position: fixed !important;
+  top: 16px !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 9999 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  padding: 10 26px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
+.poster-top-bar * {
+  pointer-events: auto;
+}
+
+/* Remove background color on is-scrolled and topbar-docked */
+.poster-top-bar.is-scrolled,
+.poster-top-bar.topbar-docked {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
 }
 
 .poster-top-bar.is-autohidden {
-  transform: translateY(-105%);
-  box-shadow: none;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
+/* Topbar inner container keeps its background color, with less lateral padding */
 .topbar-inner-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
-  max-width: 1600px;
-  min-height: 58px;
+  max-width: 1540px;
+  min-height: 50px;
   margin: 0 auto;
-  gap: 24px;
-  padding: 8px 10px 8px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.78);
+  gap: 12px;
+  padding: 10px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.poster-top-bar.is-scrolled .topbar-inner-container,
+.poster-top-bar.topbar-docked .topbar-inner-container {
+  background: rgba(255, 255, 255, 0.88) !important;
 }
 
 .topbar-left-cluster {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
@@ -246,7 +272,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 5px;
+  gap: 3px;
   min-width: 0;
   opacity: 1;
   pointer-events: auto;
@@ -257,17 +283,17 @@ body {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.72rem;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   text-decoration: none;
   color: #475569;
   background: transparent;
   border: 1px solid transparent;
-  padding: 9px 12px;
-  border-radius: 10px;
+  padding: 6px 7px;
+  border-radius: 8px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
   line-height: 1;
   white-space: nowrap;
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
@@ -403,6 +429,7 @@ body {
   position: relative;
   z-index: 10;
   width: 100%;
+  padding-top: 70px;
 }
 
 /* Layered 3D Hero Poster Section */
@@ -412,7 +439,7 @@ body {
   min-height: 100vh;
   display: flex;
   margin: 0;
-  margin-top: -85px;
+  margin-top: -70px;
   align-items: flex-end;
   justify-content: center;
   padding: 40px 30px;
@@ -508,7 +535,7 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0;
-  padding: 0;
+  padding: 40px 0;
   background-color: #0F172A;
 }
 
@@ -520,7 +547,7 @@ body {
   background-color: #0F172A;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 0 !important;
+  border-radius: 10px;
   overflow: hidden;
   margin: 0;
   box-shadow: none;
@@ -531,7 +558,7 @@ body {
 .distinction-panel:nth-child(even),
 .distinction-panel.distinction-panel-right {
   flex-direction: row-reverse;
-  background-color: #131C2E;
+  background-color: #000000;
 }
 
 .distinction-panel .distinction-media-wrap {
@@ -541,13 +568,14 @@ body {
   overflow: hidden;
   border-radius: 0 !important;
   background-color: #090D16;
-  min-height: 520px;
+
 }
 
 .distinction-panel .distinction-image {
   width: 100%;
   height: 100%;
-  min-height: 520px;
+  height: 320px;
+  min-height: 320px;
   object-fit: cover;
   object-position: center;
   display: block;
@@ -562,7 +590,7 @@ body {
 .distinction-panel .distinction-content-box {
   flex: 0 0 30%;
   width: 30%;
-  background-color: #0F172A;
+  background-color: #b1571c;
   color: #F8FAFC;
   padding: 50px 42px;
   display: flex;
@@ -575,7 +603,7 @@ body {
 }
 
 .distinction-panel:nth-child(even) .distinction-content-box {
-  background-color: #131C2E;
+  background-color: #0F172A;
 }
 
 .distinction-panel .distinction-badge {
@@ -612,6 +640,7 @@ body {
   color: #CBD5E1;
   margin-bottom: 30px;
   text-align: left;
+  display: None;
 }
 
 .distinction-panel .distinction-actions {
@@ -706,12 +735,25 @@ body {
   outline: 6px solid rgba(170, 171, 167, 0.85);
 }
 
-.camera-photo:nth-child(1) { transform: rotate(-6deg); }
-.camera-photo:nth-child(2) { transform: rotate(4deg); }
-.camera-photo:nth-child(3) { transform: rotate(-3deg); }
-.camera-photo:nth-child(4) { transform: rotate(8deg); }
+.camera-photo:nth-child(1) {
+  transform: rotate(-6deg);
+}
 
-.about-right { width: 100%; }
+.camera-photo:nth-child(2) {
+  transform: rotate(4deg);
+}
+
+.camera-photo:nth-child(3) {
+  transform: rotate(-3deg);
+}
+
+.camera-photo:nth-child(4) {
+  transform: rotate(8deg);
+}
+
+.about-right {
+  width: 100%;
+}
 
 .about-lead {
   font-family: var(--font-title);
@@ -3475,7 +3517,7 @@ body {
 }
 
 .animate-on-scroll.scale-up.is-visible {
-  transform: scale(1) translateY(0);
+  transform: scale(0.9) translateY(0);
 }
 
 /* Staggered Children Animations */
@@ -3494,5 +3536,8 @@ body {
   .section-block {
     padding: 50px 20px;
   }
-  .about-layout { grid-template-columns: 1fr; }
+
+  .about-layout {
+    grid-template-columns: 1fr;
+  }
 }

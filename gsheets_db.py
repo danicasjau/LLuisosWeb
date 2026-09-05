@@ -2,6 +2,7 @@ import os
 import json
 import logging
 import datetime
+import hashlib
 import requests
 
 logging.basicConfig(level=logging.INFO)
@@ -12,7 +13,91 @@ class GSheetsDB:
         self.credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", credentials_path)
         self.sheet_name = os.getenv("GSHEET_NAME", sheet_name)
         self.client = None
+        self.data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+        os.makedirs(self.data_dir, exist_ok=True)
         self._init_client()
+        self._init_json_store()
+
+    def _data_file(self, filename):
+        return os.path.join(self.data_dir, filename)
+
+    def _read_data(self, filename, default_val=None):
+        filepath = self._data_file(filename)
+        if os.path.exists(filepath):
+            try:
+                with open(filepath, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception as e:
+                logger.warning(f"Error reading {filepath}: {e}")
+        return default_val if default_val is not None else []
+
+    def _write_data(self, filename, data):
+        filepath = self._data_file(filename)
+        try:
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+            return True
+        except Exception as e:
+            logger.error(f"Error writing {filepath}: {e}")
+            return False
+
+    def _init_json_store(self):
+        """Initializes JSON data storage from defaults if files do not already exist."""
+        # 1. Password verification store
+        contra_file = self._data_file("contra.json")
+        if not os.path.exists(contra_file):
+            salt = "ae_lluisos_gracia_salt_2026"
+            default_hash = hashlib.sha256((salt + "caps2026").encode('utf-8')).hexdigest()
+            self._write_data("contra.json", {
+                "algorithm": "sha256_salted",
+                "salt": salt,
+                "contra_hash": default_hash,
+                "note": "AE Lluïsos de Gràcia - Contrasenya per defecte: caps2026"
+            })
+
+        # 2. Novetats store
+        novetats_file = self._data_file("novetats.json")
+        if not os.path.exists(novetats_file):
+            self._write_data("novetats.json", self._default_novetats())
+
+        # 3. Calendari store
+        cal_file = self._data_file("calendari.json")
+        if not os.path.exists(cal_file):
+            self._write_data("calendari.json", self._default_calendar_events())
+
+        # 4. Foulard pins store
+        foulard_file = self._data_file("foulard.json")
+        if not os.path.exists(foulard_file):
+            self._write_data("foulard.json", self._default_foulard_pins())
+
+        # 5. Shop store
+        shop_file = self._data_file("shop.json")
+        if not os.path.exists(shop_file):
+            self._write_data("shop.json", self._default_shop_products())
+
+    def verify_contra(self, password):
+        """Verify password against data/contra.json with basic salt+sha256 encryption."""
+        data = self._read_data("contra.json", None)
+        salt = "ae_lluisos_gracia_salt_2026"
+        expected = hashlib.sha256((salt + "caps2026").encode('utf-8')).hexdigest()
+        if data and isinstance(data, dict):
+            salt = data.get("salt", salt)
+            expected = data.get("contra_hash", expected)
+        computed = hashlib.sha256((salt + str(password).strip()).encode('utf-8')).hexdigest()
+        return computed == expected
+
+    def set_contra(self, new_password):
+        """Update password in data/contra.json."""
+        salt = "ae_lluisos_gracia_salt_2026"
+        computed = hashlib.sha256((salt + str(new_password).strip()).encode('utf-8')).hexdigest()
+        payload = {
+            "algorithm": "sha256_salted",
+            "salt": salt,
+            "contra_hash": computed,
+            "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        return self._write_data("contra.json", payload)
+
 
     def _init_client(self):
         """Initializes gspread client if credentials file is present."""
@@ -102,7 +187,42 @@ class GSheetsDB:
         }
 
     def get_novetats(self):
-        """Fetch news and posts for novetats.html"""
+        """Fetch news and posts from JSON store (with fallback)."""
+        records = self._read_data("novetats.json", None)
+        if records and len(records) > 0:
+            return records
+        defaults = self._default_novetats()
+        self._write_data("novetats.json", defaults)
+        return defaults
+
+    def add_novetat(self, data):
+        """Add a new novetat to JSON database."""
+        items = self.get_novetats()
+        next_id = max([item.get('id', 0) for item in items], default=0) + 1
+        new_post = {
+            "id": next_id,
+            "title": data.get('title', '').strip(),
+            "date": data.get('date', datetime.datetime.now().strftime("%d %b %Y")).strip().upper(),
+            "tag": data.get('tag', 'GENERAL').strip().upper(),
+            "author": data.get('author', 'Equip de Caps').strip(),
+            "excerpt": data.get('excerpt', '').strip(),
+            "content": data.get('content', '').strip(),
+            "image": data.get('image', '/static/images/scout_foulard.jpg').strip() or '/static/images/scout_foulard.jpg',
+            "read_time": data.get('read_time', '3 min de lectura').strip()
+        }
+        items.insert(0, new_post)
+        self._write_data("novetats.json", items)
+        return new_post
+
+    def delete_novetat(self, post_id):
+        """Remove a novetat by id."""
+        items = self.get_novetats()
+        items = [x for x in items if str(x.get('id')) != str(post_id)]
+        self._write_data("novetats.json", items)
+        return True
+
+    def _default_novetats(self):
+        """Default seed news and posts for novetats.html"""
         records = self._fetch_sheet_records("Novetats")
         if records:
             return records
@@ -155,6 +275,62 @@ class GSheetsDB:
         ]
 
     def get_calendar_events(self):
+        """Fetch events from JSON store across the scout year."""
+        records = self._read_data("calendari.json", None)
+        if records and len(records) > 0:
+            return records
+        defaults = self._default_calendar_events()
+        self._write_data("calendari.json", defaults)
+        return defaults
+
+    def add_calendar_event(self, data):
+        """Add a new calendar event."""
+        events = self.get_calendar_events()
+        next_id = max([e.get('id', 0) for e in events], default=100) + 1
+        new_event = {
+            "id": next_id,
+            "title": data.get('title', '').strip(),
+            "date": data.get('date', '').strip(),
+            "time": data.get('time', '16:30 - 19:00').strip(),
+            "location": data.get('location', 'Local AE Lluïsos de Gràcia').strip(),
+            "unit": data.get('unit', 'Assemblea & General').strip(),
+            "badge_color": data.get('badge_color', '#0B2545').strip(),
+            "image": data.get('image', '/static/images/scout_foulard.jpg').strip() or '/static/images/scout_foulard.jpg',
+            "description": data.get('description', '').strip()
+        }
+        events.append(new_event)
+        events.sort(key=lambda x: str(x.get('date', '')))
+        self._write_data("calendari.json", events)
+        return new_event
+
+    def update_calendar_event(self, event_id, data):
+        """Update an existing calendar event by id."""
+        events = self.get_calendar_events()
+        for idx, event in enumerate(events):
+            if str(event.get('id')) == str(event_id):
+                event['title'] = data.get('title', event['title']).strip()
+                event['date'] = data.get('date', event['date']).strip()
+                event['time'] = data.get('time', event.get('time', '')).strip()
+                event['location'] = data.get('location', event.get('location', '')).strip()
+                event['unit'] = data.get('unit', event.get('unit', '')).strip()
+                event['badge_color'] = data.get('badge_color', event.get('badge_color', '#0B2545')).strip()
+                if data.get('image'):
+                    event['image'] = data.get('image').strip()
+                event['description'] = data.get('description', event.get('description', '')).strip()
+                events[idx] = event
+                events.sort(key=lambda x: str(x.get('date', '')))
+                self._write_data("calendari.json", events)
+                return event
+        return None
+
+    def delete_calendar_event(self, event_id):
+        """Remove a calendar event by id."""
+        events = self.get_calendar_events()
+        events = [x for x in events if str(x.get('id')) != str(event_id)]
+        self._write_data("calendari.json", events)
+        return True
+
+    def _default_calendar_events(self):
         """Fetch events for calendar.html and calendari.html across the 2026-2027 scout year"""
         records = self._fetch_sheet_records("Calendari")
         if records:
@@ -803,6 +979,48 @@ class GSheetsDB:
         ]
 
     def get_foulard_pins(self):
+        """Fetch map pinpoints from JSON store."""
+        records = self._read_data("foulard.json", None)
+        if records and len(records) > 0:
+            return records
+        defaults = self._default_foulard_pins()
+        self._write_data("foulard.json", defaults)
+        return defaults
+
+    def add_foulard_pin(self, data):
+        """Add a new foulard destination pin."""
+        pins = self.get_foulard_pins()
+        next_id = max([p.get('id', 0) for p in pins], default=0) + 1
+        try:
+            lat = float(data.get('lat', 41.4048))
+            lng = float(data.get('lng', 2.1554))
+        except (ValueError, TypeError):
+            lat, lng = 41.4048, 2.1554
+
+        new_pin = {
+            "id": next_id,
+            "title": data.get('title', '').strip(),
+            "location": data.get('location', '').strip(),
+            "country": data.get('country', '').strip(),
+            "lat": lat,
+            "lng": lng,
+            "year": str(data.get('year', datetime.datetime.now().year)).strip(),
+            "unit": data.get('unit', 'General').strip(),
+            "description": data.get('description', '').strip(),
+            "type": data.get('type', 'expedition').strip()
+        }
+        pins.append(new_pin)
+        self._write_data("foulard.json", pins)
+        return new_pin
+
+    def delete_foulard_pin(self, pin_id):
+        """Remove a foulard pin by id."""
+        pins = self.get_foulard_pins()
+        pins = [p for p in pins if str(p.get('id')) != str(pin_id)]
+        self._write_data("foulard.json", pins)
+        return True
+
+    def _default_foulard_pins(self):
         """Fetch map pinpoints for foulard.html"""
         records = self._fetch_sheet_records("FoulardMap")
         if records:
@@ -836,6 +1054,68 @@ class GSheetsDB:
         ]
 
     def get_shop_products(self):
+        """Fetch e-commerce shop products from JSON store."""
+        records = self._read_data("shop.json", None)
+        if records and len(records) > 0:
+            return records
+        defaults = self._default_shop_products()
+        self._write_data("shop.json", defaults)
+        return defaults
+
+    def add_shop_product(self, data):
+        """Add a new product to the shop."""
+        products = self.get_shop_products()
+        next_id = max([p.get('id', 0) for p in products], default=0) + 1
+        try:
+            price = float(data.get('price', 0.0))
+        except (ValueError, TypeError):
+            price = 0.0
+
+        new_prod = {
+            "id": next_id,
+            "name": data.get('name', '').strip(),
+            "price": price,
+            "category": data.get('category', 'Material').strip(),
+            "tag": data.get('tag', 'NOU').strip().upper(),
+            "image": data.get('image', '/static/images/scout_foulard.jpg').strip() or '/static/images/scout_foulard.jpg',
+            "description": data.get('description', '').strip(),
+            "in_stock": True if str(data.get('in_stock', 'true')).lower() in ['true', '1', 'on', 'yes'] else False
+        }
+        products.append(new_prod)
+        self._write_data("shop.json", products)
+        return new_prod
+
+    def update_shop_product(self, prod_id, data):
+        """Update an existing shop product by id."""
+        products = self.get_shop_products()
+        for idx, prod in enumerate(products):
+            if str(prod.get('id')) == str(prod_id):
+                prod['name'] = data.get('name', prod['name']).strip()
+                if 'price' in data and data.get('price') != '':
+                    try:
+                        prod['price'] = float(data['price'])
+                    except (ValueError, TypeError):
+                        pass
+                prod['category'] = data.get('category', prod.get('category', 'Material')).strip()
+                prod['tag'] = data.get('tag', prod.get('tag', 'NOU')).strip().upper()
+                if data.get('image'):
+                    prod['image'] = data.get('image').strip()
+                prod['description'] = data.get('description', prod.get('description', '')).strip()
+                if 'in_stock' in data:
+                    prod['in_stock'] = True if str(data.get('in_stock')).lower() in ['true', '1', 'on', 'yes'] else False
+                products[idx] = prod
+                self._write_data("shop.json", products)
+                return prod
+        return None
+
+    def delete_shop_product(self, prod_id):
+        """Remove a shop product by id."""
+        products = self.get_shop_products()
+        products = [p for p in products if str(p.get('id')) != str(prod_id)]
+        self._write_data("shop.json", products)
+        return True
+
+    def _default_shop_products(self):
         """Fetch e-commerce shop products for shop.html"""
         records = self._fetch_sheet_records("Shop")
         if records:

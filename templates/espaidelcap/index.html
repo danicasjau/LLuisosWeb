@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESPAI DEL CAP | AE Lluïsos de Gràcia</title>
+  <meta name="description" content="Panell de Gestió intern per a l'Equip de Caps de l'AE Lluïsos de Gràcia.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/espaidelcap.css') }}">
+</head>
+
+<body class="espaidelcap-body">
+
+  <!-- =======================================================================
+       TOPBAR: CENTERED TITLE "ESPAI DEL CAP" (NO EMOJIS, NO PILLS)
+       ======================================================================= -->
+  <header class="cap-topbar">
+    <div class="cap-topbar-inner">
+      <!-- Left: Back to public website -->
+      <div class="cap-topbar-left">
+        <a href="/" class="cap-back-btn">
+          ← TORNAR A LA WEB
+        </a>
+      </div>
+
+      <!-- Center: Centered Title with Logo -->
+      <div class="cap-topbar-center">
+        <div class="cap-topbar-title-wrap">
+          <img src="{{ url_for('static', filename='images/logoantic.png') }}" class="cap-topbar-logo" alt="Logo AE Lluïsos de Gràcia">
+          <div class="cap-topbar-text-group">
+            <h1 class="cap-topbar-title">ESPAI DEL CAP</h1>
+            <div class="cap-topbar-subtitle">AE LLUÏSOS DE GRÀCIA • GESTIÓ I FORMULARIS</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Logout Button -->
+      <div class="cap-topbar-right">
+        <a href="/espaidelcap/logout" class="cap-logout-btn">
+          TANCAR SESSIÓ
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- =======================================================================
+       MAIN CONTAINER
+       ======================================================================= -->
+  <main class="cap-container">
+
+    <!-- Flash Notifications -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="cap-alert {% if category == 'error' %}cap-alert-error{% else %}cap-alert-success{% endif %}">
+      <span>{{ message }}</span>
+      <button type="button" onclick="this.parentElement.remove()"
+        style="background:none; border:none; cursor:pointer; font-weight:bold; font-size:1rem; color:inherit;">x</button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <!-- SECTION TITLE -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+      <div>
+        <h2
+          style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 900; color: var(--cap-text-main); margin: 0; text-transform: uppercase;">
+          CARPETES DE GESTIÓ
+        </h2>
+        <div style="font-size: 0.85rem; color: var(--cap-text-secondary); margin-top: 4px;">
+          Selecciona una carpeta per obrir la finestra dividida: formulari tipus Google Forms a l'esquerra i base de
+          dades a la dreta.
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         THE 4 CARPETES ON DASHBOARD (CLEAN 4-COLUMN GRID)
+         ===================================================================== -->
+    <div class="cap-carpetes-grid">
+
+      <!-- CARPETA 1: NOVETATS -->
+      <div class="carpeta-card carpeta-novetats" onclick="openBigWindow('novetats')">
+        <div>
+          <div class="carpeta-tag">FORMULARI</div>
+          <h3 class="carpeta-title">AFEGIR NOVETATS</h3>
+        </div>
+        <div class="carpeta-meta">
+          <span class="carpeta-counter">{{ novetats|length }} Posts</span>
+          <button type="button" class="btn-open-carpeta">OBRIR FORMS</button>
+        </div>
+      </div>
+
+      <!-- CARPETA 2: CALENDARI -->
+      <div class="carpeta-card carpeta-calendari" onclick="openBigWindow('calendari')">
+        <div>
+          <div class="carpeta-tag">FORMULARI</div>
+          <h3 class="carpeta-title">AFEGIR AL CALENDARI</h3>
+        </div>
+        <div class="carpeta-meta">
+          <span class="carpeta-counter">{{ events|length }} Events</span>
+          <button type="button" class="btn-open-carpeta">OBRIR FORMS</button>
+        </div>
+      </div>
+
+      <!-- CARPETA 3: FOULARD VIATGER -->
+      <div class="carpeta-card carpeta-foulard" onclick="openBigWindow('foulard')">
+        <div>
+          <div class="carpeta-tag">FORMULARI</div>
+          <h3 class="carpeta-title">AFEGIR FOULARD VIATGER</h3>
+        </div>
+        <div class="carpeta-meta">
+          <span class="carpeta-counter">{{ pins|length }} Destinacions</span>
+          <button type="button" class="btn-open-carpeta">OBRIR FORMS</button>
+        </div>
+      </div>
+
+      <!-- CARPETA 4: BOTIGA -->
+      <div class="carpeta-card carpeta-botiga" onclick="openBigWindow('botiga')">
+        <div>
+          <div class="carpeta-tag">FORMULARI</div>
+          <h3 class="carpeta-title">AFEGIR ELEMENT BOTIGA</h3>
+        </div>
+        <div class="carpeta-meta">
+          <span class="carpeta-counter">{{ products|length }} Articles</span>
+          <button type="button" class="btn-open-carpeta">OBRIR FORMS</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =====================================================================
+         BOTTOM BAR: QUICK LINKS & PASSWORD SETTINGS
+         ===================================================================== -->
+    <div class="cap-bottom-panel">
+      <!-- Public Links -->
+      <div class="bottom-box">
+        <div class="bottom-box-title">ENLLAÇOS DE VISUALITZACIÓ PÚBLICA</div>
+        <div class="quick-links-row">
+          <a href="/" target="_blank" rel="noopener noreferrer" class="quick-link-chip">PÀGINA D'INICI</a>
+          <a href="/novetats" target="_blank" rel="noopener noreferrer" class="quick-link-chip">CATÀLEG DE NOVETATS</a>
+          <a href="/calendar" target="_blank" rel="noopener noreferrer" class="quick-link-chip">CALENDARI COMPLET</a>
+          <a href="/foulard" target="_blank" rel="noopener noreferrer" class="quick-link-chip">MAPA DEL FOULARD</a>
+          <a href="/shop" target="_blank" rel="noopener noreferrer" class="quick-link-chip">BOTIGA D'AGRUPAMENT</a>
+        </div>
+      </div>
+
+      <!-- Password Update -->
+      <div class="bottom-box">
+        <div class="bottom-box-title">SEGURETAT I CONTRASENYA</div>
+        <form method="POST" action="/espaidelcap/contra/update" style="display: flex; gap: 8px;">
+          <input type="password" name="nova_contra" class="gform-input" placeholder="Nova contrasenya..." required
+            style="flex: 1;">
+          <button type="submit" class="btn-gform-submit"
+            style="padding: 8px 16px; font-size: 0.8rem; white-space: nowrap;">
+            ACTUALITZAR
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- =======================================================================
+       BIG SCREEN WINDOW (DIVIDED IN 2)
+       LEFT: GOOGLE FORMS DESIGN • RIGHT: DATABASE MODIFYING
+       ======================================================================= -->
+  <div class="big-window-backdrop" id="big-window-backdrop" onclick="handleBackdropClick(event)">
+    <div class="big-screen-window" id="big-screen-window">
+
+      <!-- Top Stripe (Google Forms look) -->
+      <div class="google-form-stripe"></div>
+
+      <!-- Top Window Navigation Bar -->
+      <div class="window-top-bar">
+        <div class="window-active-tag" id="window-active-tag">FORMULARI: AFEGIR NOVETATS</div>
+        <button type="button" class="window-close-btn" onclick="closeBigWindow()">
+          TANCAR FINESTRA [ Esc ]
+        </button>
+      </div>
+
+      <!-- Window Split Content Area -->
+      <div class="window-split-container">
+
+        <!-- ===================================================================
+             SECTION 1: NOVETATS (LEFT: FORM / RIGHT: DATABASE)
+             =================================================================== -->
+        <div class="split-section-pane active" id="pane-novetats">
+
+          <!-- LEFT: GOOGLE FORMS DESIGN -->
+          <div class="form-column-box">
+            <div class="google-form-card-header">
+              <h3 class="google-form-title">PUBLICAR NOVA CRÒNICA</h3>
+              <p class="google-form-desc">Formulari d'enviament de notícies, anuncis i cròniques d'alta muntanya.</p>
+            </div>
+
+            <form method="POST" action="/espaidelcap/novetats/add"
+              style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+              <div class="google-form-body">
+
+                <div class="gform-question-card">
+                  <label for="novetat-title" class="gform-label">Títol de la Notícia <span class="req">*</span></label>
+                  <input type="text" id="novetat-title" name="title" class="gform-input"
+                    placeholder="Ex: CIM AL K2: L'EXPEDICIÓ D'HIVERN" required>
+                </div>
+
+                <div class="gform-row-2col">
+                  <div class="gform-question-card">
+                    <label for="novetat-tag" class="gform-label">Categoria / Etiqueta <span class="req">*</span></label>
+                    <select id="novetat-tag" name="tag" class="gform-select" required>
+                      <option value="EXPEDICIÓ">EXPEDICIÓ</option>
+                      <option value="ANUNCI">ANUNCI</option>
+                      <option value="MERCAU">MERCAU</option>
+                      <option value="FORMACIÓ">FORMACIÓ</option>
+                      <option value="ACTIVITAT">ACTIVITAT</option>
+                      <option value="CAMPAMENTS">CAMPAMENTS</option>
+                    </select>
+                  </div>
+
+                  <div class="gform-question-card">
+                    <label for="novetat-author" class="gform-label">Autor / Signatura</label>
+                    <input type="text" id="novetat-author" name="author" class="gform-input" value="Equip de Caps">
+                  </div>
+                </div>
+
+                <div class="gform-row-2col">
+                  <div class="gform-question-card">
+                    <label for="novetat-date" class="gform-label">Data de Publicació</label>
+                    <input type="text" id="novetat-date" name="date" class="gform-input"
+                      placeholder="Ex: 15 SETEMBRE 2026">
+                  </div>
+
+                  <div class="gform-question-card">
+                    <label for="novetat-readtime" class="gform-label">Temps de Lectura</label>
+                    <input type="text" id="novetat-readtime" name="read_time" class="gform-input"
+                      value="3 min de lectura">
+                  </div>
+                </div>
+
+                <div class="gform-question-card">
+                  <label for="novetat-image" class="gform-label">Ruta d'Imatge</label>
+                  <input type="text" id="novetat-image" name="image" class="gform-input"
+                    value="/static/images/backgroundmountains.png">
+                </div>
+
+                <div class="gform-question-card">
+                  <label for="novetat-excerpt" class="gform-label">Resum Breu (Excerpt) <span
+                      class="req">*</span></label>
+                  <textarea id="novetat-excerpt" name="excerpt" class="gform-textarea" rows="2"
+                    placeholder="Text resumit per al llistat..." required></textarea>
+                </div>
+
+                <div class="gform-question-card">
+                  <label for="novetat-content" class="gform-label">Contingut Complet <span class="req">*</span></label>
+                  <textarea id="novetat-content" name="content" class="gform-textarea" rows="4"
+                    placeholder="Text complet de la notícia..." required></textarea>
+                </div>
+
+              </div>
+
+              <div class="gform-footer-action">
+                <button type="submit" class="btn-gform-submit">PUBLICAR NOVETAT</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- RIGHT: DATABASE MODIFYING -->
+          <div class="db-column-box">
+            <div class="db-card-header">
+              <div>
+                <h4 class="db-title">REGISTRE DE NOVETATS AL WEB</h4>
+                <div style="font-size: 0.78rem; color: var(--cap-text-secondary);">Consulta i eliminació d'entrades
+                  existents</div>
+              </div>
+              <span class="db-counter-badge">{{ novetats|length }} Registres</span>
+            </div>
+
+            <div class="db-records-list">
+              {% for post in novetats %}
+              <div class="db-record-card">
+                <div class="db-record-meta">
+                  <span class="db-badge-date">{{ post.date }}</span>
+                  <span class="db-badge-unit" style="background-color: var(--cap-violet);">{{ post.tag }}</span>
+                </div>
+                <h5 class="db-record-title">{{ post.title }}</h5>
+                <div class="db-record-sub">Autor: {{ post.author }} • {{ post.read_time }}</div>
+                <p style="font-size: 0.8rem; color: #4B5563; margin-bottom: 8px;">{{ post.excerpt }}</p>
+                <div class="db-record-actions">
+                  <form method="POST" action="/espaidelcap/novetats/delete/{{ post.id }}"
+                    onsubmit="return confirm('Segur que vols eliminar aquesta novetat?');">
+                    <button type="submit" class="btn-db-action btn-db-delete">Eliminar</button>
+                  </form>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ===================================================================
+             SECTION 2: CALENDARI (LEFT: FORM / RIGHT: DATABASE WITH EDIT/UNEDIT)
+             =================================================================== -->
+        <div class="split-section-pane" id="pane-calendari">
+
+          <!-- LEFT: GOOGLE FORMS DESIGN -->
+          <div class="form-column-box">
+            <div class="google-form-card-header">
+              <h3 class="google-form-title">AFEGIR ESDEVENIMENT AL CALENDARI</h3>
+              <p class="google-form-desc">Formulari de programació d'activitats de curs, sortides i campaments.</p>
+            </div>
+
+            <form method="POST" action="/espaidelcap/calendari/add"
+              style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+              <div class="google-form-body">
+
+                <div class="gform-question-card">
+                  <label for="event-title" class="gform-label">Nom de l'Esdeveniment <span class="req">*</span></label>
+                  <input type="text" id="event-title" name="title" class="gform-input"
+                    placeholder="Ex: Passos d'Unitat i Cau de Benvinguda" required>
+                </div>
+
+                <div class="gform-row-2col">
+                  <div class="gform-question-card">
+                    <label for="event-date" class="gform-label">Data (YYYY-MM-DD) <span class="req">*</span></label>
+                    <input type="date" id="event-date" name="date" class="gform-input" value="2026-09-12" required>
+                  </div>
+
+                  <div class="gform-question-card">
+                    <label for="event-time" class="gform-label">Horari</label>
+                    <input type="text" id="event-time" name="time" class="gform-input" value="16:30 - 19:00">
+                  </div>
+                </div>
+
+                <div class="gform-row-2col">
+                  <div class="gform-question-card">
+                    <label for="event-unit" class="gform-label">Unitat <span class="req">*</span></label>
+                    <select id="event-unit" name="unit" class="gform-select" required
+                      onchange="updateEventColor(this.value, 'event-badge-color')">
+                      <option value="Assemblea & General">Assemblea & General</option>
+                      <option value="Castúdrigues">Castúdrigues (Castors)</option>
+                      <option value="Dainops">Dainops (Llops)</option>
+                      <option value="Ranguis">Ranguis (Ràngers)</option>
+                      <option value="Pionel·les">Pionel·les (Pioners)</option>
+                      <option value="Truk">Truk (Ruta)</option>
+                      <option value="MEG">MEG (Federació)</option>
+                    </select>
+                  </div>
+
+                  <div class="gform-question-card">
+                    <label for="event-badge-color" class="gform-label">Color de la Unitat</label>
+                    <input type="color" id="event-badge-color" name="badge_color" class="gform-input" value="#0B2545"
+                      style="height: 38px; padding: 2px;">
+                  </div>
+                </div>
+
+                <div class="gform-question-card">
+                  <label for="event-location" class="gform-label">Ubicació</label>
+                  <input type="text" id="event-location" name="location" class="gform-input"
+                    value="Local AE Lluïsos de Gràcia (Plaça del Nord)">
+                </div>
+
+                <div class="gform-question-card">
+                  <label for="event-desc" class="gform-label">Descripció de l'Activitat <span
+                      class="req">*</span></label>
+                  <textarea id="event-desc" name="description" class="gform-textarea" rows="3"
+                    placeholder="Detalls per als infants i famílies..." required></textarea>
+                </div>
+
+              </div>
+
+              <div class="gform-footer-action">
+                <button type="submit" class="btn-gform-submit">AFEGIR ESDEVENIMENT</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- RIGHT: DATABASE MODIFYING WITH EDIT / UNEDIT -->
+          <div class="db-column-box">
+            <div class="db-card-header">
+              <div>
+                <h4 class="db-title">BASE DE DADES DEL CALENDARI</h4>
+                <div style="font-size: 0.78rem; color: var(--cap-text-secondary);">Clica 'Editar' per modificar en línia
+                  o 'Desfer' per cancel·lar</div>
+              </div>
+              <span class="db-counter-badge">{{ events|length }} Events</span>
+            </div>
+
+            <div class="db-records-list">
+              {% for ev in events %}
+              <div class="db-record-card" id="cal-card-{{ ev.id }}">
+
+                <!-- Display Mode -->
+                <div id="cal-view-{{ ev.id }}">
+                  <div class="db-record-meta">
+                    <span class="db-badge-date">{{ ev.date }}</span>
+                    <span class="db-badge-unit" style="background-color: {{ ev.badge_color|default('#5B21B6') }};">{{
+                      ev.unit }}</span>
+                  </div>
+                  <h5 class="db-record-title">{{ ev.title }}</h5>
+                  <div class="db-record-sub">Ubicació: {{ ev.location }} • Horari: {{ ev.time }}</div>
+                  {% if ev.description %}
+                  <p style="font-size: 0.8rem; color: #4B5563; margin-bottom: 8px;">{{ ev.description }}</p>
+                  {% endif %}
+                  <div class="db-record-actions">
+                    <button type="button" class="btn-db-action btn-db-edit"
+                      onclick="toggleCalEdit('{{ ev.id }}', true)">Editar</button>
+                    <form method="POST" action="/espaidelcap/calendari/delete/{{ ev.id }}"
+                      onsubmit="return confirm('Segur que vols eliminar aquest esdeveniment?');"
+                      style="display:inline;">
+                      <button type="submit" class="btn-db-action btn-db-delete">Eliminar</button>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- Inline Edit Mode (Forms to update / Unedit) -->
+                <div class="db-inline-edit" id="cal-edit-{{ ev.id }}">
+                  <div class="db-inline-header">
+                    <span>EDITANT ESDEVENIMENT #{{ ev.id }}</span>
+                    <button type="button" class="btn-unedit" onclick="toggleCalEdit('{{ ev.id }}', false)">Desfer
+                      (Unedit)</button>
+                  </div>
+
+                  <form method="POST" action="/espaidelcap/calendari/edit/{{ ev.id }}">
+                    <div style="margin-bottom: 8px;">
+                      <label class="gform-label" style="font-size: 0.72rem;">Títol</label>
+                      <input type="text" name="title" class="gform-input" value="{{ ev.title }}" required>
+                    </div>
+
+                    <div class="gform-row-2col" style="margin-bottom: 8px;">
+                      <div>
+                        <label class="gform-label" style="font-size: 0.72rem;">Data</label>
+                        <input type="date" name="date" class="gform-input" value="{{ ev.date }}" required>
+                      </div>
+                      <div>
+                        <label class="gform-label" style="font-size: 0.72rem;">Horari</label>
+                        <input type="text" name="time" class="gform-input" value="{{ ev.time }}">
+                      </div>
+                    </div>
+
+                    <div class="gform-row-2col" style="margin-bottom: 8px;">
+                      <div>
+                        <label class="gform-label" style="font-size: 0.72rem;">Unitat</label>
+                        <select name="unit" class="gform-select">
+                          <option value="Assemblea & General" {% if ev.unit=='Assemblea & General' %}selected{% endif
+                            %}>Assemblea & General</option>
+                          <option value="Castúdrigues" {% if ev.unit=='Castúdrigues' %}selected{% endif %}>Castúdrigues
+                          </option>
+                          <option value="Dainops" {% if ev.unit=='Dainops' %}selected{% endif %}>Dainops</option>
+                          <option value="Ranguis" {% if ev.unit=='Ranguis' %}selected{% endif %}>Ranguis</option>
+                          <option value="Pionel·les" {% if ev.unit=='Pionel·les' %}selected{% endif %}>Pionel·les
+                          </option>
+                          <option value="Truk" {% if ev.unit=='Truk' %}selected{% endif %}>Truk</option>
+                          <option value="MEG" {% if ev.unit=='MEG' %}selected{% endif %}>MEG</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="gform-label" style="font-size: 0.72rem;">Color Badge</label>
+                        <input type="color" name="badge_color" class="gform-input"
+                          value="{{ ev.badge_color|default('#0B2545') }}" style="height:36px; padding:2px;">
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom: 8px;">
+                      <label class="gform-label" style="font-size: 0.72rem;">Ubicació</label>
+                      <input type="text" name="location" class="gform-input" value="{{ ev.location }}">
+                    </div>
+
+                    <div style="margin-bottom: 8px;">
+                      <label class="gform-label" style="font-size: 0.72rem;">Descripció</label>
+                      <textarea name="description" class="gform-textarea" rows="2">{{ ev.description }}</textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 6px;">
+                      <button type="button" class="btn-db-action btn-db-edit"
+                        onclick="toggleCalEdit('{{ ev.id }}', false)">Cancel·lar</button>
+                      <button type="submit" class="btn-gform-submit"
+                        style="padding: 6px 14px; font-size: 0.8rem;">Guardar Canvis</button>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ===================================================================
+             SECTION 3: FOULARD VIATGER (POSTS TO /foulardviatger)
+             =================================================================== -->
+        <div class="split-section-pane" id="pane-foulard">
+
+          <!-- LEFT: GOOGLE FORMS DESIGN -->
+          <div class="form-column-box">
+            <div class="google-form-card-header">
+              <h3 class="google-form-title">AFEGIR DESTINACIÓ DEL FOULARD</h3>
+              <p class="google-form-desc">Formulari amb ruta dedicada: <code>/foulardviatger</code></p>
+            </div>
+
+            <form method="POST" action="/foulardviatger"
+              style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+              <div class="google-form-body">
+
+                <div class="gform-question-card">
+                  <label for="foulard-title" class="gform-label">Títol de l'Expedició o Seu <span
+                      class="req">*</span></label>
+                  <input type="text" id="foulard-title" name="title" class="gform-input"
+                    placeholder="Ex: Campament d'Estiu a la Vall de Boí" required>
+                </div>
+
+                <div class="gform-row-2col">
+                  <div class="gform-question-card">
+                    <label for="foulard-location" class="gform-label">Lloc / Ciutat <span class="req">*</span></label>
+                    <input type="text" id="foulard-location" name="location" class="gform-input"
+                      placeholder="Ex: Vall de Boí, Pirineu" required>
+                  </div>
+
+                  <div class="gform-question-card">
+                    <label for="foulard-country" class="gform-label">País / Regió <span class="req">*</span></label>
+                    <input type="text" id="foulard-country" name="country" class="gform-input" value="Catalunya"
+                      required>
+                  </div>
+                </div>
+
+                <!-- Preset coordinates -->
+                <div class="gform-question-card">
+                  <label class="gform-label">Coordenades GPS (Latitud i Longitud)</label>
+                  <div class="preset-coords-container">
+                    <button type="button" class="btn-coord-preset"
+                      onclick="fillCoords(41.4048, 2.1554, 'Gràcia, Barcelona')">Plaça del Nord (Cau)</button>
+                    <button type="button" class="btn-coord-preset"
+                      onclick="fillCoords(35.8808, 76.5158, 'K2 Base Camp')">K2 Himàlaia</button>
+                    <button type="button" class="btn-coord-preset"
+                      onclick="fillCoords(42.3831, 2.1166, 'Puigmal, Pirineus')">Puigmal</button>
+                    <button type="button" class="btn-coord-preset"
+                      onclick="fillCoords(41.7107, 2.4418, 'Montseny')">Montseny</button>
+                    <button type="button" class="btn-coord-preset"
+                      onclick="fillCoords(45.8326, 6.8652, 'Mont Blanc')">Alps</button>
+                  </div>
+                  <div class="gform-row-2col">
+                    <input type="number" step="any" id="foulard-lat" name="lat" class="gform-input" value="41.4048"
+                      required>
+                    <input type="number" step="any" id="foulard-lng" name="lng" class="gform-input" value="2.1554"
+                      required>
+                  </div>
+                </div>
+
+                <div class="gform-row-2col">
+                  <div class="gform-question-card">
+                    <label for="foulard-year" class="gform-label">Any</label>
+                    <input type="text" id="foulard-year" name="year" class="gform-input" value="2026">
+                  </div>
+
+                  <div class="gform-question-card">
+                    <label for="foulard-unit" class="gform-label">Unitat Responsable</label>
+                    <select id="foulard-unit" name="unit" class="gform-select">
+                      <option value="Trucs">Trucs</option>
+                      <option value="Pioners">Pioners</option>
+                      <option value="Ràngers">Ràngers</option>
+                      <option value="Llops">Llops</option>
+                      <option value="Castors">Castors</option>
+                      <option value="Equip de Caps">Equip de Caps</option>
+                      <option value="Seu Central">Seu Central</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="gform-question-card">
+                  <label for="foulard-desc" class="gform-label">Descripció del Viatge</label>
+                  <textarea id="foulard-desc" name="description" class="gform-textarea" rows="3"
+                    placeholder="Resum de l'expedició..."></textarea>
+                </div>
+
+              </div>
+
+              <div class="gform-footer-action">
+                <button type="submit" class="btn-gform-submit">AFEGIR DESTINACIÓ AL MAPA</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- RIGHT: DATABASE MODIFYING -->
+          <div class="db-column-box">
+            <div class="db-card-header">
+              <div>
+                <h4 class="db-title">BASE DE DADES DEL FOULARD</h4>
+                <div style="font-size: 0.78rem; color: var(--cap-text-secondary);">Destinacions registrades al mapa
+                  mundial</div>
+              </div>
+              <span class="db-counter-badge">{{ pins|length }} Punts</span>
+            </div>
+
+            <div class="db-records-list">
+              {% for pin in pins %}
+              <div class="db-record-card">
+                <div class="db-record-meta">
+                  <span class="db-badge-date">{{ pin.year }}</span>
+                  <span class="db-badge-unit" style="background-color: var(--cap-violet);">{{ pin.unit }}</span>
+                </div>
+                <h5 class="db-record-title">{{ pin.title }}</h5>
+                <div class="db-record-sub">Lloc: {{ pin.location }} ({{ pin.country }}) • Lat: {{ pin.lat }}, Lng: {{
+                  pin.lng }}</div>
+                {% if pin.description %}
+                <p style="font-size: 0.8rem; color: #4B5563; margin-bottom: 8px;">{{ pin.description }}</p>
+                {% endif %}
+                <div class="db-record-actions">
+                  <form method="POST" action="/espaidelcap/foulard/delete/{{ pin.id }}"
+                    onsubmit="return confirm('Segur que vols eliminar aquesta destinació?');">
+                    <button type="submit" class="btn-db-action btn-db-delete">Eliminar</button>
+                  </form>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ===================================================================
+             SECTION 4: BOTIGA (LEFT: FORM / RIGHT: DATABASE WITH EDIT)
+             =================================================================== -->
+        <div class="split-section-pane" id="pane-botiga">
+
+          <!-- LEFT: GOOGLE FORMS DESIGN -->
+          <div class="form-column-box">
+            <div class="google-form-card-header">
+              <h3 class="google-form-title">PUBLICAR NOU PRODUCTE</h3>
+              <p class="google-form-desc">Formulari per afegir articles al catàleg de la botiga d'agrupament.</p>
+            </div>
+
+            <form method="POST" action="/espaidelcap/shop/add"
+              style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+              <div class="google-form-body">
+
+                <div class="gform-question-card">
+                  <label for="shop-name" class="gform-label">Nom del Producte <span class="req">*</span></label>
+                  <input type="text" id="shop-name" name="name" class="gform-input"
+                    placeholder="Ex: Samarreta d'Agrupament 2026" required>
+                </div>
+
+                <div class="gform-row-2col">
+                  <div class="gform-question-card">
+                    <label for="shop-price" class="gform-label">Preu (€) <span class="req">*</span></label>
+                    <input type="number" step="0.50" id="shop-price" name="price" class="gform-input" value="15.00"
+                      required>
+                  </div>
+
+                  <div class="gform-question-card">
+                    <label for="shop-category" class="gform-label">Categoria</label>
+                    <select id="shop-category" name="category" class="gform-select">
+                      <option value="Foulards">Foulards</option>
+                      <option value="Roba">Roba (Dessuadores, Samarretes)</option>
+                      <option value="Material">Material de Muntanya</option>
+                      <option value="Accessoris">Accessoris</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="gform-row-2col">
+                  <div class="gform-question-card">
+                    <label for="shop-tag" class="gform-label">Etiqueta</label>
+                    <input type="text" id="shop-tag" name="tag" class="gform-input" value="NOU"
+                      placeholder="Ex: RETRO, NOU, BESTSELLER">
+                  </div>
+
+                  <div class="gform-question-card">
+                    <label for="shop-image" class="gform-label">Ruta d'Imatge</label>
+                    <input type="text" id="shop-image" name="image" class="gform-input"
+                      value="/static/images/scout_foulard.jpg">
+                  </div>
+                </div>
+
+                <div class="gform-question-card">
+                  <label for="shop-desc" class="gform-label">Descripció del Producte</label>
+                  <textarea id="shop-desc" name="description" class="gform-textarea" rows="2"
+                    placeholder="Talles, colors i detalls..."></textarea>
+                </div>
+
+                <div class="gform-question-card" style="display: flex; align-items: center; gap: 8px;">
+                  <input type="checkbox" id="shop-stock" name="in_stock" checked style="width: 16px; height: 16px;">
+                  <label for="shop-stock" class="gform-label" style="margin-bottom: 0; cursor: pointer;">Disponible en
+                    estoc</label>
+                </div>
+
+              </div>
+
+              <div class="gform-footer-action">
+                <button type="submit" class="btn-gform-submit">PUBLICAR PRODUCTE</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- RIGHT: DATABASE MODIFYING WITH EDIT / UNEDIT -->
+          <div class="db-column-box">
+            <div class="db-card-header">
+              <div>
+                <h4 class="db-title">CATÀLEG DE LA BOTIGA</h4>
+                <div style="font-size: 0.78rem; color: var(--cap-text-secondary);">Modificació de preus, descripcions i
+                  estat</div>
+              </div>
+              <span class="db-counter-badge">{{ products|length }} Articles</span>
+            </div>
+
+            <div class="db-records-list">
+              {% for prod in products %}
+              <div class="db-record-card">
+
+                <!-- Display Mode -->
+                <div id="shop-view-{{ prod.id }}">
+                  <div class="db-record-meta">
+                    <span class="db-badge-date">{{ "%.2f"|format(prod.price) }} €</span>
+                    <span class="db-badge-unit" style="background-color: var(--cap-violet);">{{ prod.category }}</span>
+                  </div>
+                  <h5 class="db-record-title">{{ prod.name }}</h5>
+                  <div class="db-record-sub">Etiqueta: {{ prod.tag }} • {% if prod.in_stock %}En estoc{% else %}Sense
+                    estoc{% endif %}</div>
+                  {% if prod.description %}
+                  <p style="font-size: 0.8rem; color: #4B5563; margin-bottom: 8px;">{{ prod.description }}</p>
+                  {% endif %}
+                  <div class="db-record-actions">
+                    <button type="button" class="btn-db-action btn-db-edit"
+                      onclick="toggleShopEdit('{{ prod.id }}', true)">Editar</button>
+                    <form method="POST" action="/espaidelcap/shop/delete/{{ prod.id }}"
+                      onsubmit="return confirm('Segur que vols eliminar aquest producte?');" style="display:inline;">
+                      <button type="submit" class="btn-db-action btn-db-delete">Eliminar</button>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- Inline Edit Mode -->
+                <div class="db-inline-edit" id="shop-edit-{{ prod.id }}">
+                  <div class="db-inline-header">
+                    <span>EDITANT PRODUCTE #{{ prod.id }}</span>
+                    <button type="button" class="btn-unedit" onclick="toggleShopEdit('{{ prod.id }}', false)">Desfer
+                      (Unedit)</button>
+                  </div>
+
+                  <form method="POST" action="/espaidelcap/shop/edit/{{ prod.id }}">
+                    <div style="margin-bottom: 8px;">
+                      <label class="gform-label" style="font-size: 0.72rem;">Nom del Producte</label>
+                      <input type="text" name="name" class="gform-input" value="{{ prod.name }}" required>
+                    </div>
+
+                    <div class="gform-row-2col" style="margin-bottom: 8px;">
+                      <div>
+                        <label class="gform-label" style="font-size: 0.72rem;">Preu (€)</label>
+                        <input type="number" step="0.50" name="price" class="gform-input" value="{{ prod.price }}"
+                          required>
+                      </div>
+                      <div>
+                        <label class="gform-label" style="font-size: 0.72rem;">Categoria</label>
+                        <input type="text" name="category" class="gform-input" value="{{ prod.category }}">
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom: 8px;">
+                      <label class="gform-label" style="font-size: 0.72rem;">Descripció</label>
+                      <textarea name="description" class="gform-textarea" rows="2">{{ prod.description }}</textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 6px;">
+                      <button type="button" class="btn-db-action btn-db-edit"
+                        onclick="toggleShopEdit('{{ prod.id }}', false)">Cancel·lar</button>
+                      <button type="submit" class="btn-gform-submit"
+                        style="padding: 6px 14px; font-size: 0.8rem;">Guardar Canvis</button>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       JAVASCRIPT FOR BIG SCREEN WINDOW & INTERACTION
+       ======================================================================= -->
+  <script>
+    const sectionTitles = {
+      'novetats': 'FORMULARI: AFEGIR NOVETATS',
+      'calendari': 'FORMULARI: AFEGIR AL CALENDARI',
+      'foulard': 'FORMULARI: AFEGIR FOULARD VIATGER',
+      'botiga': 'FORMULARI: AFEGIR ELEMENT BOTIGA'
+    };
+
+    // Open Big Screen Window focused on a specific carpeta
+    function openBigWindow(sectionKey) {
+      const backdrop = document.getElementById('big-window-backdrop');
+      const windowEl = document.getElementById('big-screen-window');
+      if (backdrop) {
+        backdrop.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+      if (windowEl) {
+        windowEl.setAttribute('data-active-theme', sectionKey);
+      }
+      switchWindowSection(sectionKey);
+    }
+
+    // Close Big Screen Window
+    function closeBigWindow() {
+      const backdrop = document.getElementById('big-window-backdrop');
+      if (backdrop) {
+        backdrop.classList.remove('is-open');
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    // Click outside window to close
+    function handleBackdropClick(e) {
+      if (e.target.id === 'big-window-backdrop') {
+        closeBigWindow();
+      }
+    }
+
+    // Keyboard Esc to close window
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeBigWindow();
+      }
+    });
+
+    // Switch between sections inside the Big Screen Window
+    function switchWindowSection(sectionKey) {
+      const windowEl = document.getElementById('big-screen-window');
+      if (windowEl) {
+        windowEl.setAttribute('data-active-theme', sectionKey);
+      }
+
+      document.querySelectorAll('.split-section-pane').forEach(p => p.classList.remove('active'));
+      const targetPane = document.getElementById('pane-' + sectionKey);
+      if (targetPane) targetPane.classList.add('active');
+
+      const titleTag = document.getElementById('window-active-tag');
+      if (titleTag && sectionTitles[sectionKey]) {
+        titleTag.textContent = sectionTitles[sectionKey];
+      }
+    }
+
+    // Toggle Edit / Unedit mode for Calendar Events
+    function toggleCalEdit(eventId, showEdit) {
+      const viewDiv = document.getElementById('cal-view-' + eventId);
+      const editDiv = document.getElementById('cal-edit-' + eventId);
+      if (!viewDiv || !editDiv) return;
+
+      if (showEdit) {
+        viewDiv.style.display = 'none';
+        editDiv.classList.add('active');
+      } else {
+        viewDiv.style.display = 'block';
+        editDiv.classList.remove('active');
+      }
+    }
+
+    // Toggle Edit / Unedit mode for Shop Products
+    function toggleShopEdit(prodId, showEdit) {
+      const viewDiv = document.getElementById('shop-view-' + prodId);
+      const editDiv = document.getElementById('shop-edit-' + prodId);
+      if (!viewDiv || !editDiv) return;
+
+      if (showEdit) {
+        viewDiv.style.display = 'none';
+        editDiv.classList.add('active');
+      } else {
+        viewDiv.style.display = 'block';
+        editDiv.classList.remove('active');
+      }
+    }
+
+    // Quick GPS helper in Foulard form
+    function fillCoords(lat, lng, locLabel) {
+      const latInput = document.getElementById('foulard-lat');
+      const lngInput = document.getElementById('foulard-lng');
+      const locInput = document.getElementById('foulard-location');
+      if (latInput) latInput.value = lat;
+      if (lngInput) lngInput.value = lng;
+      if (locInput && locLabel && !locInput.value) locInput.value = locLabel;
+    }
+
+    // Autofill color badge based on unit
+    function updateEventColor(unit, colorInputId) {
+      const input = document.getElementById(colorInputId);
+      if (!input) return;
+      const colorMap = {
+        'Castúdrigues': '#F97316',
+        'Dainops': '#F59E0B',
+        'Ranguis': '#0284C7',
+        'Pionel·les': '#E11D48',
+        'Truk': '#059669',
+        'Assemblea & General': '#0B2545',
+        'MEG': '#5B21B6'
+      };
+      if (colorMap[unit]) {
+        input.value = colorMap[unit];
+      }
+    }
+  </script>
+
+</body>
+
+</html>
