@@ -682,13 +682,13 @@ body {
 
 .distinction-panel .distinction-title-text {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 3.2vw, 3.6rem);
+  font-size: clamp(2.8rem, 4vw, 4.4rem);
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: #FFFFFF;
   text-transform: uppercase;
-  line-height: 1.05;
-  margin-bottom: 22px;
+  line-height: 0.98;
+  margin-bottom: 28px;
   text-shadow: none;
 }
 
@@ -711,7 +711,14 @@ body {
 }
 
 .distinction-panel .btn-retro {
-  border-radius: 0 !important;
+  width: 100%;
+  justify-content: center;
+  padding: 16px 18px;
+  font-size: clamp(0.84rem, 1vw, 1.08rem);
+  letter-spacing: 1px;
+  line-height: 1;
+  white-space: nowrap;
+  border-radius: 12px !important;
   box-shadow: none;
 }
 
@@ -787,11 +794,13 @@ body {
 .camera-photo {
   width: 100%;
   height: auto;
-  border-radius: var(--nor-br);
-  box-shadow: var(--shadow-soft);
+  padding: 6px;
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: 12px;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
   margin: 6px 0;
   transform-origin: center center;
-  outline: 6px solid rgba(170, 171, 167, 0.85);
 }
 
 .camera-photo:nth-child(1) {
@@ -1695,14 +1704,14 @@ body {
 }
 
 .caps-scroll-arrow {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  border-radius: 4px;
   background: var(--bg-cream);
   border: 1px solid var(--border-dark);
   color: var(--ink-black);
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 900;
   display: flex;
   align-items: center;
@@ -2493,9 +2502,10 @@ body {
 .btn-view-toggle {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 0.7px;
-  padding: 9px 13px;
+  font-size: 0.84rem;
+  letter-spacing: 0.8px;
+  padding: 12px 16px;
+  min-height: 44px;
   border: none;
   background: transparent;
   border-radius: 9px;
@@ -2519,9 +2529,10 @@ body {
 .btn-download-pdf {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   letter-spacing: 0.8px;
-  padding: 11px 15px;
+  padding: 13px 18px;
+  min-height: 44px;
   background: var(--retro-orange);
   color: #FFFFFF;
   border: 1px solid var(--retro-orange);
@@ -2628,6 +2639,15 @@ body {
   border-color: var(--retro-blue);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.calendar-cell.has-events {
+  background-color: color-mix(in srgb, var(--event-day-color) 18%, #FFFFFF);
+  border-color: color-mix(in srgb, var(--event-day-color) 45%, #CBD5E1);
+}
+
+.calendar-cell.has-events:hover {
+  background-color: color-mix(in srgb, var(--event-day-color) 26%, #FFFFFF);
 }
 
 .calendar-cell.empty {
@@ -4435,8 +4455,8 @@ body {
   }
 
   .distinction-panel .distinction-title-text {
-    font-size: clamp(1.8rem, 6vw, 2.5rem);
-    margin-bottom: 12px;
+    font-size: clamp(2.2rem, 8vw, 3.2rem);
+    margin-bottom: 18px;
   }
 
   /* Calendar Component on Mobile */
@@ -4476,13 +4496,15 @@ body {
   }
 
   .btn-view-toggle {
-    font-size: 0.65rem;
-    padding: 7px 10px;
+    font-size: 0.72rem;
+    padding: 9px 12px;
+    min-height: 42px;
   }
 
   .btn-download-pdf {
-    font-size: 0.65rem;
-    padding: 7px 10px;
+    font-size: 0.72rem;
+    padding: 9px 13px;
+    min-height: 42px;
   }
 
   .calendar-grid-box,

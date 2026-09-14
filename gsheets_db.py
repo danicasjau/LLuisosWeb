@@ -936,7 +936,7 @@ class GSheetsDB:
             },
             {
                 "id": 2,
-                "name": "Maia de Cook",
+                "name": "Maia de Cock",
                 "role": "Cap de Branca",
                 "unit": "Castúdrigues",
                 "unit_code": "castors",

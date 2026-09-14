@@ -351,13 +351,14 @@ function renderCalendarMonth() {
     // Find events on this day
     const dayEvents = events.filter(e => e.date === dayStr);
     if (dayEvents.length > 0) {
+      const eventColor = dayEvents[0].badge_color || '#FF5722';
       cell.classList.add('has-events');
+      cell.style.setProperty('--event-day-color', eventColor);
     }
 
     let topRowHtml = `
       <div class="cell-top-row">
         <span class="cell-number">${d}</span>
-        ${isToday ? '<span class="today-pill-tag">AVUI</span>' : ''}
       </div>
     `;
 
