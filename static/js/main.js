@@ -276,19 +276,29 @@ function onMonthDropdownChange(val) {
 }
 
 function setCalendarView(viewMode) {
+  const previousView = calendarState.activeView;
   calendarState.activeView = viewMode;
   const monthContainer = document.getElementById('calendar-month-container');
   const yearContainer = document.getElementById('calendar-year-container');
+  const monthNav = document.querySelector('.month-nav-cluster');
   const btnMonth = document.getElementById('btn-view-month');
   const btnYear = document.getElementById('btn-view-year');
 
   if (viewMode === 'year') {
+    if (monthNav) monthNav.classList.add('is-hidden');
     if (monthContainer) monthContainer.style.display = 'none';
     if (yearContainer) yearContainer.style.display = 'block';
     if (btnMonth) btnMonth.classList.remove('active');
     if (btnYear) btnYear.classList.add('active');
     renderCalendarYear();
   } else {
+    if (monthNav) monthNav.classList.remove('is-hidden');
+    if (previousView === 'year') {
+      const now = new Date();
+      calendarState.currentYear = now.getFullYear();
+      calendarState.currentMonth = now.getMonth() + 1;
+      clampCalendarDate();
+    }
     if (monthContainer) monthContainer.style.display = 'block';
     if (yearContainer) yearContainer.style.display = 'none';
     if (btnMonth) btnMonth.classList.add('active');
@@ -349,7 +359,11 @@ function renderCalendarMonth() {
     cell.setAttribute('data-date', dayStr);
 
     // Find events on this day
-    const dayEvents = events.filter(e => e.date === dayStr);
+    const dayEvents = events.filter(event => {
+      const eventStart = event.date;
+      const eventEnd = event.end_date || eventStart;
+      return dayStr >= eventStart && dayStr <= eventEnd;
+    });
     if (dayEvents.length > 0) {
       const eventColor = dayEvents[0].badge_color || '#FF5722';
       cell.classList.add('has-events');
@@ -377,11 +391,6 @@ function renderCalendarMonth() {
     eventsHtml += '</div>';
 
     cell.innerHTML = topRowHtml + eventsHtml;
-
-    // Click to open 2-div Day Detail Modal
-    cell.addEventListener('click', () => {
-      openDayDetailModal(dayStr);
-    });
 
     gridEl.appendChild(cell);
   }
@@ -435,8 +444,7 @@ function renderCalendarYear() {
 
     let cardHtml = `
       <div class="mini-month-title">
-        <span>${monthName} ${y}</span>
-        <button class="btn-retro" style="font-size:0.65rem; padding:2px 8px; border-radius:var(--small-br);" onclick="jumpToMonth(${y}, ${m})">VEURE MES →</button>
+        <button class="mini-month-title-button" type="button" onclick="jumpToMonth(${y}, ${m})">${monthName} ${y}</button>
       </div>
       <div class="mini-month-grid">
         <div class="mini-day-header">DL</div>
@@ -455,16 +463,19 @@ function renderCalendarYear() {
     for (let d = 1; d <= daysInMonth; d++) {
       const dayStr = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const isToday = (dayStr === todayStr);
-      const dayEvents = events.filter(e => e.date === dayStr);
+      const dayEvents = events.filter(event => {
+        const eventStart = event.date;
+        const eventEnd = event.end_date || eventStart;
+        return dayStr >= eventStart && dayStr <= eventEnd;
+      });
       const hasEvent = dayEvents.length > 0;
-      const dotColor = hasEvent ? (dayEvents[0].badge_color || '#FF5722') : 'transparent';
+      const eventColor = hasEvent ? (dayEvents[0].badge_color || '#FF5722') : '';
 
       cardHtml += `
-        <div class="mini-day-cell ${isToday ? 'is-today' : ''} ${hasEvent ? 'has-event' : ''}" 
-             onclick="openDayDetailModal('${dayStr}')" 
+        <div class="mini-day-cell ${isToday ? 'is-today' : ''} ${hasEvent ? 'has-event' : ''}"
+             ${hasEvent ? `style="--mini-event-color: ${eventColor};"` : ''}
              title="${dayStr}${hasEvent ? ': ' + dayEvents.map(e => e.title).join(', ') : ''}">
           <span>${d}</span>
-          ${hasEvent ? `<span class="mini-event-dot" style="background-color: ${dotColor};"></span>` : ''}
         </div>
       `;
     }
@@ -478,6 +489,7 @@ function renderCalendarYear() {
 function jumpToMonth(y, m) {
   calendarState.currentYear = y;
   calendarState.currentMonth = m;
+  calendarState.activeView = 'month';
   setCalendarView('month');
 }
 

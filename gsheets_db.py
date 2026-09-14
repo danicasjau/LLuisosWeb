@@ -402,6 +402,48 @@ class GSheetsDB:
         """Fetch events from JSON store across the scout year."""
         records = self._read_data("calendari.json", None)
         if records and len(records) > 0:
+            excluded_cau_dates = {
+                "2026-10-03", "2026-12-26", "2027-01-02", "2027-01-09",
+                "2027-03-20", "2027-03-27", "2027-04-10", "2027-06-26"
+            }
+            records = [
+                event for event in records
+                if not (
+                    event.get('title') == 'Cau'
+                    and (
+                        event.get('date', '')[5:7] in {'07', '08', '09'}
+                        or event.get('date') in excluded_cau_dates
+                    )
+                )
+            ]
+            records = [
+                event for event in records
+                if not (
+                    (event.get('title') == 'Excursió' and event.get('date') == '2026-10-17')
+                    or (event.get('title') == 'Cau' and event.get('date') == '2026-11-14')
+                )
+            ]
+            for event in records:
+                if event.get('title') == 'Excursió' and not event.get('end_date'):
+                    start_date = datetime.date.fromisoformat(event['date'])
+                    event['end_date'] = (start_date + datetime.timedelta(days=1)).isoformat()
+                if event.get('title') == 'Excursió' and event.get('date') == '2027-07-10':
+                    event['date'] = '2027-05-08'
+                    event['end_date'] = '2027-05-09'
+                if event.get('title') == 'Campaments Primavera':
+                    event['end_date'] = '2027-03-23'
+                    event['time'] = 'Dissabte 08:00 - Dimarts 18:30'
+            existing_event_keys = {(event.get('title'), event.get('date')) for event in records}
+            next_id = max([event.get('id', 0) for event in records], default=100) + 1
+            for special_event in self._calendar_special_events():
+                event_key = (special_event['title'], special_event['date'])
+                if event_key not in existing_event_keys:
+                    special_event['id'] = next_id
+                    records.append(special_event)
+                    existing_event_keys.add(event_key)
+                    next_id += 1
+            records.sort(key=lambda x: str(x.get('date', '')))
+            self._write_data("calendari.json", records)
             return records
         defaults = self._default_calendar_events()
         self._write_data("calendari.json", defaults)
@@ -461,11 +503,151 @@ class GSheetsDB:
         self._write_data("calendari.json", events)
         return True
 
+    def _calendar_special_events(self):
+        return [
+            {
+                "title": "Últim Cau",
+                "date": "2026-09-19",
+                "time": "16:30 - 19:00",
+                "location": "Local AE Lluïsos de Gràcia",
+                "unit": "Totes les unitats",
+                "badge_color": "#FF5722",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Últim cau de la temporada."
+            },
+            {
+                "title": "Campaments Primavera",
+                "date": "2027-03-20",
+                "end_date": "2027-03-23",
+                "time": "Dissabte 08:00 - Dimarts 18:30",
+                "location": "Entorn natural de Catalunya",
+                "unit": "Totes les unitats",
+                "badge_color": "#16A34A",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Campaments de primavera de l'agrupament."
+            },
+            {
+                "title": "Jamborinada",
+                "date": "2027-04-10",
+                "end_date": "2027-04-11",
+                "time": "Dissabte 08:00 - Diumenge 18:30",
+                "location": "Entorn natural de Catalunya",
+                "unit": "Totes les unitats",
+                "badge_color": "#2563EB",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Sortida de cap de setmana a la Jamborinada."
+            },
+            {
+                "title": "Campaments Hivern (Pionel·les)",
+                "date": "2026-12-27",
+                "end_date": "2026-12-29",
+                "time": "Diumenge 08:00 - Dimarts 18:30",
+                "location": "Entorn natural de Catalunya",
+                "unit": "Pionel·les",
+                "badge_color": "#DC2626",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Campaments d'hivern de les Pionel·les."
+            },
+            {
+                "title": "Cau",
+                "date": "2026-10-17",
+                "time": "16:30 - 19:00",
+                "location": "Local AE Lluïsos de Gràcia",
+                "unit": "Totes les unitats",
+                "badge_color": "#FF5722",
+                "image": "/static/images/scout_foulard.jpg",
+                "description": "Activitat de cau de dissabte per a totes les unitats."
+            },
+            {
+                "title": "Excursió de Passos",
+                "date": "2026-10-03",
+                "end_date": "2026-10-04",
+                "time": "Dissabte 08:00 - Diumenge 18:30",
+                "location": "Entorn natural de Catalunya",
+                "unit": "Totes les unitats",
+                "badge_color": "#0284C7",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Excursió de passos de branca del cap de setmana."
+            },
+            {
+                "title": "Excursió",
+                "date": "2026-11-14",
+                "end_date": "2026-11-15",
+                "time": "Dissabte 08:00 - Diumenge 18:30",
+                "location": "Entorn natural de Catalunya",
+                "unit": "Totes les unitats",
+                "badge_color": "#0284C7",
+                "image": "/static/images/backgroundmountains.png",
+                "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda."
+            }
+        ]
+
     def _default_calendar_events(self):
         """Fetch events for calendar.html and calendari.html across the 2026-2027 scout year"""
         records = self._fetch_sheet_records("Calendari")
         if records:
             return records
+
+        excluded_cau_dates = {
+            datetime.date(2026, 10, 3),
+            datetime.date(2026, 12, 26),
+            datetime.date(2027, 1, 2),
+            datetime.date(2027, 1, 9),
+            datetime.date(2027, 3, 20),
+            datetime.date(2027, 3, 27),
+            datetime.date(2027, 4, 10),
+            datetime.date(2027, 6, 26),
+            datetime.date(2027, 5, 8),
+        }
+        events = []
+        current_date = datetime.date(2026, 9, 12)
+        final_date = datetime.date(2027, 9, 18)
+        event_id = 101
+
+        while current_date <= final_date:
+            if current_date.month not in {7, 8, 9} and current_date not in excluded_cau_dates:
+                events.append({
+                    "id": event_id,
+                    "title": "Cau",
+                    "date": current_date.isoformat(),
+                    "time": "16:30 - 19:00",
+                    "location": "Local AE Lluïsos de Gràcia",
+                    "unit": "Totes les unitats",
+                    "badge_color": "#FF5722",
+                    "image": "/static/images/scout_foulard.jpg",
+                    "description": "Activitat de cau de dissabte per a totes les unitats."
+                })
+                event_id += 1
+
+            if current_date in {
+                datetime.date(2026, 11, 14),
+                datetime.date(2026, 12, 5),
+                datetime.date(2027, 2, 20),
+                datetime.date(2027, 4, 24),
+                datetime.date(2027, 5, 8),
+            }:
+                events.append({
+                    "id": event_id,
+                    "title": "Excursió",
+                    "date": current_date.isoformat(),
+                    "end_date": (current_date + datetime.timedelta(days=1)).isoformat(),
+                    "time": "Dissabte 08:00 - Diumenge 18:30",
+                    "location": "Entorn natural de Catalunya",
+                    "unit": "Totes les unitats",
+                    "badge_color": "#0284C7",
+                    "image": "/static/images/backgroundmountains.png",
+                    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda."
+                })
+                event_id += 1
+
+            current_date += datetime.timedelta(days=7)
+
+        for special_event in self._calendar_special_events():
+            special_event['id'] = event_id
+            events.append(special_event)
+            event_id += 1
+
+        return events
         
         return [
             # --- SETEMBRE 2026 ---

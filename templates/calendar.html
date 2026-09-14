@@ -6,9 +6,9 @@
 <div class="page-container calendar-page-layout">
 
   <!-- Page Header -->
-  <div class="section-header animate-on-scroll fade-left" style="margin-top: 10px;">
+  <div class="section-header calendar-page-header animate-on-scroll fade-left" style="margin-top: 10px;">
     <div>
-      <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">CAULENDARI D'ACTIVITATS</h2>
+      <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">CAULENDARI</h2>
     </div>
   </div>
 
@@ -52,7 +52,7 @@
         <div class="calendar-action-cluster">
           <div class="view-mode-toggle">
             <button class="btn-view-toggle active" id="btn-view-month" onclick="setCalendarView('month')">VISTA MES</button>
-            <button class="btn-view-toggle" id="btn-view-year" onclick="setCalendarView('year')">VISTA ANUAL (12 MESOS)</button>
+            <button class="btn-view-toggle" id="btn-view-year" onclick="setCalendarView('year')">VISTA ANUAL</button>
           </div>
 
           <button class="btn-retro btn-download-pdf" onclick="downloadCalendarPDF()" title="Descarrega o imprimeix el calendari">
@@ -85,8 +85,7 @@
       <!-- Calendar Full Year (12 Months) View Container -->
       <div id="calendar-year-container" class="calendar-year-container" style="display: none;">
         <div class="year-view-header">
-          <h3 class="calendar-month-heading">CURS COMPLET 2026 - 2027 (SETEMBRE 26 - AGOST 27)</h3>
-          <p style="font-size: 0.9rem; color: var(--ink-muted);">Clica qualsevol dia d'un mes per obrir la finestra emergent amb el detall.</p>
+          <h3 class="calendar-month-heading">TOT EL CURS</h3>
         </div>
         <div class="year-grid-12-months" id="year-months-grid">
           <!-- 12 Mini Months injected via JS -->
