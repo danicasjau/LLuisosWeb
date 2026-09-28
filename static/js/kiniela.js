@@ -13,7 +13,7 @@ const GROUPS = [
   { code: "marxen", name: "Marxen", color: "#7C3AED", badgeColor: "#6D28D9" }
 ];
 
-// 7 New Caps (Truks) - Rules state they CANNOT be assigned to Marxen
+// 7 New Caps (Truks)
 const NEW_CAPS = [
   { id: 1001, name: "Pau Nuet", isNewCap: true },
   { id: 1002, name: "Joan Nuet", isNewCap: true },
@@ -28,9 +28,6 @@ const NEW_CAPS = [
 let MEMBERS_POOL = [];
 // State: memberId -> groupCode (or 'pool')
 let assignments = {};
-// Selected member for quick assign modal
-let activeQuickMember = null;
-
 document.addEventListener('DOMContentLoaded', () => {
   console.log("⚡ Kiniela Escolta Engine Initialized");
   initKiniela();
@@ -87,7 +84,6 @@ function initKiniela() {
   renderPoolUI();
   setupActionButtons();
   setupSearchFilter();
-  updateProgressUI();
 }
 
 function resetAssignments() {
@@ -145,7 +141,7 @@ function renderPoolUI() {
   if (filteredNewCaps.length > 0) {
     const divider = document.createElement('div');
     divider.className = 'kiniela-new-caps-title';
-    divider.innerHTML = `TRUKS (NOUS CAPS • ${filteredNewCaps.length})`;
+    divider.textContent = 'TRUKS';
     poolContainer.appendChild(divider);
 
     filteredNewCaps.forEach(member => {
@@ -189,7 +185,7 @@ function renderGroupsUI() {
     if (membersInGroup.length === 0) {
       dropzone.innerHTML = `
         <div style="color: #94A3B8; font-size: 0.85rem; text-align: center; margin: auto; padding: 20px 10px; border: 2px dashed #E2E8F0; border-radius: 8px;">
-          Arrossega un cap aquí o fes clic a sobre d'ell
+          Arrossega un cap aquí
         </div>
       `;
     } else {
@@ -221,21 +217,6 @@ function createMemberCard(member, isInGroup = false) {
     nameSpan.innerHTML = `${escapeHTML(member.name)} <span style="font-size:0.7rem; background:#FFF7ED; color:var(--retro-orange); padding:1px 5px; border-radius:4px; margin-left:4px; font-weight:800;">TRUK</span>`;
   }
   card.appendChild(nameSpan);
-
-  // Quick Action Icon / Button
-  const moveBtn = document.createElement('button');
-  moveBtn.type = 'button';
-  moveBtn.className = 'btn-quick-move';
-  moveBtn.title = 'Assignar o moure';
-  moveBtn.innerHTML = '⇄';
-  moveBtn.setAttribute('aria-label', `Assignar a ${member.name}`);
-  card.appendChild(moveBtn);
-
-  // Click card or move button opens Quick Assign Modal
-  card.addEventListener('click', (e) => {
-    e.stopPropagation();
-    openQuickAssignModal(member);
-  });
 
   // Drag handlers
   card.addEventListener('dragstart', (e) => {
@@ -274,114 +255,13 @@ function handleDrop(e, targetGroupCode) {
   const member = MEMBERS_POOL.find(m => m.id === memberId);
   if (!member) return;
 
-  // Enforce Special Scout Rule: Truks (new caps) CANNOT be in Marxen
-  if (targetGroupCode === 'marxen' && member.isNewCap) {
-    const dropzone = e.currentTarget;
-    showMarxenRestrictionToast(dropzone);
-    return;
-  }
-
   assignMember(memberId, targetGroupCode);
-}
-
-function showMarxenRestrictionToast(container) {
-  const existing = container.querySelector('.marxen-restriction-message');
-  if (existing) existing.remove();
-
-  const msg = document.createElement('div');
-  msg.className = 'marxen-restriction-message';
-  msg.style.cssText = 'background:#FDF2F8; border:1px solid #DB2777; color:#9D174D; padding:10px; border-radius:6px; font-weight:800; font-size:0.85rem; margin-top:8px; text-align:center; animation:kiniela-card-drop 0.2s ease-out;';
-  msg.textContent = "⚠️ Els nous caps (Truks) NO poden anar a Marxen!";
-  container.prepend(msg);
-
-  setTimeout(() => {
-    if (msg.parentElement) msg.remove();
-  }, 2400);
 }
 
 function assignMember(memberId, groupCode) {
   assignments[memberId] = groupCode;
   renderPoolUI();
   renderGroupsUI();
-  updateProgressUI();
-}
-
-/* ==========================================================================
-   QUICK ASSIGN MODAL (1-CLICK & TOUCH ACCESSIBLE)
-   ========================================================================== */
-
-function openQuickAssignModal(member) {
-  activeQuickMember = member;
-  const modal = document.getElementById('kiniela-quick-modal');
-  const nameEl = document.getElementById('quick-cap-name');
-  const badgeEl = document.getElementById('quick-cap-badge');
-  const currentEl = document.getElementById('quick-cap-current');
-  const unitButtonsContainer = document.getElementById('quick-unit-buttons');
-  const viewProfileBtn = document.getElementById('btn-quick-view-profile');
-
-  if (!modal || !nameEl || !unitButtonsContainer) return;
-
-  nameEl.textContent = member.name;
-  if (member.isNewCap) {
-    badgeEl.textContent = 'NOU CAP (TRUK)';
-    badgeEl.style.background = 'var(--retro-orange)';
-    if (viewProfileBtn) viewProfileBtn.style.display = 'none';
-  } else {
-    badgeEl.textContent = member.role || 'CAP D\'AGRUPAMENT';
-    badgeEl.style.background = 'var(--retro-blue)';
-    if (viewProfileBtn) viewProfileBtn.style.display = 'inline-block';
-  }
-
-  const currentGroup = GROUPS.find(g => g.code === assignments[member.id]);
-  currentEl.textContent = currentGroup ? `Actualment a: ${currentGroup.name}` : `Actualment: Sense assignar (Pool)`;
-
-  unitButtonsContainer.innerHTML = '';
-
-  GROUPS.forEach(g => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'btn-retro';
-    btn.style.cssText = `width: 100%; justify-content: flex-start; gap: 12px; padding: 10px 14px; font-size: 0.92rem; background: #FFFFFF; border-color: ${g.color};`;
-
-    const isCurrent = assignments[member.id] === g.code;
-    const isMarxenBlocked = member.isNewCap && g.code === 'marxen';
-
-    if (isMarxenBlocked) {
-      btn.disabled = true;
-      btn.style.opacity = '0.45';
-      btn.style.cursor = 'not-allowed';
-      btn.style.background = '#F8FAFC';
-      btn.innerHTML = `
-        <span style="width:14px; height:14px; border-radius:50%; background:${g.color}; display:inline-block;"></span>
-        <span style="font-weight:700;">${g.name}</span>
-        <span style="margin-left:auto; font-size:0.75rem; color:#9D174D; font-weight:800;">🚫 NO PERMÈS</span>
-      `;
-    } else {
-      btn.innerHTML = `
-        <span style="width:14px; height:14px; border-radius:50%; background:${g.color}; display:inline-block;"></span>
-        <span style="font-weight:700;">${g.name}</span>
-        ${isCurrent ? '<span style="margin-left:auto; font-size:0.75rem; background:#DCFCE7; color:#15803D; padding:2px 8px; border-radius:4px; font-weight:800;">✓ ACTUAL</span>' : ''}
-      `;
-      btn.addEventListener('click', () => {
-        assignMember(member.id, g.code);
-        closeQuickModal();
-      });
-    }
-
-    unitButtonsContainer.appendChild(btn);
-  });
-
-  modal.style.display = 'flex';
-  modal.classList.add('active');
-}
-
-function closeQuickModal() {
-  const modal = document.getElementById('kiniela-quick-modal');
-  if (modal) {
-    modal.style.display = 'none';
-    modal.classList.remove('active');
-  }
-  activeQuickMember = null;
 }
 
 /* ==========================================================================
@@ -391,18 +271,16 @@ function closeQuickModal() {
 function randomizeKiniela() {
   resetAssignments();
 
-  // Eligible groups for Truks (all EXCEPT Marxen)
-  const nonMarxenGroupCodes = GROUPS.filter(g => g.code !== 'marxen').map(g => g.code);
   const allGroupCodes = GROUPS.map(g => g.code);
   const groupCounts = Object.fromEntries(allGroupCodes.map(c => [c, 0]));
 
   const shuffledPool = [...MEMBERS_POOL].sort(() => Math.random() - 0.5);
 
-  // 1. Assign Truks exclusively to non-marxen groups
+  // 1. Distribute Truks across all groups
   const truks = shuffledPool.filter(m => m.isNewCap);
   truks.forEach(truk => {
     // Pick the group with fewest members so far
-    const sortedUnits = [...nonMarxenGroupCodes].sort((a, b) => groupCounts[a] - groupCounts[b]);
+    const sortedUnits = [...allGroupCodes].sort((a, b) => groupCounts[a] - groupCounts[b]);
     const chosenUnit = sortedUnits[0];
     assignments[truk.id] = chosenUnit;
     groupCounts[chosenUnit] += 1;
@@ -427,7 +305,6 @@ function randomizeKiniela() {
 
   renderPoolUI();
   renderGroupsUI();
-  updateProgressUI();
 }
 
 function resetKiniela() {
@@ -435,23 +312,7 @@ function resetKiniela() {
     resetAssignments();
     renderPoolUI();
     renderGroupsUI();
-    updateProgressUI();
   }
-}
-
-function updateProgressUI() {
-  const total = MEMBERS_POOL.length;
-  const assigned = Object.values(assignments).filter(g => g !== 'pool').length;
-  const percentage = total > 0 ? Math.round((assigned / total) * 100) : 0;
-
-  const counterEl = document.getElementById('kiniela-progress-counter');
-  if (counterEl) counterEl.textContent = `${assigned} / ${total}`;
-
-  const pctEl = document.getElementById('kiniela-progress-pct');
-  if (pctEl) pctEl.textContent = `${percentage}%`;
-
-  const fillEl = document.getElementById('kiniela-progress-fill');
-  if (fillEl) fillEl.style.width = `${percentage}%`;
 }
 
 /* ==========================================================================
@@ -626,40 +487,6 @@ function setupActionButtons() {
   const btnCancelPublish = document.getElementById('btn-cancel-publish');
   if (btnCancelPublish) btnCancelPublish.addEventListener('click', closePublishModal);
 
-  // Quick Modal Closes
-  const btnCloseQuick = document.getElementById('btn-close-quick-modal');
-  if (btnCloseQuick) btnCloseQuick.addEventListener('click', closeQuickModal);
-
-  const btnQuickUnassign = document.getElementById('btn-quick-unassign');
-  if (btnQuickUnassign) {
-    btnQuickUnassign.addEventListener('click', () => {
-      if (activeQuickMember) {
-        assignMember(activeQuickMember.id, 'pool');
-        closeQuickModal();
-      }
-    });
-  }
-
-  const btnQuickProfile = document.getElementById('btn-quick-view-profile');
-  if (btnQuickProfile) {
-    btnQuickProfile.addEventListener('click', () => {
-      if (activeQuickMember && !activeQuickMember.isNewCap) {
-        closeQuickModal();
-        if (typeof openModal === 'function') {
-          const profileQuestions = `
-            <div class="person-profile-questions">
-              <p><strong>Nom i Cognoms:</strong> ${escapeHTML(activeQuickMember.name)}</p>
-              <p><strong>Cap de:</strong> ${escapeHTML(activeQuickMember.role || 'Cap')}</p>
-              <p><strong>Unitat:</strong> ${escapeHTML(activeQuickMember.unit || '')}</p>
-              <p><strong>Bio:</strong> ${escapeHTML(activeQuickMember.bio || '')}</p>
-            </div>
-          `;
-          openModal(activeQuickMember.name, activeQuickMember.role || 'CAP', '', profileQuestions, activeQuickMember.photo);
-        }
-      }
-    });
-  }
-
   // Success Modal
   const btnCloseSuccess = document.getElementById('btn-close-success-modal');
   if (btnCloseSuccess) btnCloseSuccess.addEventListener('click', closeSuccessModal);
@@ -685,7 +512,7 @@ function setupActionButtons() {
   }
 
   // Backdrop clicks
-  ['kiniela-publish-modal', 'kiniela-quick-modal', 'kiniela-success-modal'].forEach(id => {
+  ['kiniela-publish-modal', 'kiniela-success-modal'].forEach(id => {
     const modal = document.getElementById(id);
     if (modal) {
       modal.addEventListener('click', (e) => {
@@ -701,7 +528,6 @@ function setupActionButtons() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closePublishModal();
-      closeQuickModal();
       closeSuccessModal();
     }
   });

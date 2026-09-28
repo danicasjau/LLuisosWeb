@@ -35,39 +35,6 @@
     </div>
   </div>
 
-  <!-- Special Scout Rules Banner -->
-  <div
-    style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border-dark); border-radius: var(--nor-br); padding: 14px 20px; margin-bottom: 22px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-soft);">
-    <span style="font-size: 1.5rem; line-height: 1;">💡</span>
-    <div style="font-size: 0.92rem; color: var(--ink-black); line-height: 1.5;">
-      <strong>Instruccions:</strong> Arrossega cada cap a la seva unitat o <strong>fes clic/tap</strong> sobre qualsevol
-      targeta per assignar-lo fàcilment des del mòbil.
-      <span style="display: inline-block; margin-left: 6px; color: #7C3AED; font-weight: 700;">
-        ⚠️ Recorda: Els <strong>Truks</strong> (nous caps) no poden anar a la unitat de <strong>Marxen</strong>!
-      </span>
-    </div>
-  </div>
-
-  <!-- Progress Bar Container -->
-  <div class="kiniela-progress-bar-container">
-    <div
-      style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-      <div
-        style="font-family: var(--font-display); font-weight: 800; font-size: 1rem; letter-spacing: 1px; color: var(--ink-black);">
-        PROGRÉS D'ASSIGNACIÓ
-      </div>
-      <div style="font-family: var(--font-display); font-weight: 900; font-size: 1.1rem; color: var(--retro-orange);">
-        <span id="kiniela-progress-counter">0 / 29</span> CAPS (<span id="kiniela-progress-pct">0%</span>)
-      </div>
-    </div>
-    <div class="progress-track"
-      style="height: 14px; background-color: #E2E8F0; border-radius: 999px; overflow: hidden;">
-      <div class="progress-fill" id="kiniela-progress-fill"
-        style="width: 0%; height: 100%; background: linear-gradient(90deg, #FF5722 0%, #E64A19 100%); transition: width 0.35s ease; border-radius: 999px;">
-      </div>
-    </div>
-  </div>
-
   <!-- Kiniela Main Two-Column Layout (Lateral Sidebar Pool + 6 Group Columns) -->
   <div class="kiniela-main-split-layout">
 
@@ -159,45 +126,6 @@
         </button>
       </div>
     </form>
-  </div>
-</div>
-
-<!-- =======================================================================
-     QUICK ASSIGNMENT POPOVER MODAL (FOR MOBILE / TOUCH / 1-CLICK ASSIGN)
-     ======================================================================= -->
-<div class="retro-modal-backdrop" id="kiniela-quick-modal"
-  style="display: none; align-items: center; justify-content: center;">
-  <div class="retro-modal-box" style="max-width: 440px; width: 92%;">
-    <button class="modal-close-btn" id="btn-close-quick-modal" type="button" aria-label="Tanca">✕</button>
-
-    <div style="text-align: center; margin-bottom: 16px;">
-      <div id="quick-cap-badge" class="post-tag"
-        style="background: var(--retro-blue); margin-bottom: 6px; display: inline-block;">CAP</div>
-      <h3 id="quick-cap-name" class="section-title" style="font-size: 1.8rem; margin: 4px 0;">Nom del Cap</h3>
-      <div id="quick-cap-current" style="font-size: 0.88rem; color: var(--ink-muted); font-weight: 700;">Actualment:
-        Sense assignar</div>
-    </div>
-
-    <div
-      style="font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 1px; color: var(--ink-black); margin-bottom: 10px; font-weight: 800;">
-      TRIA A QUINA UNITAT VOLS DESTINAR-LO/A:
-    </div>
-
-    <div id="quick-unit-buttons" style="display: flex; flex-direction: column; gap: 8px;">
-      <!-- Buttons dynamically injected by kiniela.js -->
-    </div>
-
-    <div
-      style="margin-top: 14px; border-top: 1px solid var(--border-dark); padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-      <button type="button" id="btn-quick-view-profile" class="btn-retro"
-        style="font-size: 0.8rem; padding: 6px 12px; background: #F1F5F9; color: #0F172A; border-color: #CBD5E1;">
-        ℹ️ Veure Fitxa
-      </button>
-      <button type="button" id="btn-quick-unassign" class="btn-retro"
-        style="font-size: 0.8rem; padding: 6px 12px; background: #FFF7ED; color: var(--retro-orange); border-color: var(--retro-orange);">
-        ⚪ Tornar al Pool
-      </button>
-    </div>
   </div>
 </div>
 

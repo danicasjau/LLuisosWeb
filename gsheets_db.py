@@ -560,7 +560,7 @@ class GSheetsDB:
         records = self._read_data("calendari.json", None)
         if records and len(records) > 0:
             excluded_cau_dates = {
-                "2026-10-03", "2026-12-26", "2027-01-02", "2027-01-09",
+                "2026-10-03", "2026-12-26", "2027-01-02",
                 "2027-03-20", "2027-03-27", "2027-04-10", "2027-06-26"
             }
             records = [
@@ -577,16 +577,12 @@ class GSheetsDB:
                 event for event in records
                 if not (
                     (event.get('title') == 'Excursió' and event.get('date') == '2026-10-17')
-                    or (event.get('title') == 'Cau' and event.get('date') == '2026-11-14')
                 )
             ]
             for event in records:
                 if event.get('title') == 'Excursió' and not event.get('end_date'):
                     start_date = datetime.date.fromisoformat(event['date'])
                     event['end_date'] = (start_date + datetime.timedelta(days=1)).isoformat()
-                if event.get('title') == 'Excursió' and event.get('date') == '2027-07-10':
-                    event['date'] = '2027-05-08'
-                    event['end_date'] = '2027-05-09'
                 if event.get('title') == 'Campaments Primavera':
                     event['end_date'] = '2027-03-23'
                     event['time'] = 'Dissabte 08:00 - Dimarts 18:30'
@@ -726,17 +722,6 @@ class GSheetsDB:
                 "image": "/static/images/backgroundmountains.png",
                 "description": "Excursió de passos de branca del cap de setmana."
             },
-            {
-                "title": "Excursió",
-                "date": "2026-11-14",
-                "end_date": "2026-11-15",
-                "time": "Dissabte 08:00 - Diumenge 18:30",
-                "location": "Entorn natural de Catalunya",
-                "unit": "Totes les unitats",
-                "badge_color": "#0284C7",
-                "image": "/static/images/backgroundmountains.png",
-                "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda."
-            }
         ]
 
     def _default_calendar_events(self):
@@ -748,13 +733,18 @@ class GSheetsDB:
         excluded_cau_dates = {
             datetime.date(2026, 10, 3),
             datetime.date(2026, 12, 26),
+            datetime.date(2026, 12, 5),
             datetime.date(2027, 1, 2),
-            datetime.date(2027, 1, 9),
+            datetime.date(2026, 11, 21),
+            datetime.date(2027, 1, 23),
+            datetime.date(2027, 2, 27),
             datetime.date(2027, 3, 20),
             datetime.date(2027, 3, 27),
             datetime.date(2027, 4, 10),
             datetime.date(2027, 6, 26),
-            datetime.date(2027, 5, 8),
+            datetime.date(2027, 5, 1),
+            datetime.date(2027, 5, 15),
+            datetime.date(2027, 5, 29),
         }
         events = []
         current_date = datetime.date(2026, 9, 12)
@@ -777,11 +767,11 @@ class GSheetsDB:
                 event_id += 1
 
             if current_date in {
-                datetime.date(2026, 11, 14),
-                datetime.date(2026, 12, 5),
-                datetime.date(2027, 2, 20),
-                datetime.date(2027, 4, 24),
-                datetime.date(2027, 5, 8),
+                datetime.date(2026, 11, 21),
+                datetime.date(2027, 1, 23),
+                datetime.date(2027, 2, 27),
+                datetime.date(2027, 5, 1),
+                datetime.date(2027, 5, 29),
             }:
                 events.append({
                     "id": event_id,

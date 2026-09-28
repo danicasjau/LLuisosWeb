@@ -2761,6 +2761,32 @@ body {
   gap: 20px;
 }
 
+.calendar-activity-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin: 20px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--border-dark);
+  list-style: none;
+  color: var(--ink-black);
+  font-weight: 700;
+}
+
+.calendar-activity-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-legend-swatch {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  border-radius: 3px;
+  background-color: var(--legend-color);
+}
+
 .mini-month-card {
   background: #FFFFFF;
   border: 1px solid var(--border-dark);

@@ -78,27 +78,27 @@
     "description": "Activitat de cau de dissabte per a totes les unitats."
   },
   {
-    "title": "Excursió",
-    "date": "2026-11-14",
-    "end_date": "2026-11-15",
-    "time": "Dissabte 08:00 - Diumenge 18:30",
-    "location": "Entorn natural de Catalunya",
-    "unit": "Totes les unitats",
-    "badge_color": "#0284C7",
-    "image": "/static/images/backgroundmountains.png",
-    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda.",
-    "id": 154
-  },
-  {
-    "id": 112,
     "title": "Cau",
-    "date": "2026-11-21",
+    "date": "2026-11-14",
     "time": "16:30 - 19:00",
     "location": "Local AE Lluïsos de Gràcia",
     "unit": "Totes les unitats",
     "badge_color": "#FF5722",
     "image": "/static/images/scout_foulard.jpg",
-    "description": "Activitat de cau de dissabte per a totes les unitats."
+    "description": "Activitat de cau de dissabte per a totes les unitats.",
+    "id": 154
+  },
+  {
+    "id": 112,
+    "title": "Excursió",
+    "date": "2026-11-21",
+    "end_date": "2026-11-22",
+    "time": "Dissabte 08:00 - Diumenge 18:30",
+    "location": "Entorn natural de Catalunya",
+    "unit": "Totes les unitats",
+    "badge_color": "#0284C7",
+    "image": "/static/images/backgroundmountains.png",
+    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda."
   },
   {
     "id": 113,
@@ -110,18 +110,6 @@
     "badge_color": "#FF5722",
     "image": "/static/images/scout_foulard.jpg",
     "description": "Activitat de cau de dissabte per a totes les unitats."
-  },
-  {
-    "id": 115,
-    "title": "Excursió",
-    "date": "2026-12-05",
-    "time": "Dissabte 08:00 - Diumenge 18:30",
-    "location": "Entorn natural de Catalunya",
-    "unit": "Totes les unitats",
-    "badge_color": "#0284C7",
-    "image": "/static/images/backgroundmountains.png",
-    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda.",
-    "end_date": "2026-12-06"
   },
   {
     "id": 116,
@@ -158,6 +146,17 @@
     "description": "Campaments d'hivern de les Pionel·les."
   },
   {
+    "id": 120,
+    "title": "Cau",
+    "date": "2027-01-09",
+    "time": "16:30 - 19:00",
+    "location": "Local AE Lluïsos de Gràcia",
+    "unit": "Totes les unitats",
+    "badge_color": "#FF5722",
+    "image": "/static/images/scout_foulard.jpg",
+    "description": "Activitat de cau de dissabte per a totes les unitats."
+  },
+  {
     "id": 121,
     "title": "Cau",
     "date": "2027-01-16",
@@ -170,14 +169,15 @@
   },
   {
     "id": 122,
-    "title": "Cau",
+    "title": "Excursió",
     "date": "2027-01-23",
-    "time": "16:30 - 19:00",
-    "location": "Local AE Lluïsos de Gràcia",
+    "end_date": "2027-01-24",
+    "time": "Dissabte 08:00 - Diumenge 18:30",
+    "location": "Entorn natural de Catalunya",
     "unit": "Totes les unitats",
-    "badge_color": "#FF5722",
-    "image": "/static/images/scout_foulard.jpg",
-    "description": "Activitat de cau de dissabte per a totes les unitats."
+    "badge_color": "#0284C7",
+    "image": "/static/images/backgroundmountains.png",
+    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda."
   },
   {
     "id": 123,
@@ -214,26 +214,26 @@
   },
   {
     "id": 127,
-    "title": "Excursió",
-    "date": "2027-02-20",
-    "time": "Dissabte 08:00 - Diumenge 18:30",
-    "location": "Entorn natural de Catalunya",
-    "unit": "Totes les unitats",
-    "badge_color": "#0284C7",
-    "image": "/static/images/backgroundmountains.png",
-    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda.",
-    "end_date": "2027-02-21"
-  },
-  {
-    "id": 128,
     "title": "Cau",
-    "date": "2027-02-27",
+    "date": "2027-02-20",
     "time": "16:30 - 19:00",
     "location": "Local AE Lluïsos de Gràcia",
     "unit": "Totes les unitats",
     "badge_color": "#FF5722",
     "image": "/static/images/scout_foulard.jpg",
     "description": "Activitat de cau de dissabte per a totes les unitats."
+  },
+  {
+    "id": 128,
+    "title": "Excursió",
+    "date": "2027-02-27",
+    "end_date": "2027-02-28",
+    "time": "Dissabte 08:00 - Diumenge 18:30",
+    "location": "Entorn natural de Catalunya",
+    "unit": "Totes les unitats",
+    "badge_color": "#0284C7",
+    "image": "/static/images/backgroundmountains.png",
+    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda."
   },
   {
     "id": 129,
@@ -305,20 +305,8 @@
   },
   {
     "id": 137,
-    "title": "Excursió",
-    "date": "2027-04-24",
-    "time": "Dissabte 08:00 - Diumenge 18:30",
-    "location": "Entorn natural de Catalunya",
-    "unit": "Totes les unitats",
-    "badge_color": "#0284C7",
-    "image": "/static/images/backgroundmountains.png",
-    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda.",
-    "end_date": "2027-04-25"
-  },
-  {
-    "id": 138,
     "title": "Cau",
-    "date": "2027-05-01",
+    "date": "2027-04-24",
     "time": "16:30 - 19:00",
     "location": "Local AE Lluïsos de Gràcia",
     "unit": "Totes les unitats",
@@ -327,21 +315,21 @@
     "description": "Activitat de cau de dissabte per a totes les unitats."
   },
   {
-    "id": 149,
+    "id": 138,
     "title": "Excursió",
-    "date": "2027-05-08",
+    "date": "2027-05-01",
+    "end_date": "2027-05-02",
     "time": "Dissabte 08:00 - Diumenge 18:30",
     "location": "Entorn natural de Catalunya",
     "unit": "Totes les unitats",
     "badge_color": "#0284C7",
     "image": "/static/images/backgroundmountains.png",
-    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda.",
-    "end_date": "2027-05-09"
+    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda."
   },
   {
-    "id": 140,
+    "id": 149,
     "title": "Cau",
-    "date": "2027-05-15",
+    "date": "2027-05-08",
     "time": "16:30 - 19:00",
     "location": "Local AE Lluïsos de Gràcia",
     "unit": "Totes les unitats",
@@ -362,14 +350,15 @@
   },
   {
     "id": 142,
-    "title": "Cau",
+    "title": "Excursió",
     "date": "2027-05-29",
-    "time": "16:30 - 19:00",
-    "location": "Local AE Lluïsos de Gràcia",
+    "end_date": "2027-05-30",
+    "time": "Dissabte 08:00 - Diumenge 18:30",
+    "location": "Entorn natural de Catalunya",
     "unit": "Totes les unitats",
-    "badge_color": "#FF5722",
-    "image": "/static/images/scout_foulard.jpg",
-    "description": "Activitat de cau de dissabte per a totes les unitats."
+    "badge_color": "#0284C7",
+    "image": "/static/images/backgroundmountains.png",
+    "description": "Excursió de cap de setmana amb sortida dissabte al matí i tornada diumenge a la tarda."
   },
   {
     "id": 143,
