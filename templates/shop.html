@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}BOTIGA | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">BOTIGA D'AGRUPAMENT</h2>
+      <div class="section-subtitle">EQUIPAMENT ESCOLTA, DESSUADORES, FOULARDS I ACCESSORIS D'ALTA MUNTANYA</div>
+    </div>
+    <div style="font-family: var(--font-display); font-size: 1.2rem; background: var(--retro-orange); color: white; padding: 6px 16px; border: 1px solid var(--ink-black); display: flex; align-items: center; gap: 8px;">
+      CESTA: <span id="cart-counter" style="background: white; color: var(--ink-black); padding: 2px 8px; font-weight: bold;">0</span> ITEMS
+    </div>
+  </div>
+
+  <!-- Product Catalog Grid -->
+  <div class="shop-grid">
+    {% for prod in products %}
+    <div class="product-card">
+      <div>
+        <div style="position: relative;">
+          <img src="{{ prod.image }}" alt="{{ prod.name }}" class="product-img">
+          <span class="post-tag" style="position: absolute; top: 10px; left: 10px; background-color: var(--retro-blue);">
+            {{ prod.tag }}
+          </span>
+        </div>
+        <div class="product-info">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">
+            CATEGORY: {{ prod.category }}
+          </div>
+          <h3 class="post-title" style="font-size: 1.15rem; margin: 4px 0 8px 0;">{{ prod.name }}</h3>
+          <p style="font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 12px;">
+            {{ prod.description }}
+          </p>
+        </div>
+      </div>
+
+      <div style="padding: 15px; border-top: 1px dashed #CBD5E1; background: var(--bg-cream); display: flex; justify-content: space-between; align-items: center;">
+        <div class="product-price">{{ "%.2f"|format(prod.price) }} €</div>
+        <button class="btn-retro btn-retro-orange btn-add-cart" 
+                style="padding: 8px 14px; font-size: 0.95rem;"
+                data-id="{{ prod.id }}" 
+                data-name="{{ prod.name }}" 
+                data-price="{{ prod.price }}">
+          + AFEGIR
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

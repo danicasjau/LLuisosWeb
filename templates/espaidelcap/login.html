@@ -31,6 +31,7 @@
       {% endwith %}
 
       <form method="POST" action="/loginespaidelcap" class="cap-login-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="gform-question-card" style="margin-bottom: 14px;">
           <label for="contra" class="gform-label">CONTRASENYA D'ACCÉS <span class="req">*</span></label>
           <div class="password-input-wrap">

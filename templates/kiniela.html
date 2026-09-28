@@ -1,27 +1,60 @@
 {% extends 'base.html' %}
 
-{% block title %}QUINIELA DE CAPS | AE Lluïsos de Gràcia{% endblock %}
+{% block title %}QUINIELA DE CAPS 2026-2027 | AE Lluïsos de Gràcia{% endblock %}
 
 {% block content %}
 <script>
   window.CAPS_POOL = {{ team|tojson }};
 </script>
+
 <div class="page-container kiniela-page-layout">
   
-  <!-- Header Banner (Same class as caps & calendari, without subtitle) -->
+  <!-- Header Banner -->
   <div class="section-header animate-on-scroll fade-left" style="margin-top: 10px;">
     <div>
       <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">QUINIELA DE CAPS</h2>
+      <div class="section-subtitle" style="margin-top: 4px;">
+        FES LA TEVA APOSTA PER A LA RONDA ESCOLTA 2026-2027!
+      </div>
     </div>
     
-    <!-- Action Controls (ALEATORI & REINICIAR) -->
-    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-      <button id="btn-publish-kiniela" class="btn-retro btn-retro-orange">
-        ALEATORI
+    <!-- Action Controls (ALEATORI, REINICIAR & PUBLICAR) -->
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <button id="btn-random-kiniela" class="btn-retro btn-retro-blue" type="button" title="Assignar caps aleatòriament seguint les regles">
+        🎲 ALEATORI
       </button>
-      <button id="btn-reset-kiniela" class="btn-retro btn-retro-blue">
-        REINICIAR
+      <button id="btn-reset-kiniela" class="btn-retro" style="background:#E2E8F0; color:#1E293B; border-color:#0F172A;" type="button" title="Tornar tots els caps a la llista sense assignar">
+        ↺ REINICIAR
       </button>
+      <button id="btn-publish-kiniela" class="btn-retro btn-retro-orange" type="button" title="Enviar la teva quiniela a la base de dades">
+        ✓ PUBLICAR QUINIELA
+      </button>
+    </div>
+  </div>
+
+  <!-- Special Scout Rules Banner -->
+  <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border-dark); border-radius: var(--nor-br); padding: 14px 20px; margin-bottom: 22px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-soft);">
+    <span style="font-size: 1.5rem; line-height: 1;">💡</span>
+    <div style="font-size: 0.92rem; color: var(--ink-black); line-height: 1.5;">
+      <strong>Instruccions:</strong> Arrossega cada cap a la seva unitat o <strong>fes clic/tap</strong> sobre qualsevol targeta per assignar-lo fàcilment des del mòbil.
+      <span style="display: inline-block; margin-left: 6px; color: #7C3AED; font-weight: 700;">
+        ⚠️ Recorda: Els <strong>Truks</strong> (nous caps) no poden anar a la unitat de <strong>Marxen</strong>!
+      </span>
+    </div>
+  </div>
+
+  <!-- Progress Bar Container -->
+  <div class="kiniela-progress-bar-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+      <div style="font-family: var(--font-display); font-weight: 800; font-size: 1rem; letter-spacing: 1px; color: var(--ink-black);">
+        PROGRÉS D'ASSIGNACIÓ
+      </div>
+      <div style="font-family: var(--font-display); font-weight: 900; font-size: 1.1rem; color: var(--retro-orange);">
+        <span id="kiniela-progress-counter">0 / 29</span> CAPS (<span id="kiniela-progress-pct">0%</span>)
+      </div>
+    </div>
+    <div class="progress-track" style="height: 14px; background-color: #E2E8F0; border-radius: 999px; overflow: hidden;">
+      <div class="progress-fill" id="kiniela-progress-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #FF5722 0%, #E64A19 100%); transition: width 0.35s ease; border-radius: 999px;"></div>
     </div>
   </div>
 
@@ -33,15 +66,23 @@
       
       <!-- Unassigned Member Circles Pool -->
       <div class="kiniela-pool-wrapper">
-        <div class="sidebar-title">CAPS</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border-dark); padding-bottom: 8px;">
+          <div class="sidebar-title" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;">CAPS PER ASSIGNAR</div>
+          <span id="sidebar-pool-count" style="font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; background: var(--bg-cream); border: 1px solid var(--border-dark); padding: 2px 8px; border-radius: 4px;">29</span>
+        </div>
+
+        <!-- Quick filter search -->
+        <input type="text" id="pool-search-input" placeholder="🔍 Cerca per nom..." 
+               style="width: 100%; padding: 8px 12px; border: 1px solid var(--border-dark); border-radius: var(--nor-br); font-family: var(--font-body); font-size: 0.85rem; margin-bottom: 12px; background: #FAFAFA;">
+
         <div class="unassigned-pool-grid" id="unassigned-pool">
-          <!-- Member circular avatar cards rendered by kiniela.js -->
+          <!-- Member cards rendered by kiniela.js -->
         </div>
       </div>
 
     </aside>
 
-    <!-- Right Area: 5 Group Columns Grid (Castors, Llops, Ranguis, Pios, Truk) -->
+    <!-- Right Area: 6 Group Columns Grid (Castors, Llops, Ranguis, Pios, Truk, Marxen) -->
     <main class="kiniela-groups-layout" id="groups-container">
       <!-- Group columns rendered by kiniela.js -->
     </main>
@@ -49,6 +90,131 @@
   </div>
 
 </div>
+
+<!-- =======================================================================
+     DEDICATED KINIELA PUBLISH MODAL (SAFE, ACCESSIBLE, SECURE)
+     ======================================================================= -->
+<div class="retro-modal-backdrop" id="kiniela-publish-modal" style="display: none; align-items: center; justify-content: center;">
+  <div class="retro-modal-box" style="max-width: 520px; width: 92%;">
+    <button class="modal-close-btn" id="btn-close-publish-modal" type="button" aria-label="Tanca">✕</button>
+
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 18px;">
+      <div class="post-tag" style="background: var(--retro-orange); margin-bottom: 8px; display: inline-block;">
+        BASE DE DADES EN LÍNIA
+      </div>
+      <h2 class="section-title" style="font-size: 2rem; margin: 4px 0 6px 0;">PUBLICAR LA QUINIELA</h2>
+      <div id="kiniela-publish-summary-text" style="font-size: 0.92rem; font-weight: 700; color: var(--retro-blue);">
+        Assignats: 29 de 29 caps
+      </div>
+    </div>
+
+    <!-- Warning shown if not all caps are assigned -->
+    <div id="kiniela-incomplete-alert" style="display: none; background: #FFFBEB; border: 1px solid #F59E0B; color: #92400E; padding: 10px 14px; border-radius: 6px; font-size: 0.88rem; margin-bottom: 16px; line-height: 1.4;">
+      ⚠️ <strong>Atenció:</strong> Encara et queden <span id="kiniela-unassigned-num">0</span> caps a la barra lateral sense assignar. Pots publicar la travessa de totes maneres o cancel·lar per acabar-los de col·locar.
+    </div>
+
+    <!-- Submission Form -->
+    <form id="kiniela-publish-form" onsubmit="event.preventDefault(); submitKinielaData();">
+      <!-- Anti-bot honeypot field (hidden from genuine users) -->
+      <div style="display: none !important;" aria-hidden="true">
+        <label for="kiniela-hp">Deixa buit:</label>
+        <input type="text" id="kiniela-hp" name="hp" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div style="margin-bottom: 18px;">
+        <label for="kiniela-creator-name" class="creator-label" style="font-size: 0.95rem; margin-bottom: 6px;">
+          EL TEU NOM O ÀLIES ESCOLTA: <span style="color: var(--retro-orange);">*</span>
+        </label>
+        <input type="text" id="kiniela-creator-name" class="creator-input" 
+               placeholder="Ex: Clara, Pau, Marc, Gemma..." 
+               maxlength="60" required autofocus 
+               style="width: 100%; box-sizing: border-box;" />
+      </div>
+
+      <div id="kiniela-publish-error" style="display: none; background: #FEF2F2; border: 1px solid #EF4444; color: #991B1B; padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 14px; font-weight: 700;"></div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+        <button type="button" id="btn-cancel-publish" class="btn-retro" style="background: #E2E8F0; color: #1E293B; border-color: #0F172A; padding: 10px 18px;">
+          CANCEL·LAR
+        </button>
+        <button type="submit" id="btn-confirm-publish" class="btn-retro btn-retro-orange" style="padding: 10px 22px;">
+          CONFIRMAR I ENVIAR
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- =======================================================================
+     QUICK ASSIGNMENT POPOVER MODAL (FOR MOBILE / TOUCH / 1-CLICK ASSIGN)
+     ======================================================================= -->
+<div class="retro-modal-backdrop" id="kiniela-quick-modal" style="display: none; align-items: center; justify-content: center;">
+  <div class="retro-modal-box" style="max-width: 440px; width: 92%;">
+    <button class="modal-close-btn" id="btn-close-quick-modal" type="button" aria-label="Tanca">✕</button>
+
+    <div style="text-align: center; margin-bottom: 16px;">
+      <div id="quick-cap-badge" class="post-tag" style="background: var(--retro-blue); margin-bottom: 6px; display: inline-block;">CAP</div>
+      <h3 id="quick-cap-name" class="section-title" style="font-size: 1.8rem; margin: 4px 0;">Nom del Cap</h3>
+      <div id="quick-cap-current" style="font-size: 0.88rem; color: var(--ink-muted); font-weight: 700;">Actualment: Sense assignar</div>
+    </div>
+
+    <div style="font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 1px; color: var(--ink-black); margin-bottom: 10px; font-weight: 800;">
+      TRIA A QUINA UNITAT VOLS DESTINAR-LO/A:
+    </div>
+
+    <div id="quick-unit-buttons" style="display: flex; flex-direction: column; gap: 8px;">
+      <!-- Buttons dynamically injected by kiniela.js -->
+    </div>
+
+    <div style="margin-top: 14px; border-top: 1px solid var(--border-dark); padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+      <button type="button" id="btn-quick-view-profile" class="btn-retro" style="font-size: 0.8rem; padding: 6px 12px; background: #F1F5F9; color: #0F172A; border-color: #CBD5E1;">
+        ℹ️ Veure Fitxa
+      </button>
+      <button type="button" id="btn-quick-unassign" class="btn-retro" style="font-size: 0.8rem; padding: 6px 12px; background: #FFF7ED; color: var(--retro-orange); border-color: var(--retro-orange);">
+        ⚪ Tornar al Pool
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =======================================================================
+     SUCCESS MODAL POPUP
+     ======================================================================= -->
+<div class="retro-modal-backdrop" id="kiniela-success-modal" style="display: none; align-items: center; justify-content: center;">
+  <div class="retro-modal-box" style="max-width: 600px; width: 92%;">
+    <button class="modal-close-btn" id="btn-close-success-modal" type="button" aria-label="Tanca">✕</button>
+
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 16px;">
+      <div style="font-size: 2.5rem; margin-bottom: 4px;">🎉</div>
+      <div class="post-tag" style="background: #16A34A; margin-bottom: 8px; display: inline-block;">
+        DESADA CORRECTAMENT
+      </div>
+      <h2 class="section-title" style="font-size: 2rem; margin: 4px 0 6px 0;">QUINIELA REGISTRADA!</h2>
+      <div id="success-creator-info" style="font-size: 0.95rem; font-weight: 800; color: var(--retro-blue);">
+        Creador: - • Data: -
+      </div>
+    </div>
+
+    <div style="background: #DCFCE7; border: 1px solid #16A34A; color: #14532D; padding: 12px 16px; border-radius: 8px; font-weight: 700; margin-bottom: 16px; font-size: 0.92rem;">
+      La teva travessa ha estat desada amb èxit a la base de dades segura de l'Agrupament!
+    </div>
+
+    <div style="font-family: var(--font-display); font-weight: 800; font-size: 0.88rem; margin-bottom: 6px;">
+      RESUM DE LES TEVES ASSIGNACIONS:
+    </div>
+    <textarea id="success-summary-textarea" readonly style="width: 100%; height: 180px; font-family: monospace; font-size: 0.85rem; padding: 12px; border: 1px solid var(--border-dark); border-radius: 6px; background: #F8FAFC; box-sizing: border-box; resize: vertical;"></textarea>
+
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap;">
+      <button type="button" id="btn-copy-summary" class="btn-retro" style="background: #F1F5F9; color: #0F172A; border-color: #0F172A; padding: 10px 18px;">
+        📋 COPIAR RESUM
+      </button>
+      <button type="button" id="btn-done-success" class="btn-retro btn-retro-orange" style="padding: 10px 22px;">
+        FET / TANCAR
+      </button>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}

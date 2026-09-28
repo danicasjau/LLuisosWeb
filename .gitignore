@@ -17,6 +17,9 @@ service_account.json
 
 # Fitxers de dades locals generats
 kiniela_submissions.json
+data/.secret_key
+*.tmp*
+*.bak
 
 # IDEs
 .vscode/

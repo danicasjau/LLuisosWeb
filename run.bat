@@ -2,6 +2,7 @@
 title AE Lluïsos de Gràcia - Web Server
 echo ======================================================
 echo   Iniciant servidor web - AE Lluïsos de Gràcia
+echo   Adreça local: http://localhost:5050
 echo ======================================================
 echo.
 

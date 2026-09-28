@@ -3,10 +3,13 @@ import json
 import logging
 import datetime
 import hashlib
+import hmac
+import uuid
+import secrets
+import threading
 import requests
 import unicodedata
 import re
-
 import html
 
 logging.basicConfig(level=logging.INFO)
@@ -15,6 +18,18 @@ logger = logging.getLogger(__name__)
 # ==============================================================================
 # CYBERSECURITY & DATA FILTRATION (Anti-XSS, Script & Payload Sanitization)
 # ==============================================================================
+
+def sanitize_formula_value(val):
+    """
+    Prevents CSV / Google Sheets Formula Injection (CSV DDE Injection / CVE-2014-3524).
+    Neutralizes formula execution triggers (=, +, -, @, \t, \r) by prepending a single quote (').
+    """
+    if val is None:
+        return ""
+    val_str = str(val).strip()
+    if val_str and val_str[0] in ('=', '+', '-', '@', '\t', '\r'):
+        return "'" + val_str
+    return val_str
 
 def sanitize_text(value, max_length=1000, allow_newlines=False):
     """
@@ -107,49 +122,71 @@ def sanitize_data_struct(item, max_depth=5):
         return ""
     if isinstance(item, dict):
         return {
-            sanitize_text(k, max_length=100): sanitize_data_struct(v, max_depth - 1)
+            sanitize_formula_value(sanitize_text(k, max_length=100)): sanitize_data_struct(v, max_depth - 1)
             for k, v in item.items()
         }
     elif isinstance(item, list):
         return [sanitize_data_struct(x, max_depth - 1) for x in item]
     elif isinstance(item, str):
-        return sanitize_text(item, max_length=1000, allow_newlines=True)
+        return sanitize_formula_value(sanitize_text(item, max_length=1000, allow_newlines=True))
     elif isinstance(item, (int, float, bool)) or item is None:
         return item
-    return sanitize_text(str(item), max_length=500)
+    return sanitize_formula_value(sanitize_text(str(item), max_length=500))
 
 class GSheetsDB:
     def __init__(self, credentials_path="credentials.json", sheet_name="AE_Lluisos_Database"):
         self.credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", credentials_path)
         self.sheet_name = os.getenv("GSHEET_NAME", sheet_name)
         self.client = None
-        self.data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+        self.base_dir = os.path.dirname(os.path.abspath(__file__))
+        self.data_dir = os.path.join(self.base_dir, "data")
+        self._lock = threading.RLock()
         os.makedirs(self.data_dir, exist_ok=True)
         self._init_client()
         self._init_json_store()
 
     def _data_file(self, filename):
-        return os.path.join(self.data_dir, filename)
+        safe_name = os.path.basename(str(filename).strip())
+        if not safe_name or safe_name != filename or not safe_name.endswith('.json'):
+            raise ValueError(f"Security: Nom de fitxer invàlid '{filename}'")
+        full_path = os.path.abspath(os.path.join(self.data_dir, safe_name))
+        if not full_path.startswith(os.path.abspath(self.data_dir)):
+            raise ValueError(f"Security: Intent de path traversal detectat '{filename}'")
+        return full_path
 
     def _read_data(self, filename, default_val=None):
-        filepath = self._data_file(filename)
-        if os.path.exists(filepath):
+        with self._lock:
             try:
-                with open(filepath, "r", encoding="utf-8") as f:
-                    return json.load(f)
+                filepath = self._data_file(filename)
+                if os.path.exists(filepath):
+                    if os.path.getsize(filepath) == 0:
+                        logger.warning(f"Fitxer {filepath} buit. Utilitzant valor per defecte.")
+                        return default_val if default_val is not None else []
+                    with open(filepath, "r", encoding="utf-8") as f:
+                        return json.load(f)
             except Exception as e:
-                logger.warning(f"Error reading {filepath}: {e}")
-        return default_val if default_val is not None else []
+                logger.warning(f"Error llegint {filename}: {e}")
+            return default_val if default_val is not None else []
 
     def _write_data(self, filename, data):
-        filepath = self._data_file(filename)
-        try:
-            with open(filepath, "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
-            return True
-        except Exception as e:
-            logger.error(f"Error writing {filepath}: {e}")
-            return False
+        with self._lock:
+            try:
+                filepath = self._data_file(filename)
+                temp_path = f"{filepath}.tmp.{os.getpid()}.{threading.get_ident()}"
+                with open(temp_path, "w", encoding="utf-8") as f:
+                    json.dump(data, f, indent=2, ensure_ascii=False)
+                    f.flush()
+                    os.fsync(f.fileno())
+                os.replace(temp_path, filepath)
+                return True
+            except Exception as e:
+                logger.error(f"Error escrivint {filename}: {e}")
+                if 'temp_path' in locals() and os.path.exists(temp_path):
+                    try:
+                        os.remove(temp_path)
+                    except OSError:
+                        pass
+                return False
 
     def _init_json_store(self):
         """Initializes JSON data storage from defaults if files do not already exist."""
@@ -201,30 +238,67 @@ class GSheetsDB:
                 except Exception:
                     pass
 
+        # 8. Kiniela submissions store
+        kiniela_file = self._data_file("kiniela_submissions.json")
+        if not os.path.exists(kiniela_file):
+            self._write_data("kiniela_submissions.json", [])
+
     def verify_contra(self, password):
-        """Verify password against data/contra.json with basic salt+sha256 encryption."""
+        """Verify password against data/contra.json with timing-attack mitigation and Werkzeug support."""
+        if not password:
+            return False
         data = self._read_data("contra.json", None)
-        salt = "ae_lluisos_gracia_salt_2026"
-        expected = hashlib.sha256((salt + "caps2026").encode('utf-8')).hexdigest()
-        if data and isinstance(data, dict):
-            salt = data.get("salt", salt)
-            expected = data.get("contra_hash", expected)
+        if not data or not isinstance(data, dict):
+            return False
+        
+        algo = data.get("algorithm", "sha256_salted")
+        stored_hash = str(data.get("contra_hash", ""))
+        
+        # 1. Modern Werkzeug hash check (scrypt or pbkdf2)
+        if algo in ("werkzeug", "scrypt", "pbkdf2") or stored_hash.startswith(("scrypt:", "pbkdf2:")):
+            try:
+                from werkzeug.security import check_password_hash
+                return check_password_hash(stored_hash, str(password).strip())
+            except Exception as e:
+                logger.warning(f"Werkzeug password check failed: {e}")
+
+        # 2. Legacy salted sha256 check with constant-time comparison
+        salt = data.get("salt", "ae_lluisos_gracia_salt_2026")
         computed = hashlib.sha256((salt + str(password).strip()).encode('utf-8')).hexdigest()
-        return computed == expected
+        if hmac.compare_digest(computed, stored_hash):
+            # Auto-upgrade to Werkzeug hash
+            try:
+                self.set_contra(password)
+                logger.info("Auto-upgraded master password hash to modern Werkzeug format.")
+            except Exception as e:
+                logger.warning(f"Could not auto-upgrade password hash: {e}")
+            return True
+            
+        return False
 
     def set_contra(self, new_password):
-        """Update password in data/contra.json with sanitization and salted sha256."""
+        """Update password in data/contra.json with sanitization and modern Werkzeug hash."""
         clean_pwd = str(new_password).replace('\x00', '').strip()[:100]
-        if not clean_pwd:
+        if not clean_pwd or len(clean_pwd) < 4:
             return False
-        salt = "ae_lluisos_gracia_salt_2026"
-        computed = hashlib.sha256((salt + clean_pwd).encode('utf-8')).hexdigest()
-        payload = {
-            "algorithm": "sha256_salted",
-            "salt": salt,
-            "contra_hash": computed,
-            "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
+        try:
+            from werkzeug.security import generate_password_hash
+            hashed = generate_password_hash(clean_pwd)
+            payload = {
+                "algorithm": "werkzeug",
+                "contra_hash": hashed,
+                "note": "AE Lluïsos de Gràcia - Contrasenya mestra xifrada amb Werkzeug (scrypt/pbkdf2)",
+                "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+        except Exception:
+            salt = "ae_lluisos_gracia_salt_2026"
+            computed = hashlib.sha256((salt + clean_pwd).encode('utf-8')).hexdigest()
+            payload = {
+                "algorithm": "sha256_salted",
+                "salt": salt,
+                "contra_hash": computed,
+                "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
         return self._write_data("contra.json", payload)
 
 
@@ -265,13 +339,72 @@ class GSheetsDB:
         
         return None
 
-    def save_kiniela(self, creator_name, kiniela_data):
-        """Save a new Kiniela prediction to Google Sheets (Worksheet: 'Kiniela') with full payload sanitization."""
-        clean_creator = sanitize_text(creator_name, max_length=100) or 'Anònim/a'
-        clean_assignments = sanitize_data_struct(kiniela_data)
+    def get_kiniela_submissions(self):
+        """Fetch all Kiniela predictions sorted newest first."""
+        records = self._read_data("kiniela_submissions.json", [])
+        if not isinstance(records, list):
+            records = []
+        return sorted(records, key=lambda x: str(x.get("timestamp", "")), reverse=True)
+
+    def delete_kiniela_submission(self, submission_id):
+        """Safely delete a Kiniela submission by integer ID or UUID."""
+        with self._lock:
+            submissions = self._read_data("kiniela_submissions.json", [])
+            if not isinstance(submissions, list):
+                return False
+            initial_count = len(submissions)
+            target = str(submission_id).strip()
+            filtered = [
+                s for s in submissions
+                if str(s.get("id")) != target and str(s.get("uuid")) != target
+            ]
+            if len(filtered) < initial_count:
+                self._write_data("kiniela_submissions.json", filtered)
+                logger.info(f"Kiniela submission #{submission_id} eliminada correctament.")
+                return True
+            return False
+
+    def save_kiniela(self, creator_name, kiniela_data, client_ip=None, user_agent=None):
+        """
+        Save a new Kiniela prediction to local JSON store and Google Sheets (Worksheet: 'Kiniela')
+        with comprehensive cybersecurity sanitization, anti-formula injection, and rate/size validation.
+        """
+        clean_creator = sanitize_text(creator_name, max_length=60)
+        if not clean_creator:
+            clean_creator = 'Anònim/a'
+        clean_creator = sanitize_formula_value(clean_creator)
+
+        # Validate kiniela_data structure
+        clean_assignments = {}
+        total_assigned = 0
+        if isinstance(kiniela_data, dict):
+            for group, members in list(kiniela_data.items())[:12]:
+                group_clean = sanitize_text(group, max_length=50)
+                group_clean = sanitize_formula_value(group_clean)
+                if not group_clean:
+                    continue
+                if isinstance(members, list):
+                    clean_members = []
+                    for m in members[:30]:
+                        clean_m = sanitize_text(m, max_length=60)
+                        clean_m = sanitize_formula_value(clean_m)
+                        if clean_m:
+                            clean_members.append(clean_m)
+                            total_assigned += 1
+                    clean_assignments[group_clean] = clean_members
+                elif isinstance(members, str):
+                    clean_m = sanitize_text(members, max_length=60)
+                    clean_m = sanitize_formula_value(clean_m)
+                    if clean_m:
+                        clean_assignments[group_clean] = [clean_m]
+                        total_assigned += 1
+
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data_str = json.dumps(clean_assignments, ensure_ascii=False)
-        
+        submission_uuid = uuid.uuid4().hex[:12]
+        ip_hash = None
+        if client_ip:
+            ip_hash = hashlib.sha256(f"ae_kiniela_ip_{client_ip}".encode()).hexdigest()[:12]
+
         saved_online = False
         if self.client:
             try:
@@ -279,34 +412,58 @@ class GSheetsDB:
                 try:
                     worksheet = spreadsheet.worksheet("Kiniela")
                 except Exception:
-                    worksheet = spreadsheet.add_worksheet(title="Kiniela", rows="500", cols="4")
-                    worksheet.append_row(["Timestamp", "Creator Name", "Assignments JSON"])
+                    worksheet = spreadsheet.add_worksheet(title="Kiniela", rows="500", cols="5")
+                    worksheet.append_row(["Timestamp", "Creator Name", "Total Assigned", "Assignments JSON", "Submission UUID"])
                 
-                worksheet.append_row([timestamp, clean_creator, data_str])
+                worksheet.append_row([
+                    timestamp,
+                    clean_creator,
+                    total_assigned,
+                    json.dumps(clean_assignments, ensure_ascii=False),
+                    submission_uuid
+                ])
                 saved_online = True
                 logger.info(f"Successfully saved Kiniela prediction for '{clean_creator}' to Google Sheets!")
             except Exception as e:
                 logger.warning(f"Failed to save to Google Sheets directly: {e}")
 
-        # Local persistence in data/kiniela_submissions.json
-        submissions = self._read_data("kiniela_submissions.json", [])
-        if not isinstance(submissions, list):
-            submissions = []
-        
-        new_entry = {
-            "id": len(submissions) + 1,
-            "timestamp": timestamp,
-            "creator_name": clean_creator,
-            "assignments": clean_assignments,
-            "saved_online": saved_online
-        }
-        submissions.append(new_entry)
-        self._write_data("kiniela_submissions.json", submissions)
+        # Local persistence in data/kiniela_submissions.json with thread-safe atomic lock
+        with self._lock:
+            submissions = self._read_data("kiniela_submissions.json", [])
+            if not isinstance(submissions, list):
+                submissions = []
             
+            max_id = 0
+            for s in submissions:
+                try:
+                    curr_id = int(s.get("id", 0))
+                    if curr_id > max_id:
+                        max_id = curr_id
+                except (ValueError, TypeError):
+                    pass
+            new_id = max_id + 1
+
+            new_entry = {
+                "id": new_id,
+                "uuid": submission_uuid,
+                "timestamp": timestamp,
+                "creator_name": clean_creator,
+                "total_assigned": total_assigned,
+                "assignments": clean_assignments,
+                "saved_online": saved_online,
+                "ip_hash": ip_hash,
+                "user_agent": sanitize_text(user_agent, max_length=150) if user_agent else None
+            }
+            submissions.append(new_entry)
+            self._write_data("kiniela_submissions.json", submissions)
+                
         return {
             "status": "success",
             "message": f"Kiniela de {clean_creator} guardada correctament a la base de dades!",
             "saved_online": saved_online,
+            "id": new_id,
+            "uuid": submission_uuid,
+            "total_assigned": total_assigned,
             "timestamp": timestamp
         }
 

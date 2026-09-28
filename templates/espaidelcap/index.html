@@ -117,6 +117,18 @@
         </div>
       </div>
 
+            <!-- CARPETA 5: QUINIELA -->
+      <div class="carpeta-card carpeta-kiniela" onclick="openBigWindow('kiniela')">
+        <div>
+          <div class="carpeta-tag">RESPOSTES</div>
+          <h3 class="carpeta-title">QUINIELA DE CAPS</h3>
+        </div>
+        <div class="carpeta-meta">
+          <span class="carpeta-counter">{{ kinielas|length }} Respostes</span>
+          <button type="button" class="btn-open-carpeta">VEURE RESPOSTES</button>
+        </div>
+      </div>
+
       <!-- CARPETA 4: BOTIGA -->
       <div class="carpeta-card carpeta-botiga" onclick="openBigWindow('botiga')">
         <div>
@@ -143,6 +155,7 @@
           <a href="/novetats" target="_blank" rel="noopener noreferrer" class="quick-link-chip">CATÀLEG DE NOVETATS</a>
           <a href="/calendar" target="_blank" rel="noopener noreferrer" class="quick-link-chip">CALENDARI COMPLET</a>
           <a href="/foulard" target="_blank" rel="noopener noreferrer" class="quick-link-chip">MAPA DEL FOULARD</a>
+          <a href="/kiniela" target="_blank" rel="noopener noreferrer" class="quick-link-chip">QUINIELA DE CAPS</a>
           <a href="/shop" target="_blank" rel="noopener noreferrer" class="quick-link-chip">BOTIGA D'AGRUPAMENT</a>
         </div>
       </div>
@@ -151,6 +164,7 @@
       <div class="bottom-box">
         <div class="bottom-box-title">SEGURETAT I CONTRASENYA</div>
         <form method="POST" action="/espaidelcap/contra/update" style="display: flex; gap: 8px;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="password" name="nova_contra" class="gform-input" placeholder="Nova contrasenya..." required
             style="flex: 1;">
           <button type="submit" class="btn-gform-submit"
@@ -198,6 +212,7 @@
 
             <form method="POST" action="/espaidelcap/novetats/add"
               style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <div class="google-form-body">
 
                 <div class="gform-question-card">
@@ -290,6 +305,7 @@
                 <div class="db-record-actions">
                   <form method="POST" action="/espaidelcap/novetats/delete/{{ post.id }}"
                     onsubmit="return confirm('Segur que vols eliminar aquesta novetat?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn-db-action btn-db-delete">Eliminar</button>
                   </form>
                 </div>
@@ -314,6 +330,7 @@
 
             <form method="POST" action="/espaidelcap/calendari/add"
               style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <div class="google-form-body">
 
                 <div class="gform-question-card">
@@ -410,6 +427,7 @@
                     <form method="POST" action="/espaidelcap/calendari/delete/{{ ev.id }}"
                       onsubmit="return confirm('Segur que vols eliminar aquest esdeveniment?');"
                       style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                       <button type="submit" class="btn-db-action btn-db-delete">Eliminar</button>
                     </form>
                   </div>
@@ -424,6 +442,7 @@
                   </div>
 
                   <form method="POST" action="/espaidelcap/calendari/edit/{{ ev.id }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <div style="margin-bottom: 8px;">
                       <label class="gform-label" style="font-size: 0.72rem;">Títol</label>
                       <input type="text" name="title" class="gform-input" value="{{ ev.title }}" required>
@@ -503,6 +522,7 @@
 
             <form method="POST" action="/foulardviatger"
               style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <div class="google-form-body">
 
                 <div class="gform-question-card">
@@ -610,6 +630,7 @@
                 <div class="db-record-actions">
                   <form method="POST" action="/espaidelcap/foulard/delete/{{ pin.id }}"
                     onsubmit="return confirm('Segur que vols eliminar aquesta destinació?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn-db-action btn-db-delete">Eliminar</button>
                   </form>
                 </div>
@@ -634,6 +655,7 @@
 
             <form method="POST" action="/espaidelcap/shop/add"
               style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <div class="google-form-body">
 
                 <div class="gform-question-card">
@@ -726,6 +748,7 @@
                       onclick="toggleShopEdit('{{ prod.id }}', true)">Editar</button>
                     <form method="POST" action="/espaidelcap/shop/delete/{{ prod.id }}"
                       onsubmit="return confirm('Segur que vols eliminar aquest producte?');" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                       <button type="submit" class="btn-db-action btn-db-delete">Eliminar</button>
                     </form>
                   </div>
@@ -740,6 +763,7 @@
                   </div>
 
                   <form method="POST" action="/espaidelcap/shop/edit/{{ prod.id }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <div style="margin-bottom: 8px;">
                       <label class="gform-label" style="font-size: 0.72rem;">Nom del Producte</label>
                       <input type="text" name="name" class="gform-input" value="{{ prod.name }}" required>
@@ -778,6 +802,102 @@
 
         </div>
 
+        <!-- ===================================================================
+             SECTION 5: QUINIELA (LEFT: RESUM / RIGHT: TRAVESSES DATABASE)
+             =================================================================== -->
+        <div class="split-section-pane" id="pane-kiniela">
+
+          <!-- LEFT: RESUM I GESTIÓ -->
+          <div class="form-column-box">
+            <div class="google-form-card-header" style="border-left: 4px solid var(--color-kiniela);">
+              <h3 class="google-form-title">RESPOSTES DE LA QUINIELA</h3>
+              <p class="google-form-desc">Visualitza i gestiona les apostes d'assignació d'equips rebudes per a la ronda 2026-2027.</p>
+            </div>
+
+            <div class="google-form-body" style="padding: 22px;">
+              <div style="background: var(--color-kiniela-light); border: 1px solid var(--color-kiniela-border); border-radius: var(--cap-radius); padding: 16px; margin-bottom: 20px;">
+                <div style="font-size: 0.8rem; font-weight: 800; color: var(--color-kiniela-hover); text-transform: uppercase; letter-spacing: 1px;">TOTAL DE TRAVESSES</div>
+                <div style="font-size: 2.2rem; font-weight: 900; color: var(--color-kiniela); font-family: var(--font-display); line-height: 1.1;">{{ kinielas|length }}</div>
+                <div style="font-size: 0.85rem; color: var(--cap-text-secondary); margin-top: 6px;">Emmagatzemades correctament a data/kiniela_submissions.json</div>
+              </div>
+
+              <div class="gform-question-card" style="margin-bottom: 16px;">
+                <label class="gform-label">Filtrar per nom del creador/a</label>
+                <input type="text" id="admin-kiniela-search" class="gform-input" placeholder="Escriu per cercar ràpidament..." oninput="filterAdminKinielas()">
+              </div>
+
+              <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--cap-border-card); display: flex; flex-direction: column; gap: 10px;">
+                <a href="/kiniela" target="_blank" rel="noopener noreferrer" class="btn-retro" style="text-align: center; justify-content: center; background: #FFFFFF; font-size: 0.85rem; padding: 10px; border-color: var(--color-kiniela); color: var(--color-kiniela);">
+                  🌐 OBRIR JOC DE LA QUINIELA PÚBLIC
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: DATABASE DE TRAVESSES -->
+          <div class="db-column-box">
+            <div class="db-column-header">
+              <div>
+                <h3 class="db-title">TRAVESSES REGISTRADES ({{ kinielas|length }})</h3>
+                <p class="db-subtitle">Prediccions guardades en format JSON protegit</p>
+              </div>
+            </div>
+
+            <div class="db-items-list" id="admin-kiniela-list">
+              {% if kinielas|length == 0 %}
+              <div style="padding: 40px 20px; text-align: center; color: var(--cap-text-muted); font-size: 0.95rem;">
+                Encara no s'ha registrat cap travessa a la base de dades.
+              </div>
+              {% endif %}
+
+              {% for k in kinielas %}
+              <div class="db-item-card admin-kiniela-item" data-creator="{{ k.creator_name|lower }}" style="border-left: 4px solid var(--color-kiniela);">
+                <div class="db-item-header" style="align-items: flex-start;">
+                  <div>
+                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
+                      <span class="post-tag" style="background: var(--color-kiniela); font-size: 0.72rem; padding: 2px 7px;">#{{ k.id }}</span>
+                      <strong style="font-size: 1.15rem; color: var(--cap-text-main);">{{ k.creator_name }}</strong>
+                      <span style="font-size: 0.78rem; background: #F1F5F9; color: #475569; padding: 2px 7px; border-radius: 4px; font-weight: 700;">
+                        {{ k.total_assigned or '29' }} caps assignats
+                      </span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--cap-text-muted);">
+                      {{ k.timestamp }} {% if k.saved_online %}<span style="color: #16A34A; font-weight: 700;">• Google Sheets OK</span>{% endif %}
+                    </div>
+                  </div>
+
+                  <form method="POST" action="/espaidelcap/kiniela/delete/{{ k.id }}" onsubmit="return confirm('Segur que vols eliminar la quiniela de {{ k.creator_name|escape }}?');" style="margin: 0;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn-db-action btn-db-delete" title="Eliminar travessa">✕</button>
+                  </form>
+                </div>
+
+                <!-- Units Breakdown -->
+                <div style="margin-top: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 12px; font-size: 0.82rem;">
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+                    {% for unit_name, names in k.assignments.items() %}
+                    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 8px 10px;">
+                      <div style="font-weight: 800; font-size: 0.78rem; color: var(--cap-text-main); margin-bottom: 4px; border-bottom: 1px solid #F1F5F9; padding-bottom: 2px;">
+                        {{ unit_name }} ({{ names|length }})
+                      </div>
+                      <div style="color: var(--cap-text-secondary); font-size: 0.76rem; line-height: 1.45;">
+                        {% for n in names %}
+                        <div>• {{ n }}</div>
+                        {% else %}
+                        <div style="color: #94A3B8; font-style: italic;">Cap assignat</div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
     </div>
@@ -791,7 +911,8 @@
       'novetats': 'FORMULARI: AFEGIR NOVETATS',
       'calendari': 'FORMULARI: AFEGIR AL CALENDARI',
       'foulard': 'FORMULARI: AFEGIR FOULARD VIATGER',
-      'botiga': 'FORMULARI: AFEGIR ELEMENT BOTIGA'
+      'botiga': 'FORMULARI: AFEGIR ELEMENT BOTIGA',
+      'kiniela': 'RESPOSTES: QUINIELA DE CAPS'
     };
 
     // Open Big Screen Window focused on a specific carpeta
@@ -904,6 +1025,14 @@
       if (colorMap[unit]) {
         input.value = colorMap[unit];
       }
+    }
+
+    function filterAdminKinielas() {
+      const query = (document.getElementById('admin-kiniela-search')?.value || '').toLowerCase().trim();
+      document.querySelectorAll('.admin-kiniela-item').forEach(item => {
+        const creator = (item.getAttribute('data-creator') || '').toLowerCase();
+        item.style.display = (!query || creator.includes(query)) ? 'block' : 'none';
+      });
     }
   </script>
 
