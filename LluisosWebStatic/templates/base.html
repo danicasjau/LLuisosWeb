@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AE LLUÏSOS DE GRÀCIA{% endblock %}</title>
+  <meta name="description"
+    content="Agrupament Escolta Lluïsos de Gràcia. Escoltisme, muntanya i lleure educatiu a Gràcia.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- Leaflet Open-Source Interactive Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- Outer Frame -->
+  <div class="poster-outer-wrapper">
+    <div class="poster-canvas">
+
+      <!-- Main Top Bar Banner (Always Visible on Top & Vertically Centered) -->
+      <header class="poster-top-bar" id="main-top-bar">
+        <div class="topbar-inner-container">
+          <div class="topbar-left-cluster">
+            <h1 class="poster-title-fill">
+              <a href="/" class="poster-title-link">
+                <em><span class="smalltext" style="font-weight: 900; text-transform: uppercase;">AE</span>
+                  <d style="font-weight: 900;">lluïsos</d>
+                </em> <span class="smalltext">de</span>
+                <em style="font-weight: 900;">gràcia</em>
+              </a>
+            </h1>
+          </div>
+
+          <!-- Top Bar Navigation Apartats -->
+          <nav class="topbar-apartats-nav" id="topbar-apartats" aria-label="Index Apartats">
+            <a href="/#qui-som" class="topbar-apartat-link">QUI SOM</a>
+            <a href="/equips" class="topbar-apartat-link {% if active_page == 'equips' %}active{% endif %}">CAPS</a>
+            <a href="/kiniela"
+              class="topbar-apartat-link {% if active_page == 'kiniela' %}active{% endif %}">QUINIELA</a>
+            <a href="/calendar"
+              class="topbar-apartat-link {% if active_page == 'calendar' %}active{% endif %}">CAULENDARI</a>
+            <a href="/foulard" class="topbar-apartat-link {% if active_page == 'foulard' %}active{% endif %}">Foulard
+              Viatger</a>
+            <a href="/cims" class="topbar-apartat-link {% if active_page == 'llistatdecims' %}active{% endif %}">LListat
+              de Cims
+            </a>
+            <a href="/espaidelcap"
+              class="topbar-apartat-link {% if active_page == 'espaidelcap' %}active{% endif %}">ESPAI DEL CAP</a>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Static Vertical Navigation Bar (Alternative) -->
+      <button class="nav-hide-btn" style="display: none;" id="nav-hide-toggle" aria-label="Amagar o Mostrar Menú">
+        <span class="hide-icon">☰</span>
+      </button>
+
+      <nav class="poster-nav" id="main-nav">
+        <a href="/">INICI</a>
+        <a href="/#qui-som">QUI SOM</a>
+        <a href="/equips">CAPS</a>
+        <a href="/kiniela">QUINIELA</a>
+        <a href="/calendar">CAULENDARI</a>
+        <a href="/foulard">FOULARD VIATGER</a>
+        <a href="/espaidelcap">ESPAI DEL CAP</a>
+      </nav>
+
+      <!-- Dynamic Page Content -->
+      <main class="poster-main-content">
+        {% block content %}{% endblock %}
+      </main>
+
+      <!-- Standard Retro Modal Popup Shell -->
+      <div class="retro-modal-backdrop" id="retro-modal">
+        <div class="retro-modal-box">
+          <button class="modal-close-btn" id="modal-close-btn" type="button" aria-label="Tanca">✕</button>
+
+          <!-- Image on top -->
+          <img id="modal-img" src="" alt="Modal media" style="display:none;" />
+
+          <div style="text-align:center; margin-top:12px;">
+            <div id="modal-badge" class="post-tag" style="margin-bottom: 8px; display:inline-block;">BADGE</div>
+            <h2 id="modal-title" class="section-title" style="font-size: 2.2rem; margin:6px 0;">Modal Title</h2>
+            <div id="modal-meta"
+              style="font-size: 0.9rem; font-weight: 700; color: var(--retro-blue); margin-bottom: 12px;">Date /
+              Location</div>
+          </div>
+
+          <div class="modal-person-layout">
+            <div id="modal-body" style="font-size: 0.98rem; line-height: 1.6; color: var(--ink-black);">
+              Content text goes here.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-Div Centered Day Popup Modal -->
+      <div class="retro-modal-backdrop day-modal-backdrop" id="day-detail-modal">
+        <div class="retro-modal-box day-modal-box">
+          <button class="modal-close-btn" id="day-modal-close-btn" type="button" aria-label="Tanca">✕</button>
+          <div class="day-modal-layout">
+            <!-- Left Div: Opened Day & Events List with Hours -->
+            <div class="day-modal-left">
+              <div class="day-modal-header">
+                <div class="day-number-badge" id="day-modal-day-num">12</div>
+                <div>
+                  <div class="day-modal-weekday" id="day-modal-weekday">DISSABTE</div>
+                  <h3 class="day-modal-full-date" id="day-modal-date-text">12 de Setembre de 2026</h3>
+                </div>
+              </div>
+              <div class="day-events-section-title">ESDEVENIMENTS D'AQUEST DIA</div>
+              <div class="day-modal-events-list" id="day-modal-events-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Right Lateral Div: Detailed Event Information -->
+            <div class="day-modal-right" id="day-modal-event-detail">
+              <!-- Injected via JS when an event is selected -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional Dark Footer Bar with Index & Sitemap -->
+      <footer class="poster-footer-bar">
+        <div class="footer-index-grid">
+          <div class="footer-col">
+            <div class="footer-title">AE LLUÏSOS DE GRÀCIA</div>
+            <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 5px;">
+              Educant infants i joves en el lleure, la muntanya i el compromís social des de 1957.
+            </p>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">ÍNDEX DEL LLOC</div>
+            <ul class="footer-sitemap">
+              <li><a href="/">INICI</a></li>
+              <li><a href="/#qui-som">QUI SOM</a></li>
+              <li><a href="/equips">EQUIP DE CAPS</a></li>
+              <li><a href="/calendar">CAULENDARI</a></li>
+              <li><a href="/foulard">FOULARD VIATGER</a></li>
+              <li><a href="/espaidelcap">ESPAI DEL CAP</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">CONTACTE</div>
+            <div class="footer-contact-wrap">
+              <div class="footer-contact-address">
+                <strong style="color: #F8FAFC;">Local de l'Agrupament</strong><br>
+                Plaça del Nord, 4<br>
+                08024 Barcelona (Vila de Gràcia)
+              </div>
+              <div class="footer-contact-links">
+                <a href="https://www.instagram.com/aelluisosdegracia/" target="_blank" rel="noopener noreferrer" class="footer-ig-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                  <span>@aelluisosdegracia</span>
+                </a>
+                <a href="#" id="email-link" data-user="Y29udGFjdGU=" data-domain="ZXhhbXBsZS5jb20=" class="footer-email-chip">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                  </svg>
+                  <span>Envia'ns un correu</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom-line">
+          <div>AE LLUÏSOS DE GRÀCIA &copy; 2026 • TOTS ELS DRETS RESERVATS</div>
+          <div class="retro-barcode">
+            <div class="barcode-lines" id="barcode-lines-container"></div>
+            <div class="barcode-text">AE_LLUISOS_GRACIA_2026</div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/beauty.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/caps_carousel.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/animations.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+<script>
+  const emailLink = document.getElementById("email-link");
+
+  emailLink.addEventListener("mouseover", setupEmail);
+  emailLink.addEventListener("focus", setupEmail); // Per a accessibilitat amb teclat
+
+  function setupEmail() {
+    const user = atob(emailLink.getAttribute("data-user"));
+    const domain = atob(emailLink.getAttribute("data-domain"));
+    emailLink.href = `mailto:${user}@${domain}`;
+
+    // Eliminem els esdeveniments un cop ja s'ha xifrat
+    emailLink.removeEventListener("mouseover", setupEmail);
+    emailLink.removeEventListener("focus", setupEmail);
+  }
+
+</script>
+
+</html>

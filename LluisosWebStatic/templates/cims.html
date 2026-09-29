@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}LLISTAT DE CIMS | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<div class="page-container peaks-page">
+  <div class="section-header peaks-header">
+    <div>
+      <h2 class="section-title">LLISTAT DE CIMS</h2>
+    </div>
+  </div>
+
+  <section class="peaks-intro">
+    <p>Els cims estan classificats en cinc categories depenent de la dificultat tècnica, el desnivell i els quilòmetres.
+      Alguns cims tenen més d'una ruta per arribar-hi; en aquest llistat apareixen segons la ruta de nivell més baix.
+    </p>
+  </section>
+
+  <div class="equips-filters-strip animate-on-scroll scale-up is-visible" style="margin-top: 25px; margin-bottom: 25px;"
+    role="group" aria-label="Filtrar per unitat">
+    <button class="btn-filter active" type="button" data-unit-filter="all" data-level="all">TOTS ELS CIMS</button>
+    <button class="btn-filter" type="button" data-unit-filter="castors" data-level="CiLL">CASTÚDRIGUES</button>
+    <button class="btn-filter" type="button" data-unit-filter="llops" data-level="LLiD">DAINOPS</button>
+    <button class="btn-filter" type="button" data-unit-filter="ranguis" data-level="RNG">RANGUIS</button>
+    <button class="btn-filter" type="button" data-unit-filter="pios" data-level="PiC">PIONEL·LES</button>
+    <button class="btn-filter" type="button" data-unit-filter="truk" data-level="Truk">TRUK</button>
+  </div>
+
+  <ol class="peaks-grid" id="peaks-container">
+    <!-- Generat dinàmicament per cims.js a partir de cims.json -->
+    <li class="peaks-loading-hint" style="grid-column: 1 / -1; padding: 24px; text-align: center; color: #64748B; font-weight: 600;">
+      Carregant el llistat de cims...
+    </li>
+  </ol>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/cims.js') }}"></script>
+{% endblock %}

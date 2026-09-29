@@ -1,0 +1,6 @@
+{
+  "algorithm": "werkzeug",
+  "contra_hash": "scrypt:32768:8:1$qGVcfDfCixhyiTan$7df002026d84f415a821a034a0528ae26349b5bec689738a59cc41ec0a89df244096df949abb53262a99896aae2dbd713dd07ac9b3268f85ca13a2f7be37aa68",
+  "note": "AE Lluïsos de Gràcia - Contrasenya mestra xifrada amb Werkzeug (scrypt/pbkdf2)",
+  "updated_at": "2026-09-28 18:04:06"
+}

@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block title %}QUINIELA DE CAPS 2026-2027 | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<script>
+  window.CAPS_POOL = {{ team | tojson }};
+</script>
+
+<div class="page-container kiniela-page-layout">
+
+  <!-- Header Banner -->
+  <div class="section-header animate-on-scroll fade-left" style="margin-top: 10px;">
+    <div>
+      <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">QUINIELA DE CAPS</h2>
+      <div class="section-subtitle" style="margin-top: 4px;">
+        FES LA TEVA APOSTA PELS CAPS DEL PROPER CURS!
+      </div>
+    </div>
+
+    <!-- Action Controls (ALEATORI, REINICIAR & PUBLICAR) -->
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <button id="btn-random-kiniela" class="btn-retro btn-retro-blue" type="button"
+        title="Assignar caps aleatòriament seguint les regles">
+        ALEATORI
+      </button>
+      <button id="btn-reset-kiniela" class="btn-retro" style="background:#E2E8F0; color:#1E293B; border-color:#0F172A;"
+        type="button" title="Tornar tots els caps a la llista sense assignar">
+        REINICIAR
+      </button>
+      <button id="btn-publish-kiniela" class="btn-retro btn-retro-orange" type="button"
+        title="Enviar la teva quiniela a la base de dades">
+        PUBLICAR QUINIELA
+      </button>
+    </div>
+  </div>
+
+  <!-- Kiniela Main Two-Column Layout (Lateral Sidebar Pool + 6 Group Columns) -->
+  <div class="kiniela-main-split-layout">
+
+    <!-- Left Lateral Sidebar: Member Circles Pool -->
+    <aside class="kiniela-lateral-sidebar">
+
+      <!-- Unassigned Member Circles Pool -->
+      <div class="kiniela-pool-wrapper">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border-dark); padding-bottom: 8px;">
+          <div class="sidebar-title" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;">CAPS
+          </div>
+          <span i</span>
+        </div>
+
+        <!-- Quick filter search -->
+       
+        <div class="unassigned-pool-grid" id="unassigned-pool">
+          <!-- Member cards rendered by kiniela.js -->
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Right Area: 6 Group Columns Grid (Castors, Llops, Ranguis, Pios, Truk, Marxen) -->
+    <main class="kiniela-groups-layout" id="groups-container">
+      <!-- Group columns rendered by kiniela.js -->
+    </main>
+
+  </div>
+
+</div>
+
+<!-- =======================================================================
+     DEDICATED KINIELA PUBLISH MODAL (SAFE, ACCESSIBLE, SECURE)
+     ======================================================================= -->
+<div class="retro-modal-backdrop" id="kiniela-publish-modal"
+  style="display: none; align-items: center; justify-content: center;">
+  <div class="retro-modal-box" style="max-width: 520px; width: 92%;">
+    <button class="modal-close-btn" id="btn-close-publish-modal" type="button" aria-label="Tanca">✕</button>
+
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 18px;">
+      <div 
+      </div>
+      <h2 class="section-title" style="font-size: 2rem; margin: 4px 0 6px 0;">PUBLICAR LA QUINIELA</h2>
+      <div 
+      </div>
+    </div>
+
+    <!-- Warning shown if not all caps are assigned -->
+    <div id="kiniela-incomplete-alert"
+      style="display: none; background: #FFFBEB; border: 1px solid #F59E0B; color: #92400E; padding: 10px 14px; border-radius: 6px; font-size: 0.88rem; margin-bottom: 16px; line-height: 1.4;">
+       <strong>Atenció:</strong> Encara et queden <span id="kiniela-unassigned-num">0</span> caps a la barra lateral
+      sense assignar. Pots publicar la quiniela de totes maneres o cancel·lar per acabar-los de col·locar.
+    </div>
+
+    <!-- Submission Form -->
+    <form id="kiniela-publish-form" onsubmit="event.preventDefault(); submitKinielaData();">
+      <!-- Anti-bot honeypot field (hidden from genuine users) -->
+      <div style="display: none !important;" aria-hidden="true">
+        <label for="kiniela-hp">Deixa buit:</label>
+        <input type="text" id="kiniela-hp" name="hp" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div style="margin-bottom: 18px;">
+        <label for="kiniela-creator-name" class="creator-label" style="font-size: 0.95rem; margin-bottom: 6px;">
+          EL TEU NOM: <span style="color: var(--retro-orange);">*</span>
+        </label>
+        <input type="text" id="kiniela-creator-name" class="creator-input" placeholder="Ex: Clara, Pau, Marc, Gemma..."
+          maxlength="60" required autofocus style="width: 100%; box-sizing: border-box;" />
+      </div>
+
+      <div id="kiniela-publish-error"
+        style="display: none; background: #FEF2F2; border: 1px solid #EF4444; color: #991B1B; padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 14px; font-weight: 700;">
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+        <button type="button" id="btn-cancel-publish" class="btn-retro"
+          style="background: #E2E8F0; color: #1E293B; border-color: #0F172A; padding: 10px 18px;">
+          CANCEL·LAR
+        </button>
+        <button type="submit" id="btn-confirm-publish" class="btn-retro btn-retro-orange" style="padding: 10px 22px;">
+          CONFIRMAR I ENVIAR
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- =======================================================================
+     SUCCESS MODAL POPUP
+     ======================================================================= -->
+<div class="retro-modal-backdrop" id="kiniela-success-modal"
+  style="display: none; align-items: center; justify-content: center;">
+  <div class="retro-modal-box" style="max-width: 600px; width: 92%;">
+    <button class="modal-close-btn" id="btn-close-success-modal" type="button" aria-label="Tanca">✕</button>
+
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 16px;">
+      <div /div>
+      <div class="post-tag" style="background: #16A34A; margin-bottom: 8px; display: inline-block;">
+        DESADA CORRECTAMENT
+      </div>
+      <h2 class="section-title" style="font-size: 2rem; margin: 4px 0 6px 0;">QUINIELA REGISTRADA!</h2>
+      <div id="success-creator-info" style="font-size: 0.95rem; font-weight: 800; color: var(--retro-blue);">
+        Creador: - 
+      </div>
+    </div>
+
+    <div
+      style="background: #DCFCE7; border: 1px solid #16A34A; color: #14532D; padding: 12px 16px; border-radius: 8px; font-weight: 700; margin-bottom: 16px; font-size: 0.92rem;">
+      La teva travessa ha estat desada amb èxit a la base de dades segura de l'Agrupament!
+    </div>
+
+    <div style="font-family: var(--font-display); font-weight: 800; font-size: 0.88rem; margin-bottom: 6px;">
+      RESUM DE LES TEVES ASSIGNACIONS:
+    </div>
+    <textarea id="success-summary-textarea" readonly
+      style="width: 100%; height: 180px; font-family: monospace; font-size: 0.85rem; padding: 12px; border: 1px solid var(--border-dark); border-radius: 6px; background: #F8FAFC; box-sizing: border-box; resize: vertical;"></textarea>
+
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap;">
+      <button type="button" id="btn-copy-summary" class="btn-retro"
+        style="background: #F1F5F9; color: #0F172A; border-color: #0F172A; padding: 10px 18px;">
+        COPIAR RESUM
+      </button>
+      <button type="button" id="btn-done-success" class="btn-retro btn-retro-orange" style="padding: 10px 22px;">
+        FET / TANCAR
+      </button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/kiniela.js') }}"></script>
+{% endblock %}

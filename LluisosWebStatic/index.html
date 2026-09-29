@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AE LLUÏSOS DE GRÀCIA</title>
+  <meta name="description"
+    content="Agrupament Escolta Lluïsos de Gràcia. Escoltisme, muntanya i lleure educatiu a Gràcia.">
+  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/espaidelcap.css">
+  <!-- Leaflet Open-Source Interactive Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body>
+
+  <!-- Outer Frame -->
+  <div class="poster-outer-wrapper">
+    <div class="poster-canvas">
+
+      <!-- Main Top Bar Banner (Always Visible on Top & Vertically Centered) -->
+      <header class="poster-top-bar" id="main-top-bar">
+        <div class="topbar-inner-container">
+          <div class="topbar-left-cluster">
+            <h1 class="poster-title-fill">
+              <a href="#inici" class="poster-title-link" data-route="inici">
+                <em><span class="smalltext" style="font-weight: 900; text-transform: uppercase;">AE</span>
+                  <d style="font-weight: 900;">lluïsos</d>
+                </em> <span class="smalltext">de</span>
+                <em style="font-weight: 900;">gràcia</em>
+              </a>
+            </h1>
+          </div>
+
+          <!-- Top Bar Navigation Apartats -->
+          <nav class="topbar-apartats-nav" id="topbar-apartats" aria-label="Index Apartats">
+            <a href="#qui-som" class="topbar-apartat-link" data-route="qui-som">QUI SOM</a>
+            <a href="#equips" class="topbar-apartat-link" data-route="equips">CAPS</a>
+            <a href="#kiniela" class="topbar-apartat-link" data-route="kiniela">QUINIELA</a>
+            <a href="#calendar" class="topbar-apartat-link" data-route="calendar">CAULENDARI</a>
+            <!-- <a href="#foulard" class="topbar-apartat-link" data-route="foulard">Foulard Viatger</a> -->
+            <a href="#cims" class="topbar-apartat-link" data-route="cims">LListat de Cims</a>
+            <a href="#espaidelcap" class="topbar-apartat-link" data-route="espaidelcap">ESPAI DEL CAP</a>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Static Vertical Navigation Bar (Alternative) -->
+      <button class="nav-hide-btn" style="display: none;" id="nav-hide-toggle" aria-label="Amagar o Mostrar Menú">
+        <span class="hide-icon">☰</span>
+      </button>
+
+      <nav class="poster-nav" id="main-nav">
+        <a href="#inici" data-route="inici">INICI</a>
+        <a href="#qui-som" data-route="qui-som">QUI SOM</a>
+        <a href="#equips" data-route="equips">CAPS</a>
+        <a href="#kiniela" data-route="kiniela">QUINIELA</a>
+        <a href="#calendar" data-route="calendar">CAULENDARI</a>
+        <a href="#foulard" data-route="foulard">FOULARD VIATGER</a>
+        <a href="#cims" data-route="cims">LLISTAT DE CIMS</a>
+        <a href="#espaidelcap" data-route="espaidelcap">ESPAI DEL CAP</a>
+      </nav>
+
+      <!-- Dynamic Page Content -->
+      <main class="poster-main-content">
+
+        <!-- ===================================================================
+             VIEW 1: INICI (HOME PAGE)
+             =================================================================== -->
+        <div id="view-inici" class="page-view">
+          <!-- Vertical Poster Hero Section with 3D Parallax Depth Layers -->
+          <div class="hero-poster-container" id="hero-container">
+            <!-- Back Layer: Sky & Mountain Landscape -->
+            <div class="hero-mountain-bg"></div>
+
+            <!-- Center of hero-mountain-bg: Bigger centered version of poster-title-fill -->
+            <div class="hero-mountain-title-center">
+              <div class="poster-title-fill is-topbar title-on-topbar hero-poster-title-giant">
+                <em><span class="smalltext" style="font-weight: 900; text-transform: uppercase;">AE</span>
+                  <d style="font-weight: 900;">lluïsos</d>
+                </em> <span class="smalltext">de</span>
+                <em style="font-weight: 900;">gràcia</em>
+              </div>
+            </div>
+
+            <!-- Front Layer: Cutout Mountain Ridges in front of centered Title -->
+            <img src="static/images/mountains_cutout.png" alt="Muntanyes AE Lluïsos de Gràcia"
+              class="hero-mountain-cutout">
+          </div>
+
+          <!-- Distinction Editorial Full-Width Alternating Sections -->
+          <div class="distinction-sections-wrapper">
+
+            <!-- 01 QUI SOM -->
+            <section class="distinction-panel distinction-panel-left animate-on-scroll scale-up"
+              id="distinction-qui-som">
+              <div class="distinction-media-wrap">
+                <img src="static/images/distincitiona_001.png" alt="Qui Som Escolta" class="distinction-image">
+              </div>
+              <div class="distinction-content-box">
+                <h2 class="distinction-title-text">QUI SOM</h2>
+                <p class="distinction-desc">
+                  L'Agrupament Escolta Lluïsos de Gràcia és una entitat sense ànim de lucre fundada el 1957. Educem en
+                  el
+                  lleure, la muntanya i el compromís social des de la Plaça del Nord de Gràcia, organitzats gràcies a
+                  l'entrega voluntària d'un equip de caps compromesos amb l'educació transformadora.
+                </p>
+                <div class="distinction-actions">
+                  <a href="#qui-som" data-route="qui-som" class="btn-retro btn-retro-orange">CONEIX L'AGRUPAMENT →</a>
+                </div>
+              </div>
+            </section>
+
+            <!-- 04 CALENDARI -->
+            <section class="distinction-panel distinction-panel-right animate-on-scroll scale-up"
+              id="distinction-valors">
+              <div class="distinction-media-wrap">
+                <img src="static/images/distincitiona_004.png" alt="Calendari Escolta" class="distinction-image">
+              </div>
+              <div class="distinction-content-box">
+                <h2 class="distinction-title-text">CALENDARI</h2>
+                <p class="distinction-desc">
+                  Consulta totes les sortides de cap de setmana, campaments d'estiu, caus especials i assemblees
+                  generals
+                  programades per a aquest curs 2026-2027.
+                </p>
+                <div class="distinction-actions">
+                  <a href="#calendar" data-route="calendar" class="btn-retro btn-retro-blue">VEURE CALENDARI COMPLET
+                    →</a>
+                </div>
+              </div>
+            </section>
+
+            <!-- 03 EQUIP DE CAPS -->
+            <section class="distinction-panel distinction-panel-left animate-on-scroll scale-up"
+              id="distinction-equip-de-caps">
+              <div class="distinction-media-wrap">
+                <img src="static/images/distincitiona_003.png" alt="Equip de Caps Escolta" class="distinction-image">
+              </div>
+              <div class="distinction-content-box">
+                <h2 class="distinction-title-text">EQUIP DE CAPS</h2>
+                <p class="distinction-desc">
+                  Un equip de joves voluntaris compromesos que organitzen dissabte a dissabte les activitats, excursions
+                  i
+                  campaments per a totes les branques pedagògiques de l'agrupament.
+                </p>
+                <div class="distinction-actions">
+                  <a href="#equips" data-route="equips" class="btn-retro btn-retro-orange">VEURE EQUIP DE CAPS →</a>
+                </div>
+              </div>
+            </section>
+
+          </div>
+
+          <!-- SECTION 1: QUI SOM I VALORS -->
+          <section class="section-block bg-vintage-cream animate-on-scroll" id="qui-som"
+            style="scroll-margin-top: 20px;">
+            <div class="page-container" style="padding: 0;">
+              <div class="section-header animate-on-scroll fade-left">
+                <div>
+                  <h2 class="section-title">EL NOSTRE AGRUPAMENT</h2>
+                </div>
+              </div>
+
+              <div>
+                <div class="about-layout">
+                  <div class="about-left camera-roll">
+                    <img src="static/images/distincitiona_001.png" alt="foto1" class="camera-photo">
+                    <img src="static/images/distincitiona_002.png" alt="foto2" class="camera-photo">
+                    <img src="static/images/distincitiona_003.png" alt="foto3" class="camera-photo">
+                    <img src="static/images/distincitiona_004.png" alt="foto4" class="camera-photo">
+                  </div>
+
+                  <div class="about-right">
+                    <div class="about-body">
+                      <p>L’Agrupament Escolta Lluïsos de Gràcia és un agrupament escolta del barri de Gràcia de
+                        Barcelona, fundat
+                        el 1957.</p>
+
+                      <p>L’agrupament està dins l’entitat cultural i esportiva <a href="http://www.lluisosdegracia.cat/"
+                          target="_blank" rel="noopener noreferrer">Lluïsos de Gràcia</a> i forma part de Minyons
+                        Escoltes i Guies
+                        de Catalunya, un moviment estès en el territori que compta amb més de 15.000 infants i joves en
+                        prop de
+                        150 agrupaments arreu del país, amb una visió compartida: deixar el món millor de com l’han
+                        trobat. Entre
+                        aquests hi ha més de 3.000 voluntaris i voluntàries que fan de caps, formadors o responsables
+                        associatius.
+                      </p>
+                      <br>
+                      <hr><br>
+                      <p>L’agrupament organitza jocs, tallers, excursions i campaments. A part de les activitats que es
+                        fan tots
+                        els dissabtes (de 16:30 a 19 hores), anualment també programa sis excursions de cap de setmana,
+                        tres dies
+                        de campaments per Nadal, quatre per Setmana Santa i entre set i quinze dies a l’estiu. El 2007
+                        va rebre la
+                        Medalla d’Honor de Barcelona.</p>
+                      <br>
+                      <hr><br>
+                      <p>A través d’aquestes activitats, l’entitat escolta promou entre els seus membres l’interès per
+                        tot allò
+                        que succeeix al seu voltant; el desenvolupament d’una consciència crítica i l’habitud de la
+                        col·laboració,
+                        la participació i el joc democràtic; el creixement com a persones solidàries i compromeses amb
+                        la pau, la
+                        justícia i la igualtat; la convivència i el respecte envers la diferència cultural des de la
+                        defensa de la
+                        llengua, la cultura i la història pròpies; el coneixement de la natura i el foment del consum
+                        responsable,
+                        i el treball de la dimensió interior de cadascú per desenvolupar els valors de la pròpia
+                        espiritualitat i
+                        respectar la dels altres.</p>
+                      <br>
+                      <hr><br>
+                      <p>Els nens s’agrupen per edats, en cinc unitats: castors/llúdrigues (6 i 7 anys), llops/daines
+                        (8, 9, 10),
+                        ràngers/noies guia (11, 12, 13), pioners/caravel·les (14, 15, 16) i TRUC (17 i 18 anys). Cada
+                        unitat està
+                        sota la responsabilitat d’un equip de caps que fan la seva tasca de manera voluntària i que
+                        treballen per
+                        l’educació en el lleure d’infants i joves, oferint-los l’aventura de créixer i aprendre
+                        mitjançant el
+                        mètode escolta i guia. L’entitat compta amb una centena escoltes i guies, i una trentena de
+                        caps.</p>
+                      <br>
+                      <p>L’escoltisme és un moviment educatiu juvenil internacional que, des del voluntariat, educa
+                        infants i
+                        joves en la participació democràtica i el compromís cívic, amb la natura com a espai idoni per a
+                        l’aprenentatge. Amb més de 100 anys d’història, 45 milions de membres arreu del món i presència
+                        en 160
+                        països, és el moviment educatiu juvenil més nombrós del planeta.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="units-card">
+                <div class="units-heading-wrap animate-on-scroll fade-left is-visible">
+                  <h3 class="units-heading">UNITATS</h3>
+                </div>
+                <hr style="opacity: 0.2;"><br>
+                <div class="units-intro">
+                  <p>A l’agrupament, ens dividim en 5 grups d’unitats, formats per nois i noies de edats pròximes. Cada
+                    unitat és
+                    identificada amb un color i el seu lema.</p>
+                </div>
+
+                <div class="units-list">
+                  <article class="unit-item unit-item-orange">
+                    <div class="unit-item-topline"><span>6-8 ANYS</span></div>
+                    <h4>Castors i Llúdrigues</h4>
+                    <p>A Castors fan els primers passos dins el cau: descobreixen els campaments, el joc compartit i la
+                      vida en
+                      grup.</p>
+                    <p class="unit-motto">“Riu amunt”</p>
+                  </article>
+
+                  <article class="unit-item unit-item-yellow">
+                    <div class="unit-item-topline"><span>8-11 ANYS</span></div>
+                    <h4>Llops i Daines</h4>
+                    <p>Assaboreixen la natura, aprofundeixen en els valors de l’escoltisme i juguen sense parar.</p>
+                    <p class="unit-motto">“Tant com puc”</p>
+                  </article>
+
+                  <article class="unit-item unit-item-blue">
+                    <div class="unit-item-topline"><span>11-14 ANYS</span></div>
+                    <h4>Ràngers i Noies Guia</h4>
+                    <p>Fan les primeres rutes importants, campaments més llargs i projectes que els fan créixer.</p>
+                    <p class="unit-motto">“Sempre a punt”</p>
+                  </article>
+
+                  <article class="unit-item unit-item-red">
+                    <div class="unit-item-topline"><span>14-17 ANYS</span></div>
+                    <h4>Pioners i Caravel·les</h4>
+                    <p>Ideen projectes, s’organitzen i aprenen a portar les seves aventures una passa més enllà.</p>
+                    <p class="unit-motto">“Res a mitges”</p>
+                  </article>
+
+                  <article class="unit-item unit-item-green">
+                    <div class="unit-item-topline"><span>17-19 ANYS</span></div>
+                    <h4>TRUK</h4>
+                    <p>S’autogestionen, fan servei a les altres unitats i es preparen per continuar fent cau.</p>
+                    <p class="unit-motto">“Fent servei”</p>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="section-line-separator"></div>
+
+          <!-- SECTION 3: EQUIP DE CAPS (Horizontal Scroll Carousel) -->
+          <section class="section-block bg-warm-beige animate-on-scroll" id="caps" style="scroll-margin-top: 20px;">
+            <div class="page-container" style="padding: 0;">
+              <div class="section-header animate-on-scroll fade-left">
+                <div>
+                  <h2 class="section-title">EQUIP DE CAPS</h2>
+                </div>
+                <div class="caps-carousel-controls">
+                  <a href="#equips" data-route="equips" class="btn-retro btn-retro-orange btn-caps-view-all">VEURE TOTS
+                    ELS CAPS (21) →</a>
+                </div>
+              </div>
+
+              <!-- Horizontal Scroll Carousel Track -->
+              <div class="caps-scroll-wrapper animate-on-scroll scale-up">
+                <div class="caps-scroll-track" id="caps-scroll-track">
+                  <!-- Populated dynamically via JS from CAPS_DATA -->
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 2: EQUIP DE CAPS (FULL PAGE)
+             =================================================================== -->
+        <div id="view-equips" class="page-view" style="display: none;">
+          <div class="page-container equips-page-layout">
+            <div class="section-header animate-on-scroll fade-left" style="margin-top: 15px;">
+              <div>
+                <h2 class="section-title" style="font-size: clamp(2.2rem, 4.5vw, 3.8rem);">EQUIP DE CAPS</h2>
+              </div>
+            </div>
+
+            <!-- Unit Filter Tabs -->
+            <div class="equips-filters-strip animate-on-scroll scale-up is-visible">
+              <button class="btn-filter active" type="button" data-unit-filter="all">TOTS ELS CAPS</button>
+              <button class="btn-filter" type="button" data-unit-filter="castors">CASTÚDRIGUES</button>
+              <button class="btn-filter" type="button" data-unit-filter="llops">DAINOPS</button>
+              <button class="btn-filter" type="button" data-unit-filter="ranguis">RANGUIS</button>
+              <button class="btn-filter" type="button" data-unit-filter="pios">PIONEL·LES</button>
+              <button class="btn-filter" type="button" data-unit-filter="truk">TRUK</button>
+            </div>
+
+            <!-- Grid of All Caps Cards -->
+            <div class="equips-full-grid" id="equips-container" style="margin-top: 35px;">
+              <!-- Populated dynamically via JS from CAPS_DATA -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 3: QUINIELA (GAME)
+             =================================================================== -->
+        <div id="view-kiniela" class="page-view" style="display: none;">
+          <div class="page-container kiniela-page-layout">
+            <div class="section-header animate-on-scroll fade-left" style="margin-top: 10px;">
+              <div>
+                <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">QUINIELA DE CAPS</h2>
+                <div class="section-subtitle" style="margin-top: 4px;">
+                  FES LA TEVA APOSTA PELS CAPS DEL PROPER CURS!
+                </div>
+              </div>
+
+              <!-- Action Controls -->
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <button id="btn-random-kiniela" class="btn-retro btn-retro-blue" type="button"
+                  title="Assignar caps aleatòriament seguint les regles">
+                  ALEATORI
+                </button>
+                <button id="btn-reset-kiniela" class="btn-retro"
+                  style="background:#E2E8F0; color:#1E293B; border-color:#0F172A;" type="button"
+                  title="Tornar tots els caps a la llista sense assignar">
+                  REINICIAR
+                </button>
+                <button id="btn-publish-kiniela" class="btn-retro btn-retro-orange" type="button"
+                  title="Enviar la teva quiniela a la base de dades">
+                  PUBLICAR QUINIELA
+                </button>
+              </div>
+            </div>
+
+            <!-- Kiniela Split Layout -->
+            <div class="kiniela-main-split-layout">
+              <aside class="kiniela-lateral-sidebar">
+                <div class="kiniela-pool-wrapper">
+                  <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border-dark); padding-bottom: 8px;">
+                    <div class="sidebar-title" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;">CAPS
+                    </div>
+                  </div>
+                  <div class="unassigned-pool-grid" id="unassigned-pool"></div>
+                </div>
+              </aside>
+
+              <main class="kiniela-groups-layout" id="groups-container"></main>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 4: CAULENDARI (CALENDAR)
+             =================================================================== -->
+        <div id="view-calendar" class="page-view" style="display: none;">
+          <div class="page-container calendar-page-layout">
+            <div class="section-header calendar-page-header animate-on-scroll fade-left" style="margin-top: 10px;">
+              <div>
+                <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">CAULENDARI</h2>
+              </div>
+            </div>
+
+            <div class="calendar-two-col-layout calendar-full-layout animate-on-scroll scale-up">
+              <main class="calendar-main-stage">
+                <div class="calendar-top-controls">
+                  <div class="month-nav-cluster">
+                    <button class="btn-month-arrow" id="btn-prev-month" onclick="prevMonth()" title="Mes anterior">
+                      <span>‹</span>
+                    </button>
+                    <div class="month-selector-wrap">
+                      <select id="month-dropdown-select" class="month-dropdown"
+                        onchange="onMonthDropdownChange(this.value)">
+                        <option value="2026-09">Setembre 2026</option>
+                        <option value="2026-10">Octubre 2026</option>
+                        <option value="2026-11">Novembre 2026</option>
+                        <option value="2026-12">Desembre 2026</option>
+                        <option value="2027-01">Gener 2027</option>
+                        <option value="2027-02">Febrer 2027</option>
+                        <option value="2027-03">Març 2027</option>
+                        <option value="2027-04">Abril 2027</option>
+                        <option value="2027-05">Maig 2027</option>
+                        <option value="2027-06">Juny 2027</option>
+                        <option value="2027-07">Juliol 2027</option>
+                        <option value="2027-08">Agost 2027</option>
+                        <option value="2027-09">Setembre 2027</option>
+                      </select>
+                    </div>
+                    <button class="btn-month-arrow" id="btn-next-month" onclick="nextMonth()" title="Mes següent">
+                      <span>›</span>
+                    </button>
+                  </div>
+
+                  <div class="calendar-action-cluster">
+                    <div class="view-mode-toggle">
+                      <button class="btn-view-toggle active" id="btn-view-month"
+                        onclick="setCalendarView('month')">VISTA MES</button>
+                      <button class="btn-view-toggle" id="btn-view-year" onclick="setCalendarView('year')">VISTA
+                        ANUAL</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Calendar Month View Container -->
+                <div id="calendar-month-container" class="calendar-view-container">
+                  <div class="calendar-month-bar">
+                    <h3 class="calendar-month-heading" id="current-month-heading">SETEMBRE 2026</h3>
+                  </div>
+
+                  <div class="calendar-grid-box">
+                    <div class="calendar-day-header">Dilluns</div>
+                    <div class="calendar-day-header">Dimarts</div>
+                    <div class="calendar-day-header">Dimecres</div>
+                    <div class="calendar-day-header">Dijous</div>
+                    <div class="calendar-day-header">Divendres</div>
+                    <div class="calendar-day-header">Dissabte</div>
+                    <div class="calendar-day-header">Diumenge</div>
+                    <div id="calendar-cells-grid" class="calendar-cells-wrapper"></div>
+                  </div>
+                </div>
+
+                <!-- Calendar Full Year View Container -->
+                <div id="calendar-year-container" class="calendar-year-container" style="display: none;">
+                  <div class="year-view-header">
+                    <h3 class="calendar-month-heading">TOT EL CURS</h3>
+                  </div>
+                  <div class="year-grid-12-months" id="year-months-grid"></div>
+                  <ul class="calendar-activity-legend" aria-label="Llegenda d'activitats">
+                    <li><span class="calendar-legend-swatch" style="--legend-color: #FF5722;"></span>Cau</li>
+                    <li><span class="calendar-legend-swatch" style="--legend-color: #0284C7;"></span>Excursió</li>
+                    <li><span class="calendar-legend-swatch" style="--legend-color: #16A34A;"></span>Campaments
+                      Primavera</li>
+                    <li><span class="calendar-legend-swatch" style="--legend-color: #DC2626;"></span>Campaments Hivern
+                    </li>
+                    <li><span class="calendar-legend-swatch" style="--legend-color: #2563EB;"></span>Jamborinada</li>
+                  </ul>
+                </div>
+
+
+              </main>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 5: FOULARD VIATGER (MAP & EXPEDITIONS)
+             =================================================================== -->
+        <div id="view-foulard" class="page-view" style="display: none;">
+          <div class="page-container">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">MAPA DEL FOULARD VIATGER</h2>
+              </div>
+            </div>
+
+            <div class="map-layout">
+              <div class="map-container" id="leaflet-map"
+                style="height: 520px; width: 100%; border: 2px solid var(--ink-black);"></div>
+            </div>
+
+            <section class="expedition-gallery" aria-labelledby="expedition-gallery-title" style="margin-top: 40px;">
+              <div class="expedition-gallery-header">
+                <h3 id="expedition-gallery-title">SORTIDES DEL FOULARD VIATGER</h3>
+                <label class="expedition-sort-control" for="expedition-sort-order">
+                  <span>Ordenar per data</span>
+                  <select id="expedition-sort-order" onchange="sortExpeditions(this.value)">
+                    <option value="newest">Més noves</option>
+                    <option value="oldest">Més antigues</option>
+                  </select>
+                </label>
+              </div>
+              <div class="expedition-grid" id="expedition-cards-grid"></div>
+            </section>
+
+            <!-- Expedition Detail Modal -->
+            <div class="expedition-detail-backdrop" id="expedition-detail" aria-hidden="true">
+              <article class="expedition-detail-modal" role="dialog" aria-modal="true"
+                aria-labelledby="expedition-detail-title">
+                <button class="expedition-detail-close" id="expedition-detail-close" type="button"
+                  aria-label="Tanca">&times;</button>
+                <div class="expedition-detail-image-wrap" id="expedition-detail-image-wrap">
+                  <img id="expedition-detail-image" src="" alt="" class="expedition-detail-image">
+                  <button class="expedition-previous-image" id="expedition-previous-image" type="button"
+                    aria-label="Veure la imatge anterior">&#8592;</button>
+                  <button class="expedition-next-image" id="expedition-next-image" type="button"
+                    aria-label="Veure la imatge següent">&#8594;</button>
+                </div>
+                <div class="expedition-detail-copy">
+                  <p class="expedition-detail-kicker" id="expedition-detail-year"></p>
+                  <h3 id="expedition-detail-modal-title"></h3>
+                  <p class="expedition-detail-author" id="expedition-detail-author"></p>
+                  <p class="expedition-detail-description" id="expedition-detail-description"></p>
+                  <div class="expedition-mini-map" id="expedition-mini-map"
+                    aria-label="Mapa de localització de l'expedició"></div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 6: LLISTAT DE CIMS
+             =================================================================== -->
+        <div id="view-cims" class="page-view" style="display: none;">
+          <div class="page-container peaks-page">
+            <div class="section-header peaks-header">
+              <div>
+                <h2 class="section-title">LLISTAT DE CIMS</h2>
+              </div>
+            </div>
+
+            <section class="peaks-intro">
+              <p>Els cims estan classificats en cinc categories depenent de la dificultat tècnica, el desnivell i els
+                quilòmetres.
+                Alguns cims tenen més d'una ruta per arribar-hi; en aquest llistat apareixen segons la ruta de nivell
+                més baix.
+              </p>
+            </section>
+
+            <div class="equips-filters-strip animate-on-scroll scale-up is-visible"
+              style="margin-top: 25px; margin-bottom: 25px;" role="group" aria-label="Filtrar per unitat">
+              <button class="btn-filter active" type="button" data-unit-filter="all" data-level="all">TOTS ELS
+                CIMS</button>
+              <button class="btn-filter" type="button" data-unit-filter="castors"
+                data-level="CiLL">CASTÚDRIGUES</button>
+              <button class="btn-filter" type="button" data-unit-filter="llops" data-level="LLiD">DAINOPS</button>
+              <button class="btn-filter" type="button" data-unit-filter="ranguis" data-level="RNG">RANGUIS</button>
+              <button class="btn-filter" type="button" data-unit-filter="pios" data-level="PiC">PIONEL·LES</button>
+              <button class="btn-filter" type="button" data-unit-filter="truk" data-level="Truk">TRUK</button>
+            </div>
+
+            <ol class="peaks-grid" id="peaks-container">
+              <!-- Rendered dynamically by cims.js -->
+            </ol>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 7: ESPAI DEL CAP (LOGIN AMB TOTES LES CONTRASENYES INCORRECTES)
+             =================================================================== -->
+        <div id="view-espaidelcap" class="page-view" style="display: none;">
+          <div class="page-container" style="max-width: 580px; margin: 40px auto 60px;">
+            <div class="cap-login-card">
+              <img src="static/images/logoantic.png" class="cap-login-logo" alt="Logo AE Lluïsos de Gràcia">
+              <div class="cap-login-badge">AE LLUÏSOS DE GRÀCIA</div>
+              <h1 class="cap-login-title">ESPAI DEL CAP</h1>
+              <p class="cap-login-subtitle">ACCÉS RESTRINGIT PER A L'ACTUAL CONSELL</p>
+
+              <!-- Banner de contrasenya incorrecta -->
+              <div id="cap-static-login-alert" class="cap-alert cap-alert-error"
+                style="display: none; margin-bottom: 18px; text-align: left;">
+                <span>Contrasenya incorrecta. Torna-ho a provar.</span>
+              </div>
+
+              <form id="cap-static-login-form" class="cap-login-form"
+                onsubmit="event.preventDefault(); submitStaticCapLogin();">
+                <div class="gform-question-card" style="margin-bottom: 14px;">
+                  <label for="static-contra" class="gform-label">CONTRASENYA D'ACCÉS <span class="req">*</span></label>
+                  <div class="password-input-wrap">
+                    <input type="password" id="static-contra" name="contra" class="gform-input"
+                      placeholder="Introdueix la contrasenya..." autocomplete="current-password" required />
+                    <button type="button" class="password-toggle-btn" id="static-toggle-pwd-btn"
+                      onclick="toggleStaticPasswordVisibility()">
+                      MOSTRAR
+                    </button>
+                  </div>
+                  <div class="cap-login-hint"></div>
+                </div>
+
+                <button type="submit" class="btn-gform-submit" style="width: 100%;">
+                  ACCEDIR A L'ESPAI DEL CAP
+                </button>
+              </form>
+
+              <div class="cap-login-footer">
+                <a href="#inici" data-route="inici">← Tornar a la pàgina principal</a>
+              </div>
+            </div>
+            <!-- ===================================================================
+             VIEW 8: NOVETATS I ANUNCIS
+             =================================================================== -->
+            <div id="view-novetats" class="page-view" style="display: none;">
+              <div class="page-container">
+                <div class="section-header">
+                  <div>
+                    <h2 class="section-title">NOVETATS I ANUNCIS</h2>
+                    <div class="section-subtitle">PUBLICACIONS, CRÒNIQUES D'ALTA MUNTANYA I ANUNCIS D'AGRUPAMENT</div>
+                  </div>
+                  <div
+                    style="font-family: var(--font-display); font-size: 1.2rem; background: var(--bg-paper); padding: 6px 14px; border: 1px solid var(--ink-black);">
+                    TOTAL POSTS: 4
+                  </div>
+                </div>
+
+                <div class="posts-grid" id="novetats-posts-grid"></div>
+              </div>
+            </div>
+
+            <!-- ===================================================================
+             VIEW 9: BOTIGA D'AGRUPAMENT
+             =================================================================== -->
+            <div id="view-shop" class="page-view" style="display: none;">
+              <div class="page-container">
+                <div class="section-header">
+                  <div>
+                    <h2 class="section-title">BOTIGA D'AGRUPAMENT</h2>
+                    <div class="section-subtitle">EQUIPAMENT ESCOLTA, DESSUADORES, FOULARDS I ACCESSORIS D'ALTA MUNTANYA
+                    </div>
+                  </div>
+                  <div
+                    style="font-family: var(--font-display); font-size: 1.2rem; background: var(--retro-orange); color: white; padding: 6px 16px; border: 1px solid var(--ink-black); display: flex; align-items: center; gap: 8px;">
+                    CESTA: <span id="cart-counter"
+                      style="background: white; color: var(--ink-black); padding: 2px 8px; font-weight: bold;">0</span>
+                    ITEMS
+                  </div>
+                </div>
+
+                <div class="shop-grid" id="shop-products-grid"></div>
+              </div>
+            </div>
+
+      </main>
+
+      <!-- Standard Retro Modal Popup Shell -->
+      <div class="retro-modal-backdrop" id="retro-modal">
+        <div class="retro-modal-box">
+          <button class="modal-close-btn" id="modal-close-btn" type="button" aria-label="Tanca">✕</button>
+
+          <!-- Image on top -->
+          <img id="modal-img" src="" alt="Modal media" style="display:none;" />
+
+          <div style="text-align:center; margin-top:12px;">
+            <div id="modal-badge" class="post-tag" style="margin-bottom: 8px; display:inline-block;">BADGE</div>
+            <h2 id="modal-title" class="section-title" style="font-size: 2.2rem; margin:6px 0;">Modal Title</h2>
+            <div id="modal-meta"
+              style="font-size: 0.9rem; font-weight: 700; color: var(--retro-blue); margin-bottom: 12px;">Date /
+              Location</div>
+          </div>
+
+          <div class="modal-person-layout">
+            <div id="modal-body" style="font-size: 0.98rem; line-height: 1.6; color: var(--ink-black);">
+              Content text goes here.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-Div Centered Day Popup Modal -->
+      <div class="retro-modal-backdrop day-modal-backdrop" id="day-detail-modal">
+        <div class="retro-modal-box day-modal-box">
+          <button class="modal-close-btn" id="day-modal-close-btn" type="button" aria-label="Tanca">✕</button>
+          <div class="day-modal-layout">
+            <!-- Left Div: Opened Day & Events List with Hours -->
+            <div class="day-modal-left">
+              <div class="day-modal-header">
+                <div class="day-number-badge" id="day-modal-day-num">12</div>
+                <div>
+                  <div class="day-modal-weekday" id="day-modal-weekday">DISSABTE</div>
+                  <h3 class="day-modal-full-date" id="day-modal-date-text">12 de Setembre de 2026</h3>
+                </div>
+              </div>
+              <div class="day-events-section-title">ESDEVENIMENTS D'AQUEST DIA</div>
+              <div class="day-modal-events-list" id="day-modal-events-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Right Lateral Div: Detailed Event Information -->
+            <div class="day-modal-right" id="day-modal-event-detail">
+              <!-- Injected via JS when an event is selected -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kiniela Publish Modal -->
+      <div class="retro-modal-backdrop" id="kiniela-publish-modal"
+        style="display: none; align-items: center; justify-content: center;">
+        <div class="retro-modal-box" style="max-width: 520px; width: 92%;">
+          <button class="modal-close-btn" id="btn-close-publish-modal" type="button" aria-label="Tanca">✕</button>
+
+          <div style="text-align: center; margin-top: 10px; margin-bottom: 18px;">
+            <h2 class="section-title" style="font-size: 2rem; margin: 4px 0 6px 0;">PUBLICAR LA QUINIELA</h2>
+          </div>
+
+          <div id="kiniela-incomplete-alert"
+            style="display: none; background: #FFFBEB; border: 1px solid #F59E0B; color: #92400E; padding: 10px 14px; border-radius: 6px; font-size: 0.88rem; margin-bottom: 16px; line-height: 1.4;">
+            <strong>Atenció:</strong> Encara et queden <span id="kiniela-unassigned-num">0</span> caps a la barra
+            lateral
+            sense assignar. Pots publicar la quiniela de totes maneres o cancel·lar per acabar-los de col·locar.
+          </div>
+
+          <form id="kiniela-publish-form" onsubmit="event.preventDefault(); submitKinielaData();">
+            <div style="display: none !important;" aria-hidden="true">
+              <label for="kiniela-hp">Deixa buit:</label>
+              <input type="text" id="kiniela-hp" name="hp" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <div style="margin-bottom: 18px; text-align: left;">
+              <label for="kiniela-creator-name"
+                style="display: block; font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px;">
+                EL TEU NOM I COGNOM <span style="color: #DC2626;">*</span>
+              </label>
+              <input type="text" id="kiniela-creator-name" name="creator_name" maxlength="60" required
+                placeholder="Ex: Clara Rius"
+                style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 1rem; border: 2px solid var(--border-dark); border-radius: 4px; font-family: var(--font-body); outline: none;" />
+            </div>
+
+            <div id="kiniela-publish-error"
+              style="display: none; color: #DC2626; font-size: 0.85rem; margin-bottom: 12px; font-weight: 600;"></div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+              <button type="button" id="btn-cancel-publish" class="btn-retro"
+                style="background: #E2E8F0; color: #1E293B;">
+                CANCEL·LAR
+              </button>
+              <button type="submit" id="btn-confirm-publish" class="btn-retro btn-retro-orange">
+                CONFIRMAR I ENVIAR
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Kiniela Success Modal -->
+      <div class="retro-modal-backdrop" id="kiniela-success-modal"
+        style="display: none; align-items: center; justify-content: center;">
+        <div class="retro-modal-box" style="max-width: 580px; width: 92%;">
+          <button class="modal-close-btn" id="btn-close-success-modal" type="button" aria-label="Tanca">✕</button>
+
+          <div style="text-align: center; margin-top: 10px; margin-bottom: 14px;">
+            <div style="font-size: 2.5rem; margin-bottom: 6px;">🎉</div>
+            <h2 class="section-title" style="font-size: 1.8rem; margin: 0 0 6px 0;">QUINIELA REGISTRADA!</h2>
+            <div id="success-creator-info"
+              style="font-size: 0.88rem; color: #0284C7; font-weight: 700; margin-bottom: 12px;"></div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label for="success-summary-textarea"
+              style="display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--ink-muted);">
+              RESUM DE LA TEVA APÒSTA (POTS COPIAR-LO I COMPARTIR-LO):
+            </label>
+            <textarea id="success-summary-textarea" readonly rows="8"
+              style="width: 100%; box-sizing: border-box; padding: 10px 12px; font-family: monospace; font-size: 0.82rem; border: 1px solid var(--border-dark); border-radius: 4px; background: #F8FAFC; resize: vertical;"></textarea>
+          </div>
+
+          <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
+            <button type="button" id="btn-copy-summary" class="btn-retro btn-retro-blue">
+              COPIAR RESUM
+            </button>
+            <button type="button" id="btn-done-success" class="btn-retro btn-retro-orange">
+              FET, MOLTES GRÀCIES!
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional Dark Footer Bar with Index & Sitemap -->
+      <footer class="poster-footer-bar">
+        <div class="footer-index-grid">
+          <div class="footer-col">
+            <div class="footer-title">AE LLUÏSOS DE GRÀCIA</div>
+            <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 5px;">
+              Educant infants i joves en el lleure, la muntanya i el compromís social des de 1957.
+            </p>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">ÍNDEX DEL LLOC</div>
+            <ul class="footer-sitemap">
+              <li><a href="#inici" data-route="inici">INICI</a></li>
+              <li><a href="#qui-som" data-route="qui-som">QUI SOM</a></li>
+              <li><a href="#equips" data-route="equips">EQUIP DE CAPS</a></li>
+              <li><a href="#calendar" data-route="calendar">CAULENDARI</a></li>
+              <li><a href="#foulard" data-route="foulard">FOULARD VIATGER</a></li>
+              <li><a href="#cims" data-route="cims">LLISTAT DE CIMS</a></li>
+              <li><a href="#espaidelcap" data-route="espaidelcap">ESPAI DEL CAP</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">CONTACTE</div>
+            <div class="footer-contact-wrap">
+              <div class="footer-contact-address">
+                <strong style="color: #F8FAFC;">Local de l'Agrupament</strong><br>
+                Plaça del Nord, 4<br>
+                08024 Barcelona (Vila de Gràcia)
+              </div>
+              <div class="footer-contact-links">
+                <a href="https://www.instagram.com/aelluisosdegracia/" target="_blank" rel="noopener noreferrer"
+                  class="footer-ig-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                  </svg>
+                  <span>@aelluisosdegracia</span>
+                </a>
+                <a href="#" id="email-link" data-user="Y29udGFjdGU=" data-domain="bGx1aXNvc2RlZ3JhY2lhLmNhdA=="
+                  class="footer-email-chip">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                  </svg>
+                  <span>Envia'ns un correu</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom-line">
+          <div>AE LLUÏSOS DE GRÀCIA &copy; 2026 • TOTS ELS DRETS RESERVATS</div>
+          <div class="retro-barcode">
+            <div class="barcode-lines" id="barcode-lines-container"></div>
+            <div class="barcode-text">AE_LLUISOS_GRACIA_2026</div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="static/js/data.js"></script>
+  <script src="static/js/main.js"></script>
+  <script src="static/js/beauty.js"></script>
+  <script src="static/js/caps_carousel.js"></script>
+  <script src="static/js/animations.js"></script>
+  <script src="static/js/cims.js"></script>
+  <script src="static/js/kiniela.js"></script>
+
+  <!-- Static Application Orchestration Script -->
+  <script>
+    // --------------------------------------------------------------------------
+    // STATIC ROUTING & PAGE VIEW SWITCHER
+    // --------------------------------------------------------------------------
+    const VALID_VIEWS = ['inici', 'qui-som', 'equips', 'kiniela', 'calendar', 'foulard', 'cims', 'espaidelcap', 'novetats', 'shop', 'botiga'];
+    let currentActiveView = 'inici';
+    let leafletMapInstance = null;
+    let leafletMarkers = [];
+
+    function switchView(route, shouldScroll = true) {
+      if (!route) route = 'inici';
+      route = route.replace('#', '').toLowerCase();
+      if (route === 'botiga') route = 'shop';
+
+      // Special case: 'qui-som' is an anchor section within 'inici'
+      const targetView = (route === 'qui-som') ? 'inici' : route;
+      const viewEl = document.getElementById(`view-${targetView}`);
+
+      if (!viewEl) return;
+
+      // Hide all page views
+      document.querySelectorAll('.page-view').forEach(v => {
+        v.style.display = 'none';
+      });
+
+      // Show requested view
+      viewEl.style.display = 'block';
+      currentActiveView = targetView;
+
+      // Update active navigation state
+      document.querySelectorAll('.topbar-apartat-link, .poster-nav a').forEach(link => {
+        const linkRoute = link.getAttribute('data-route') || (link.getAttribute('href') || '').replace('#', '');
+        if (linkRoute === route || (route === 'qui-som' && linkRoute === 'qui-som')) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      // Execute view-specific initializations
+      if (targetView === 'foulard') {
+        setTimeout(initFoulardMapAndExpeditions, 80);
+      } else if (targetView === 'calendar') {
+        setTimeout(() => {
+          if (typeof renderCalendarMonth === 'function') renderCalendarMonth();
+          if (typeof renderUpcomingEvents === 'function') renderUpcomingEvents();
+        }, 50);
+      } else if (targetView === 'equips') {
+        renderEquipsGrid();
+      } else if (targetView === 'kiniela') {
+        if (typeof renderGroupsUI === 'function') renderGroupsUI();
+        if (typeof renderPoolUI === 'function') renderPoolUI();
+      } else if (targetView === 'cims') {
+        if (typeof loadPeaksData === 'function') loadPeaksData();
+      } else if (targetView === 'novetats') {
+        renderNovetatsPosts();
+      } else if (targetView === 'shop') {
+        renderShopProducts();
+      }
+
+      if (shouldScroll) {
+        if (route === 'qui-som') {
+          setTimeout(() => {
+            const quiSomSec = document.getElementById('qui-som');
+            if (quiSomSec) quiSomSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
+
+    // Hash change handler for browser back/forward and deep linking
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) switchView(hash, true);
+      else switchView('inici', true);
+    });
+
+    // Intercept clicks on links with data-route or hash
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[data-route], a[href^="#"]');
+      if (link) {
+        const href = link.getAttribute('href');
+        const route = link.getAttribute('data-route') || (href ? href.replace('#', '') : '');
+        if (route && VALID_VIEWS.includes(route)) {
+          e.preventDefault();
+          window.location.hash = route;
+          switchView(route, true);
+        }
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // RENDER CAPS CAROUSEL & FULL GRID
+    // --------------------------------------------------------------------------
+    function renderCapsCarousel() {
+      const track = document.getElementById('caps-scroll-track');
+      if (!track || !Array.isArray(CAPS_DATA)) return;
+
+      track.innerHTML = '';
+      CAPS_DATA.forEach(member => {
+        const card = document.createElement('div');
+        card.className = 'team-card team-card-scrollable home-cap-card';
+        card.setAttribute('data-name', member.name);
+        card.setAttribute('data-unit', member.unit);
+        card.setAttribute('data-unit-code', member.unit_code || '');
+        card.setAttribute('data-role', member.role);
+        card.setAttribute('data-image', member.image);
+
+        card.innerHTML = `
+          <div class="team-polaroid-frame">
+            <img src="${member.image}" alt="${escapeHtml(member.name)}" class="team-photo"
+              onerror="this.onerror=null; this.src='static/images/caps/deafult.png';">
+          </div>
+          <div class="team-card-content compact-card-content">
+            <h3 class="team-name">${escapeHtml(member.name)}</h3>
+            <span class="team-unit-badge unit-badge-${member.unit_code || ''}">${escapeHtml(member.unit)}</span>
+          </div>
+        `;
+
+        card.addEventListener('click', () => openCapProfileModal(member));
+        track.appendChild(card);
+      });
+    }
+
+    function renderEquipsGrid() {
+      const container = document.getElementById('equips-container');
+      if (!container || !Array.isArray(CAPS_DATA)) return;
+      if (container.children.length > 0) return; // Already rendered
+
+      container.innerHTML = '';
+      CAPS_DATA.forEach(member => {
+        const card = document.createElement('div');
+        card.className = 'team-card equip-full-card';
+        card.setAttribute('data-unit-code', member.unit_code || 'general');
+        card.setAttribute('data-name', member.name);
+        card.setAttribute('data-unit', member.unit);
+        card.setAttribute('data-role', member.role);
+        card.setAttribute('data-image', member.image);
+
+        card.innerHTML = `
+          <div class="team-polaroid-frame">
+            <img src="${member.image}" alt="${escapeHtml(member.name)}" class="team-photo"
+              onerror="this.onerror=null; this.src='static/images/caps/deafult.png';">
+          </div>
+          <div class="team-card-content compact-card-content">
+            <h3 class="team-name">${escapeHtml(member.name)}</h3>
+            <span class="team-unit-badge unit-badge-${member.unit_code || ''}">${escapeHtml(member.unit)}</span>
+          </div>
+        `;
+
+        card.addEventListener('click', () => openCapProfileModal(member));
+        container.appendChild(card);
+      });
+
+      // Filter tabs event listeners for Equips
+      const filterButtons = document.querySelectorAll('.equips-filters-strip .btn-filter');
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filterKey = btn.getAttribute('data-unit-filter') || 'all';
+
+          document.querySelectorAll('.equip-full-card').forEach(card => {
+            const matches = (filterKey === 'all' || card.getAttribute('data-unit-code') === filterKey);
+            card.style.display = matches ? 'flex' : 'none';
+          });
+        });
+      });
+    }
+
+    function openCapProfileModal(member) {
+      const modal = document.getElementById('retro-modal');
+      const modalBadge = document.getElementById('modal-badge');
+      const unitCode = member.unit_code || '';
+      const name = member.name || '';
+      const role = member.role || '';
+      const profileQuestions = `
+        <div class="person-profile-questions">
+          <p><strong>Nom i Cognoms:</strong> ${escapeHtml(name)}</p>
+          <p><strong>Cap de:</strong> ${escapeHtml(role)}</p>
+          <p><strong>Data de naixement:</strong></p>
+          <p><strong>Any que va entrar al Cau:</strong></p>
+          <p><strong>Estudis:</strong></p>
+          <p><strong>Hobbies:</strong></p>
+          <p><strong>Cançó preferida:</strong></p>
+          <p><strong>Llibre preferit:</strong></p>
+          <p><strong>Color preferit:</strong></p>
+          <p><strong>Anècdota:</strong></p>
+        </div>
+      `;
+
+      modal.classList.add('caps-person-modal');
+      modal.classList.remove(...Array.from(modal.classList).filter(c => c.startsWith('unit-modal-')));
+      openModal(name, member.unit || '', '', profileQuestions, member.image || '');
+      modalBadge.className = `post-tag unit-badge-${unitCode}`;
+      modal.classList.add(`unit-modal-${unitCode}`);
+    }
+
+    // --------------------------------------------------------------------------
+    // FOULARD VIATGER: LEAFLET MAP & EXPEDITIONS GALLERY
+    // --------------------------------------------------------------------------
+    let activeExpeditionImages = [];
+    let activeExpeditionImageIndex = 0;
+    let expeditionMiniMap = null;
+    let expeditionMiniMarker = null;
+
+    function initFoulardMapAndExpeditions() {
+      const mapContainer = document.getElementById('leaflet-map');
+      if (!mapContainer) return;
+
+      if (!leafletMapInstance) {
+        leafletMapInstance = L.map('leaflet-map').setView([41.75, 1.75], 7);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '&copy; OpenStreetMap contributors | AE Lluïsos de Gràcia'
+        }).addTo(leafletMapInstance);
+
+        const orangeIcon = L.divIcon({
+          className: 'custom-leaflet-pin',
+          html: `<div style="background-color:#FF7A00; width:18px; height:18px; border-radius:50%; border:2px solid #FFFFFF; box-shadow:0 3px 8px rgba(0,0,0,0.5); cursor:pointer;"></div>`,
+          iconSize: [18, 18],
+          iconAnchor: [9, 9]
+        });
+
+        FOULARD_PINS_DATA.forEach(pin => {
+          const marker = L.marker([pin.lat, pin.lng], { icon: orangeIcon }).addTo(leafletMapInstance);
+          const popupContent = document.createElement('div');
+          popupContent.className = 'expedition-pin-popup';
+          popupContent.innerHTML = `
+            <strong class="expedition-pin-popup-title">${escapeHtml(pin.title)}</strong>
+            <span class="expedition-pin-popup-date">${escapeHtml(pin.date || pin.year)}</span>
+            <span class="expedition-pin-popup-author">${escapeHtml(pin.author || pin.unit)}</span>
+          `;
+          marker.bindPopup(popupContent);
+          leafletMarkers.push({ lat: pin.lat, lng: pin.lng, marker });
+        });
+      }
+
+      leafletMapInstance.invalidateSize();
+      renderExpeditionCards('newest');
+    }
+
+    function renderExpeditionCards(sortOrder = 'newest') {
+      const grid = document.getElementById('expedition-cards-grid');
+      if (!grid || !Array.isArray(FOULARD_EXPEDITIONS_DATA)) return;
+
+      const list = [...FOULARD_EXPEDITIONS_DATA];
+      if (sortOrder === 'oldest') {
+        list.reverse();
+      }
+
+      grid.innerHTML = '';
+      list.forEach(exp => {
+        const btn = document.createElement('button');
+        btn.className = 'expedition-card';
+        btn.type = 'button';
+        btn.setAttribute('data-id', exp.id);
+        btn.innerHTML = `
+          <span class="expedition-card-image-wrap">
+            <img src="${exp.image}" alt="${escapeHtml(exp.title)}" class="expedition-card-image">
+          </span>
+          <span class="expedition-card-content">
+            <span class="expedition-card-date">${escapeHtml(exp.date)}</span>
+            <strong>${escapeHtml(exp.title)}</strong>
+            <span>${escapeHtml(exp.author)}</span>
+          </span>
+        `;
+        btn.addEventListener('click', () => openExpeditionModal(exp));
+        grid.appendChild(btn);
+      });
+    }
+
+    function sortExpeditions(order) {
+      renderExpeditionCards(order);
+    }
+
+    function openExpeditionModal(exp) {
+      const modal = document.getElementById('expedition-detail');
+      if (!modal) return;
+
+      activeExpeditionImages = [exp.image];
+      activeExpeditionImageIndex = 0;
+
+      const imgEl = document.getElementById('expedition-detail-image');
+      if (imgEl) imgEl.src = exp.image;
+
+      document.getElementById('expedition-detail-year').textContent = exp.date;
+      document.getElementById('expedition-detail-modal-title').textContent = exp.title;
+      document.getElementById('expedition-detail-author').textContent = exp.author;
+      document.getElementById('expedition-detail-description').textContent = exp.description;
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+
+      if (!expeditionMiniMap) {
+        expeditionMiniMap = L.map('expedition-mini-map', {
+          zoomControl: false,
+          attributionControl: false
+        }).setView([exp.lat, exp.lng], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(expeditionMiniMap);
+      } else {
+        expeditionMiniMap.setView([exp.lat, exp.lng], 5);
+      }
+
+      if (expeditionMiniMarker) expeditionMiniMarker.remove();
+      expeditionMiniMarker = L.marker([exp.lat, exp.lng]).addTo(expeditionMiniMap);
+      setTimeout(() => expeditionMiniMap.invalidateSize(), 80);
+    }
+
+    const expCloseBtn = document.getElementById('expedition-detail-close');
+    if (expCloseBtn) {
+      expCloseBtn.addEventListener('click', () => {
+        const modal = document.getElementById('expedition-detail');
+        if (modal) {
+          modal.classList.remove('is-open');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }
+
+    // --------------------------------------------------------------------------
+    // ESPAI DEL CAP: TOTES LES CONTRASENYES INCORRECTES
+    // --------------------------------------------------------------------------
+    function submitStaticCapLogin() {
+      const alertEl = document.getElementById('cap-static-login-alert');
+      const inputEl = document.getElementById('static-contra');
+
+      if (alertEl) {
+        alertEl.style.display = 'block';
+      }
+      if (inputEl) {
+        inputEl.value = '';
+        inputEl.focus();
+      }
+    }
+
+    function toggleStaticPasswordVisibility() {
+      const pwdInput = document.getElementById('static-contra');
+      const toggleBtn = document.getElementById('static-toggle-pwd-btn');
+      if (!pwdInput || !toggleBtn) return;
+
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        toggleBtn.textContent = 'AMAGAR';
+      } else {
+        pwdInput.type = 'password';
+        toggleBtn.textContent = 'MOSTRAR';
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // NOVETATS & BOTIGA RENDERERS
+    // --------------------------------------------------------------------------
+    function renderNovetatsPosts() {
+      const grid = document.getElementById('novetats-posts-grid');
+      if (!grid || !Array.isArray(NOVETATS_DATA)) return;
+      if (grid.children.length > 0) return;
+
+      grid.innerHTML = '';
+      NOVETATS_DATA.forEach(post => {
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        card.innerHTML = `
+          <img src="${post.image}" alt="${escapeHtml(post.title)}" class="post-thumb">
+          <div class="post-body">
+            <span class="post-tag">${escapeHtml(post.tag)}</span>
+            <h3 class="post-title">${escapeHtml(post.title)}</h3>
+            <p class="post-excerpt">${escapeHtml(post.excerpt)}</p>
+            <div class="post-footer">
+              <span>${escapeHtml(post.date)}</span>
+              <span style="color: var(--retro-orange); font-weight: 800;">LLEGIR MÉS →</span>
+            </div>
+          </div>
+        `;
+        card.addEventListener('click', () => {
+          openModal(post.title, post.tag, `${post.date} • ${post.author}`, post.content, post.image);
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    function renderShopProducts() {
+      const grid = document.getElementById('shop-products-grid');
+      if (!grid || !Array.isArray(SHOP_PRODUCTS_DATA)) return;
+      if (grid.children.length > 0) return;
+
+      grid.innerHTML = '';
+      SHOP_PRODUCTS_DATA.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <div>
+            <div style="position: relative;">
+              <img src="${prod.image}" alt="${escapeHtml(prod.name)}" class="product-img">
+              <span class="post-tag" style="position: absolute; top: 10px; left: 10px; background-color: var(--retro-blue);">
+                ${escapeHtml(prod.tag)}
+              </span>
+            </div>
+            <div class="product-info">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">
+                CATEGORY: ${escapeHtml(prod.category)}
+              </div>
+              <h3 class="post-title" style="font-size: 1.15rem; margin: 4px 0 8px 0;">${escapeHtml(prod.name)}</h3>
+              <p style="font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 12px;">
+                ${escapeHtml(prod.description)}
+              </p>
+            </div>
+          </div>
+
+          <div style="padding: 15px; border-top: 1px dashed #CBD5E1; background: var(--bg-cream); display: flex; justify-content: space-between; align-items: center;">
+            <div class="product-price">${prod.price.toFixed(2)} €</div>
+            <button class="btn-retro btn-retro-orange btn-add-cart" 
+                    style="padding: 8px 14px; font-size: 0.95rem;"
+                    data-id="${prod.id}" 
+                    data-name="${escapeHtml(prod.name)}" 
+                    data-price="${prod.price}">
+              + AFEGIR
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      if (typeof initShopCart === 'function') {
+        initShopCart();
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // FOOTER EMAIL DECODER
+    // --------------------------------------------------------------------------
+    const emailLink = document.getElementById("email-link");
+    if (emailLink) {
+      emailLink.addEventListener("mouseover", setupEmail);
+      emailLink.addEventListener("focus", setupEmail);
+      function setupEmail() {
+        try {
+          const user = atob(emailLink.getAttribute("data-user"));
+          const domain = atob(emailLink.getAttribute("data-domain"));
+          emailLink.href = `mailto:${user}@${domain}`;
+        } catch (e) { }
+        emailLink.removeEventListener("mouseover", setupEmail);
+        emailLink.removeEventListener("focus", setupEmail);
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // INITIAL BOOTSTRAP
+    // --------------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCapsCarousel();
+      renderEquipsGrid();
+
+      // Check URL hash for direct view navigation
+      const initialHash = window.location.hash.replace('#', '');
+      if (initialHash && VALID_VIEWS.includes(initialHash)) {
+        switchView(initialHash, false);
+      } else {
+        switchView('inici', false);
+      }
+    });
+  </script>
+</body>
+
+</html>

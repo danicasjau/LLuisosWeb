@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESPAI DEL CAP • ACCÉS | AE Lluïsos de Gràcia</title>
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <link rel="stylesheet" href="../../static/css/espaidelcap.css">
+</head>
+
+<body class="espaidelcap-body">
+
+  <div class="cap-login-wrapper">
+    <div class="cap-login-card">
+      <img src="../../static/images/logoantic.png" class="cap-login-logo"
+        alt="Logo AE Lluïsos de Gràcia">
+      <div class="cap-login-badge">AE LLUÏSOS DE GRÀCIA</div>
+      <h1 class="cap-login-title">ESPAI DEL CAP</h1>
+      <p class="cap-login-subtitle">ACCÉS RESTRINGIT PER A L'ACTUAL CONSELL</p>
+
+      <div id="cap-alert-box" class="cap-alert cap-alert-error"
+        style="display: none; margin-bottom: 18px; text-align: left;">
+        <span>Contrasenya incorrecta. Torna-ho a provar.</span>
+      </div>
+
+      <form onsubmit="event.preventDefault(); document.getElementById('cap-alert-box').style.display='block'; document.getElementById('contra').value=''; document.getElementById('contra').focus();" class="cap-login-form">
+        <div class="gform-question-card" style="margin-bottom: 14px;">
+          <label for="contra" class="gform-label">CONTRASENYA D'ACCÉS <span class="req">*</span></label>
+          <div class="password-input-wrap">
+            <input type="password" id="contra" name="contra" class="gform-input"
+              placeholder="Introdueix la contrasenya..." autocomplete="current-password" required autofocus />
+            <button type="button" class="password-toggle-btn" id="toggle-pwd-btn" onclick="togglePasswordVisibility()">
+              MOSTRAR
+            </button>
+          </div>
+          <div class="cap-login-hint"></div>
+        </div>
+
+        <button type="submit" class="btn-gform-submit" style="width: 100%;">
+          ACCEDIR A L'ESPAI DEL CAP
+        </button>
+      </form>
+
+      <div class="cap-login-footer">
+        <a href="../../index.html">← Tornar a la pàgina principal</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('contra');
+      const toggleBtn = document.getElementById('toggle-pwd-btn');
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        toggleBtn.textContent = 'AMAGAR';
+      } else {
+        pwdInput.type = 'password';
+        toggleBtn.textContent = 'MOSTRAR';
+      }
+    }
+  </script>
+</body>
+
+</html>

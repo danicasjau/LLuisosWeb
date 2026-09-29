@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}EQUIP DE CAPS I MONITORS | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<div class="page-container equips-page-layout">
+
+  <!-- Header -->
+  <div class="section-header animate-on-scroll fade-left" style="margin-top: 15px;">
+    <div>
+      <h2 class="section-title" style="font-size: clamp(2.2rem, 4.5vw, 3.8rem);">EQUIP DE CAPS</h2>
+    </div>
+  </div>
+
+  <!-- Unit Filter Tabs -->
+  <div class="equips-filters-strip animate-on-scroll scale-up is-visible">
+    <button class="btn-filter active" type="button" data-unit-filter="all">TOTS ELS CAPS</button>
+    <button class="btn-filter" type="button" data-unit-filter="castors">CASTÚDRIGUES</button>
+    <button class="btn-filter" type="button" data-unit-filter="llops">DAINOPS</button>
+    <button class="btn-filter" type="button" data-unit-filter="ranguis">RANGUIS</button>
+    <button class="btn-filter" type="button" data-unit-filter="pios">PIONEL·LES</button>
+    <button class="btn-filter" type="button" data-unit-filter="truk">TRUK</button>
+  </div>
+
+  <!-- Grid of All Caps Cards -->
+  <div class="equips-full-grid" id="equips-container" style="margin-top: 35px;">
+    {% for member in team %}
+    <div class="team-card equip-full-card" data-unit-code="{{ member.unit_code|default('general') }}"
+      data-name="{{ member.name|e }}" data-unit="{{ member.unit|e }}" data-role="{{ member.role|e }}"
+      data-years="{{ member.years|e }}" data-bio="{{ member.bio|e }}" data-quote="{{ member.quote|e }}"
+      data-image="{{ member.image|e }}">
+
+      <div class="team-polaroid-frame">
+        <img src="{{ member.image }}" alt="{{ member.name }}" class="team-photo"
+          onerror="this.onerror=null; this.src='/static/images/caps/deafult.png';">
+      </div>
+
+      <div class="team-card-content compact-card-content">
+        <h3 class="team-name">{{ member.name }}</h3>
+        <span class="team-unit-badge unit-badge-{{ member.unit_code|default('') }}">{{ member.unit }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.btn-filter');
+    const cards = document.querySelectorAll('.equip-full-card');
+    const container = document.getElementById('equips-container');
+
+    function applyEquipFilter(filterKey) {
+      cards.forEach(card => {
+        const matches = filterKey === 'all' || card.dataset.unitCode === filterKey;
+        card.style.display = matches ? 'flex' : 'none';
+      });
+
+      const visibleCards = Array.from(cards).filter(card => card.style.display === 'flex');
+      for (let index = visibleCards.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [visibleCards[index], visibleCards[randomIndex]] = [visibleCards[randomIndex], visibleCards[index]];
+      }
+      visibleCards.forEach(card => container.appendChild(card));
+
+      filterButtons.forEach(button => {
+        const isActive = button.dataset.unitFilter === filterKey;
+        button.classList.toggle('active', isActive);
+      });
+    }
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        applyEquipFilter(button.dataset.unitFilter);
+      });
+    });
+
+    applyEquipFilter('all');
+
+    cards.forEach(card => {
+      card.style.display = 'flex';
+      card.addEventListener('click', () => {
+        const name = card.dataset.name || '';
+        const unit = card.dataset.unit || '';
+        const role = card.dataset.role || '';
+        const years = card.dataset.years || '';
+        const image = card.dataset.image || '';
+        const modal = document.getElementById('retro-modal');
+        const modalBadge = document.getElementById('modal-badge');
+        const unitCode = card.dataset.unitCode || '';
+        modal.classList.add('caps-person-modal');
+        modal.classList.remove(...Array.from(modal.classList).filter(className => className.startsWith('unit-modal-')));
+
+        const profileQuestions = `
+          <div class="person-profile-questions">
+            <p><strong>Nom i Cognoms:</strong> ${name}</p>
+            <p><strong>Cap de:</strong> ${role}</p>
+            <p><strong>Data de naixement:</strong></p>
+            <p><strong>Any que va entrar al Cau:</strong></p>
+            <p><strong>Estudis:</strong></p>
+            <p><strong>Hobbies:</strong></p>
+            <p><strong>Cançó preferida:</strong></p>
+            <p><strong>Llibre preferit:</strong></p>
+            <p><strong>Color preferit:</strong></p>
+            <p><strong>Anècdota:</strong></p>
+          </div>
+        `;
+
+        openModal(
+          name,
+          unit,
+          '',
+          profileQuestions,
+          image
+        );
+        modalBadge.className = `post-tag unit-badge-${unitCode}`;
+        modal.classList.add(`unit-modal-${unitCode}`);
+      });
+    });
+  });
+</script>
+{% endblock %}

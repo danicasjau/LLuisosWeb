@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}CALENDARI D'ACTIVITATS | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<div class="page-container">
+
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">CALENDARI DE SORTIDES I CAU 2026</h2>
+      <div class="section-subtitle">CALENDARI DE CONSULTA • CLICA QUALSEVOL EVENT PER VEURE LA INFORMACIÓ COMPLETA</div>
+    </div>
+    <div style="font-family: var(--font-display); font-size: 1.1rem; color: var(--retro-orange); font-weight: 700;">
+      VISTA NON-EDITABLE DE CONSULTA
+    </div>
+  </div>
+
+  <div class="calendar-wrapper">
+    <div
+      style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--ink-black); padding-bottom: 12px; margin-bottom: 15px;">
+      <h3 style="font-family: var(--font-display); font-size: 1.8rem; letter-spacing: 2px;">SETEMBRE / OCTUBRE 2026</h3>
+      <div style="display: flex; gap: 10px; font-size: 0.85rem; font-weight: 700;">
+        <span style="color: var(--retro-orange);">■ TOTES LES UNITATS</span>
+        <span style="color: var(--retro-blue);">■ RÀNGERS & PIONERS</span>
+        <span style="color: var(--ink-black);">■ ASSEMBLEA & BARRI</span>
+      </div>
+    </div>
+
+    <!-- 7 Day Header -->
+    <div class="calendar-grid">
+      <div class="calendar-day-header">DL</div>
+      <div class="calendar-day-header">DT</div>
+      <div class="calendar-day-header">DC</div>
+      <div class="calendar-day-header">DJ</div>
+      <div class="calendar-day-header">DV</div>
+      <div class="calendar-day-header">DS</div>
+      <div class="calendar-day-header">DM</div>
+
+      <!-- Days 1 - 6 empty padding -->
+      <div class="calendar-cell empty"></div>
+      <div class="calendar-cell empty"></div>
+
+      <!-- Days of September -->
+      <div class="calendar-cell"><span class="cell-number">1</span></div>
+      <div class="calendar-cell"><span class="cell-number">2</span></div>
+      <div class="calendar-cell"><span class="cell-number">3</span></div>
+      <div class="calendar-cell"><span class="cell-number">4</span></div>
+      <div class="calendar-cell"><span class="cell-number">5</span></div>
+
+      <div class="calendar-cell"><span class="cell-number">6</span></div>
+      <div class="calendar-cell"><span class="cell-number">7</span></div>
+      <div class="calendar-cell"><span class="cell-number">8</span></div>
+      <div class="calendar-cell"><span class="cell-number">9</span></div>
+      <div class="calendar-cell"><span class="cell-number">10</span></div>
+      <div class="calendar-cell"><span class="cell-number">11</span></div>
+
+      <!-- Event 1: Benvinguda (12 Setembre) -->
+      <div class="calendar-cell" data-event="true" data-title="Cau de Benvinguda i Passos d'Unitat"
+        data-unit="Totes les unitats" data-timeloc="12 Setembre • 16:00 - 19:30 @ Plaça del Nord"
+        data-desc="Benvinguda al nou curs escolta! Jocs de retrobament, presentació de nous caps i cerimònia dels passos de branca. Porteu el foulard!">
+        <span class="cell-number">12</span>
+        <div class="cell-event-badge" style="background-color: var(--retro-orange);">Benvinguda Cau</div>
+      </div>
+
+      <div class="calendar-cell"><span class="cell-number">13</span></div>
+      <div class="calendar-cell"><span class="cell-number">14</span></div>
+      <div class="calendar-cell"><span class="cell-number">15</span></div>
+      <div class="calendar-cell"><span class="cell-number">16</span></div>
+      <div class="calendar-cell"><span class="cell-number">17</span></div>
+      <div class="calendar-cell"><span class="cell-number">18</span></div>
+      <div class="calendar-cell"><span class="cell-number">19</span></div>
+
+      <div class="calendar-cell"><span class="cell-number">20</span></div>
+      <div class="calendar-cell"><span class="cell-number">21</span></div>
+      <div class="calendar-cell"><span class="cell-number">22</span></div>
+      <div class="calendar-cell"><span class="cell-number">23</span></div>
+      <div class="calendar-cell"><span class="cell-number">24</span></div>
+      <div class="calendar-cell"><span class="cell-number">25</span></div>
+
+      <!-- Event 2: Excursió Montseny (26 Setembre) -->
+      <div class="calendar-cell" data-event="true" data-title="Excursió de cap de setmana al Montseny"
+        data-unit="Ràngers i Pioners" data-timeloc="26-27 Setembre • Turó de l'Home"
+        data-desc="Primera sortida amb nit en tendes del curs. Ruta de 18km amb desnivell positiu i taller d'orientació amb estrelles.">
+        <span class="cell-number">26</span>
+        <div class="cell-event-badge" style="background-color: var(--retro-blue);">Excursió Montseny</div>
+      </div>
+
+      <div class="calendar-cell"><span class="cell-number">27</span></div>
+      <div class="calendar-cell"><span class="cell-number">28</span></div>
+      <div class="calendar-cell"><span class="cell-number">29</span></div>
+      <div class="calendar-cell"><span class="cell-number">30</span></div>
+
+      <!-- Event 3: Assemblea (3 Octubre) -->
+      <div class="calendar-cell" data-event="true" data-title="Assemblea General d'Agrupament (AGA)"
+        data-unit="Famílies i Caps" data-timeloc="3 Octubre • 18:30 - 21:00 @ Local AE Lluïsos"
+        data-desc="Presentació del projecte educatiu anual, pressupostos i elecció de la nova línia pedagògica de l'agrupament.">
+        <span class="cell-number">1 Oct</span>
+        <div class="cell-event-badge" style="background-color: var(--retro-blue-dark);">Assemblea AGA</div>
+      </div>
+
+      <!-- Event 4: Fira (17 Octubre) -->
+      <div class="calendar-cell" data-event="true" data-title="Fira d'Agrupament i Trobada de Tardor"
+        data-unit="Comunitat i Barri" data-timeloc="17 Octubre • 10:00 - 20:00 @ Plaça Revolució"
+        data-desc="Paradetes artesanes, intercanvi de material escolta, vermut musical i jocs per a la mainada de Gràcia.">
+        <span class="cell-number">17 Oct</span>
+        <div class="cell-event-badge" style="background-color: var(--retro-orange);">Fira d'Agrupament</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Agenda List View -->
+  <div style="margin-top: 35px;">
+    <h3 class="section-title" style="font-size: 1.8rem; margin-bottom: 15px;">DICCIONARI D'EVENTS</h3>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      {% for ev in events %}
+      <div class="pin-card"
+        onclick="openModal('{{ ev.title|escape }}', '{{ ev.unit }}', '{{ ev.date }} • {{ ev.time }} @ {{ ev.location }}', '{{ ev.description|escape }}')">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <span class="post-tag" style="background-color: {{ ev.badge_color }};">{{ ev.unit }}</span>
+            <strong style="font-family: var(--font-title); font-size: 1.1rem; margin-left: 8px;">{{ ev.title }}</strong>
+          </div>
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--retro-blue);">
+            {{ ev.location }} ({{ ev.date }}) →
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

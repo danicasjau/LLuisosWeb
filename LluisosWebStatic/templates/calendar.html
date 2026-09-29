@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}CALENDARI D'ACTIVITATS 2026-2027 | AE Lluïsos de Gràcia{% endblock %}
+
+{% block content %}
+<div class="page-container calendar-page-layout">
+
+  <!-- Page Header -->
+  <div class="section-header calendar-page-header animate-on-scroll fade-left" style="margin-top: 10px;">
+    <div>
+      <h2 class="section-title" style="font-size: clamp(2rem, 3.5vw, 3.2rem);">CAULENDARI</h2>
+    </div>
+  </div>
+
+  <!-- Calendar Page Layout: Full-Width Main Calendar Area (Totes les Unitats) -->
+  <div class="calendar-two-col-layout calendar-full-layout animate-on-scroll scale-up">
+    <!-- Main Calendar Area -->
+    <main class="calendar-main-stage">
+
+      <!-- Calendar Top Navigation Controls -->
+      <div class="calendar-top-controls">
+        <!-- Month Navigation: Left Arrow, Dropdown, Right Arrow -->
+        <div class="month-nav-cluster">
+          <button class="btn-month-arrow" id="btn-prev-month" onclick="prevMonth()" title="Mes anterior">
+            <span>‹</span>
+          </button>
+
+          <div class="month-selector-wrap">
+            <select id="month-dropdown-select" class="month-dropdown" onchange="onMonthDropdownChange(this.value)">
+              <option value="2026-09">Setembre 2026</option>
+              <option value="2026-10">Octubre 2026</option>
+              <option value="2026-11">Novembre 2026</option>
+              <option value="2026-12">Desembre 2026</option>
+              <option value="2027-01">Gener 2027</option>
+              <option value="2027-02">Febrer 2027</option>
+              <option value="2027-03">Març 2027</option>
+              <option value="2027-04">Abril 2027</option>
+              <option value="2027-05">Maig 2027</option>
+              <option value="2027-06">Juny 2027</option>
+              <option value="2027-07">Juliol 2027</option>
+              <option value="2027-08">Agost 2027</option>
+              <option value="2027-09">Setembre 2027</option>
+            </select>
+          </div>
+
+          <button class="btn-month-arrow" id="btn-next-month" onclick="nextMonth()" title="Mes següent">
+            <span>›</span>
+          </button>
+        </div>
+
+        <!-- View Switcher & Actions (PDF Download) -->
+        <div class="calendar-action-cluster">
+          <div class="view-mode-toggle">
+            <button class="btn-view-toggle active" id="btn-view-month" onclick="setCalendarView('month')">VISTA MES</button>
+            <button class="btn-view-toggle" id="btn-view-year" onclick="setCalendarView('year')">VISTA ANUAL</button>
+          </div>
+
+          <button class="btn-retro btn-download-pdf" onclick="downloadCalendarPDF()" title="Descarrega o imprimeix el calendari">
+            DESCARREGAR PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Calendar Month View Container -->
+      <div id="calendar-month-container" class="calendar-view-container">
+        <div class="calendar-month-bar">
+          <h3 class="calendar-month-heading" id="current-month-heading">SETEMBRE 2026</h3>
+        </div>
+
+        <!-- Month Grid -->
+        <div class="calendar-grid-box">
+          <div class="calendar-day-header">Dilluns</div>
+          <div class="calendar-day-header">Dimarts</div>
+          <div class="calendar-day-header">Dimecres</div>
+          <div class="calendar-day-header">Dijous</div>
+          <div class="calendar-day-header">Divendres</div>
+          <div class="calendar-day-header">Dissabte</div>
+          <div class="calendar-day-header">Diumenge</div>
+
+          <!-- 42 Dynamic Grid Cells Injected via JS -->
+          <div id="calendar-cells-grid" class="calendar-cells-wrapper"></div>
+        </div>
+      </div>
+
+      <!-- Calendar Full Year (12 Months) View Container -->
+      <div id="calendar-year-container" class="calendar-year-container" style="display: none;">
+        <div class="year-view-header">
+          <h3 class="calendar-month-heading">TOT EL CURS</h3>
+        </div>
+        <div class="year-grid-12-months" id="year-months-grid">
+          <!-- 12 Mini Months injected via JS -->
+        </div>
+        <ul class="calendar-activity-legend" aria-label="Llegenda d'activitats">
+          <li><span class="calendar-legend-swatch" style="--legend-color: #FF5722;"></span>Cau</li>
+          <li><span class="calendar-legend-swatch" style="--legend-color: #0284C7;"></span>Excursió</li>
+          <li><span class="calendar-legend-swatch" style="--legend-color: #16A34A;"></span>Campaments Primavera</li>
+          <li><span class="calendar-legend-swatch" style="--legend-color: #DC2626;"></span>Campaments Hivern</li>
+          <li><span class="calendar-legend-swatch" style="--legend-color: #2563EB;"></span>Jamborinada</li>
+        </ul>
+      </div>
+
+    </main>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Expose backend events to JavaScript engine
+  window.RAW_CALENDAR_EVENTS = {{ events|tojson|safe }};
+</script>
+{% endblock %}
