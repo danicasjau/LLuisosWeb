@@ -27,3 +27,4 @@ data/.secret_key
 *.swp
 *.swo
 
+/LluisosWebDynamic/data/*
